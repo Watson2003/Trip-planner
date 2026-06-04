@@ -15,7 +15,7 @@ class TripRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
-    user_id: str
+    user_id: int
     origin: str
     destination: str
     waypoints: list[Any]
@@ -34,6 +34,17 @@ class TripReportRead(BaseModel):
 class TravelDates(BaseModel):
     start: str
     end: str
+
+
+class TripSummaryResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    origin: str
+    destination: str
+    dates: TravelDates | None = None
+    budget: float | None = None
+    created_at: datetime
 
 
 class TripRequest(BaseModel):
@@ -90,7 +101,7 @@ class TripDetailResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
-    user_id: str
+    user_id: int
     origin: str
     destination: str
     waypoints: list[Any]

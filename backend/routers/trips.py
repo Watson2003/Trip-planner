@@ -25,7 +25,7 @@ async def create_trip(payload: TripCreate, session: AsyncSession = Depends(get_s
     return TripRead.model_validate(
         {
             "id": trip.id,
-            "user_id": str(trip.user_id),
+            "user_id": trip.user_id,
             "origin": trip.origin,
             "destination": trip.destination,
             "waypoints": trip.waypoints,
@@ -42,7 +42,7 @@ async def list_trips(session: AsyncSession = Depends(get_session)) -> list[TripR
         TripRead.model_validate(
             {
                 "id": trip.id,
-                "user_id": str(trip.user_id),
+                "user_id": trip.user_id,
                 "origin": trip.origin,
                 "destination": trip.destination,
                 "waypoints": trip.waypoints,
@@ -62,7 +62,7 @@ async def get_trip(trip_id: int, session: AsyncSession = Depends(get_session)) -
     return TripRead.model_validate(
         {
             "id": trip.id,
-            "user_id": str(trip.user_id),
+            "user_id": trip.user_id,
             "origin": trip.origin,
             "destination": trip.destination,
             "waypoints": trip.waypoints,

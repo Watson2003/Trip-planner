@@ -17,6 +17,19 @@ def _should_migrate_sqlite_trips(sync_connection) -> bool:
         return False
 
     columns = {column["name"]: column for column in inspector.get_columns("trips")}
+    expected_columns = {
+        "user_id",
+        "origin",
+        "destination",
+        "travel_start_date",
+        "travel_end_date",
+        "budget",
+        "waypoints",
+        "created_at",
+    }
+    if not expected_columns.issubset(columns.keys()):
+        return True
+
     user_id_column = columns.get("user_id")
     if user_id_column is None:
         return True
@@ -74,85 +87,26 @@ def _migrate_sqlite_schema(sync_connection) -> None:
     if not settings.database_url.startswith("sqlite"):
         return
 
-    if not _should_migrate_sqlite_trips(sync_connection):
+    inspector = inspect(sync_connection)
+    user_table_columns = {column["name"] for column in inspector.get_columns("users")} if "users" in inspector.get_table_names() else set()
+    if "users" not in inspector.get_table_names() or not {"username", "email", "hashed_password", "created_at", "is_active"}.issubset(user_table_columns):
         return
 
-    inspector = inspect(sync_connection)
     if "trips" not in inspector.get_table_names():
+        return
+
+    if not _should_migrate_sqlite_trips(sync_connection):
         return
 
     sync_connection.exec_driver_sql("PRAGMA foreign_keys=OFF")
     try:
-        rows = sync_connection.exec_driver_sql(
-            "SELECT id, user_id, origin, destination, waypoints, created_at FROM trips ORDER BY id"
-        ).mappings().all()
-
-        if not rows:
-            sync_connection.exec_driver_sql("DROP TABLE trips")
-            sync_connection.exec_driver_sql(
-                """
-                CREATE TABLE trips (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    user_id INTEGER NOT NULL,
-                    origin TEXT NOT NULL,
-                    destination TEXT NOT NULL,
-                    waypoints JSON NOT NULL,
-                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                    FOREIGN KEY(user_id) REFERENCES users(id)
-                )
-                """
-            )
-            sync_connection.exec_driver_sql("CREATE INDEX IF NOT EXISTS ix_trips_user_id ON trips(user_id)")
-            return
-
-        sync_connection.exec_driver_sql("DROP TABLE IF EXISTS trips_migrated")
-        sync_connection.exec_driver_sql(
-            """
-            CREATE TABLE trips_migrated (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                user_id INTEGER NOT NULL,
-                origin TEXT NOT NULL,
-                destination TEXT NOT NULL,
-                waypoints JSON NOT NULL,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY(user_id) REFERENCES users(id)
-            )
-            """
-        )
-
-        legacy_user_ids: dict[str, int] = {}
-        for row in rows:
-            legacy_identifier = str(row["user_id"] or "guest").strip() or "guest"
-            if legacy_identifier not in legacy_user_ids:
-                legacy_user_ids[legacy_identifier] = _ensure_legacy_user(sync_connection, legacy_identifier)
-
-            waypoints = row["waypoints"]
-            if isinstance(waypoints, str):
-                try:
-                    waypoints = json.loads(waypoints)
-                except json.JSONDecodeError:
-                    waypoints = [waypoints]
-            elif waypoints is None:
-                waypoints = []
-
-            sync_connection.exec_driver_sql(
-                """
-                INSERT INTO trips_migrated (id, user_id, origin, destination, waypoints, created_at)
-                VALUES (?, ?, ?, ?, ?, ?)
-                """,
-                (
-                    row["id"],
-                    legacy_user_ids[legacy_identifier],
-                    row["origin"],
-                    row["destination"],
-                    json.dumps(waypoints),
-                    row["created_at"],
-                ),
-            )
-
-        sync_connection.exec_driver_sql("DROP TABLE trips")
-        sync_connection.exec_driver_sql("ALTER TABLE trips_migrated RENAME TO trips")
-        sync_connection.exec_driver_sql("CREATE INDEX IF NOT EXISTS ix_trips_user_id ON trips(user_id)")
+        existing_columns = {column["name"] for column in inspector.get_columns("trips")}
+        if "travel_start_date" not in existing_columns:
+            sync_connection.exec_driver_sql("ALTER TABLE trips ADD COLUMN travel_start_date TEXT")
+        if "travel_end_date" not in existing_columns:
+            sync_connection.exec_driver_sql("ALTER TABLE trips ADD COLUMN travel_end_date TEXT")
+        if "budget" not in existing_columns:
+            sync_connection.exec_driver_sql("ALTER TABLE trips ADD COLUMN budget REAL")
     finally:
         sync_connection.exec_driver_sql("PRAGMA foreign_keys=ON")
 

@@ -10,9 +10,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from agents.graph import trip_planner_graph
 from models.database import async_session_maker
-from models.schemas import TripDetailResponse, TripPlanResponse, TripRequest
+from models.schemas import TripDetailResponse, TripPlanResponse, TripRequest, TripSummaryResponse
 from models.trip import Trip, TripReport
-from utils.auth import get_or_create_user_from_identifier
+from models.user_schemas import UserResponse
+from utils.auth import get_current_user
 
 router = APIRouter(tags=["trip"])
 
@@ -71,10 +72,31 @@ def _normalize_plan_state(state: dict) -> dict:
     }
 
 
+def _trip_summary(trip: Trip) -> TripSummaryResponse:
+    return TripSummaryResponse.model_validate(
+        {
+            "id": trip.id,
+            "origin": trip.origin,
+            "destination": trip.destination,
+            "dates": {
+                "start": trip.travel_start_date,
+                "end": trip.travel_end_date,
+            }
+            if trip.travel_start_date and trip.travel_end_date
+            else None,
+            "budget": trip.budget,
+            "created_at": trip.created_at,
+        }
+    )
+
+
 @router.post("/trip/plan", response_model=TripPlanResponse, status_code=status.HTTP_201_CREATED)
-async def plan_trip(payload: TripRequest, session: AsyncSession = Depends(get_session)) -> TripPlanResponse:
+async def plan_trip(
+    payload: TripRequest,
+    session: AsyncSession = Depends(get_session),
+    current_user: UserResponse = Depends(get_current_user),
+) -> TripPlanResponse:
     try:
-        user = await get_or_create_user_from_identifier(session, payload.user_id)
         initial_state = {
             "user_input": _build_user_input(payload),
             "origin": payload.origin,
@@ -83,7 +105,7 @@ async def plan_trip(payload: TripRequest, session: AsyncSession = Depends(get_se
             "budget": payload.budget,
             "preferences": payload.preferences,
             "waypoints": payload.waypoints,
-            "user_id": payload.user_id,
+            "user_id": current_user.username,
         }
         result_state = await trip_planner_graph.ainvoke(initial_state)
     except ValueError as exc:
@@ -98,9 +120,12 @@ async def plan_trip(payload: TripRequest, session: AsyncSession = Depends(get_se
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=errors)
 
     trip = Trip(
-        user_id=user.id,
+        user_id=current_user.id,
         origin=result_state.get("origin", payload.origin),
         destination=result_state.get("destination", payload.destination),
+        travel_start_date=payload.travel_dates.start,
+        travel_end_date=payload.travel_dates.end,
+        budget=payload.budget,
         waypoints=result_state.get("waypoints", payload.waypoints),
     )
     session.add(trip)
@@ -126,6 +151,18 @@ async def plan_trip(payload: TripRequest, session: AsyncSession = Depends(get_se
     return TripPlanResponse.model_validate(response_data)
 
 
+@router.get("/trip/my-trips", response_model=list[TripSummaryResponse])
+async def my_trips(
+    session: AsyncSession = Depends(get_session),
+    current_user: UserResponse = Depends(get_current_user),
+) -> list[TripSummaryResponse]:
+    result = await session.execute(
+        select(Trip).where(Trip.user_id == current_user.id).order_by(Trip.created_at.desc())
+    )
+    trips = result.scalars().all()
+    return [_trip_summary(trip) for trip in trips]
+
+
 @router.get("/trip/{trip_id}", response_model=TripDetailResponse)
 async def get_trip(trip_id: int, session: AsyncSession = Depends(get_session)) -> TripDetailResponse:
     trip_result = await session.execute(select(Trip).where(Trip.id == trip_id))
@@ -140,7 +177,7 @@ async def get_trip(trip_id: int, session: AsyncSession = Depends(get_session)) -
 
     return TripDetailResponse(
         id=trip.id,
-        user_id=str(trip.user_id),
+        user_id=trip.user_id,
         origin=trip.origin,
         destination=trip.destination,
         waypoints=trip.waypoints,

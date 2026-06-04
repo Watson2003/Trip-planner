@@ -13,3 +13,81 @@
  ○ Compiling /_error ...
  ✓ Compiled /_error in 5.1s (1924 modules)
  GET / 200 in 1155ms
+ GET / 200 in 138ms
+ ✓ Compiled in 791ms (1922 modules)
+ ✓ Compiled in 339ms (1041 modules)
+ ✓ Compiled in 835ms (1922 modules)
+ GET / 200 in 452ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 1161ms (1911 modules)
+ GET /_next/static/css/app/layout.css?v=1780559628159 404 in 1465ms
+ GET /_next/static/chunks/webpack.js?v=1780559628159 404 in 1479ms
+ GET /_next/static/chunks/main-app.js?v=1780559628159 404 in 1478ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 1477ms
+ GET /_next/static/chunks/app/not-found.js 404 in 1475ms
+ GET /_next/static/chunks/app/page.js 404 in 1476ms
+ GET /_next/static/chunks/app/global-error.js 404 in 76ms
+ ○ Compiling /login ...
+ ✓ Compiled /login in 1028ms (1931 modules)
+ GET /login 200 in 1251ms
+ GET /_next/static/css/app/layout.css?v=1780559648774 404 in 66ms
+ GET /_next/static/chunks/main-app.js?v=1780559648774 404 in 78ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 77ms
+ GET /_next/static/chunks/app/not-found.js 404 in 76ms
+ GET /_next/static/chunks/app/global-error.js 404 in 77ms
+ GET /register 404 in 54ms
+ GET /_next/static/css/app/layout.css?v=1780559662924 404 in 33ms
+ GET /_next/static/chunks/main-app.js?v=1780559662924 404 in 70ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 70ms
+ GET /_next/static/chunks/app/not-found.js 404 in 70ms
+ GET /_next/static/chunks/app/global-error.js 404 in 70ms
+ GET / 200 in 268ms
+ GET /_next/static/css/app/layout.css?v=1780559666887 404 in 100ms
+ GET /_next/static/chunks/main-app.js?v=1780559666887 404 in 107ms
+ GET /_next/static/chunks/app/not-found.js 404 in 106ms
+ GET /_next/static/chunks/app/global-error.js 404 in 104ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 109ms
+ GET /_next/static/chunks/app/page.js 404 in 109ms
+ GET /login 200 in 50ms
+ GET /_next/static/css/app/layout.css?v=1780560045813 404 in 81ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 93ms
+ GET /_next/static/chunks/main-app.js?v=1780560045813 404 in 93ms
+ GET /_next/static/chunks/app/not-found.js 404 in 91ms
+ GET /_next/static/chunks/app/global-error.js 404 in 89ms
+ GET /login 200 in 68ms
+ GET /_next/static/css/app/layout.css?v=1780560083781 404 in 54ms
+ GET /_next/static/chunks/main-app.js?v=1780560083781 404 in 65ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 65ms
+ GET /_next/static/chunks/app/not-found.js 404 in 65ms
+ GET /_next/static/chunks/app/global-error.js 404 in 62ms
+ GET /login 200 in 59ms
+ GET /_next/static/css/app/layout.css?v=1780560133740 404 in 42ms
+ GET /_next/static/chunks/main-app.js?v=1780560133740 404 in 79ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 76ms
+ GET /_next/static/chunks/app/not-found.js 404 in 76ms
+ GET /_next/static/chunks/app/global-error.js 404 in 74ms
+ GET /login? 200 in 42ms
+ GET /_next/static/css/app/layout.css?v=1780560134218 404 in 38ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 58ms
+ GET /_next/static/chunks/main-app.js?v=1780560134218 404 in 58ms
+ GET /_next/static/chunks/app/not-found.js 404 in 57ms
+ GET /_next/static/chunks/app/global-error.js 404 in 57ms
+ ✓ Compiled in 734ms (1934 modules)
+ ✓ Compiled /login in 179ms (892 modules)
+ GET /login 200 in 379ms
+ ✓ Compiled /_not-found in 180ms (894 modules)
+ GET /_next/static/css/app/layout.css?v=1780560223470 404 in 343ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 350ms
+ GET /_next/static/chunks/app/not-found.js 404 in 343ms
+ GET /_next/static/chunks/main-app.js?v=1780560223470 404 in 355ms
+ GET /_next/static/chunks/app/global-error.js 404 in 339ms
+ GET /login? 200 in 191ms
+ GET /_next/static/css/app/layout.css?v=1780560223931 404 in 47ms
+ GET /_next/static/chunks/main-app.js?v=1780560223931 404 in 64ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 63ms
+ GET /_next/static/chunks/app/not-found.js 404 in 59ms
+ GET /_next/static/chunks/app/global-error.js 404 in 57ms
+ ✓ Compiled in 565ms (1932 modules)
+ ✓ Compiled in 339ms (1053 modules)
+ ✓ Compiled in 1620ms (1941 modules)
+[?25h

@@ -1,13 +1,16 @@
 "use client";
 
 import { useEffect, useMemo, useState, type FormEvent } from "react";
-import { ArrowDownToLine, Compass, Loader2, Moon, PanelTop, Sparkles, Sun } from "lucide-react";
+import { ArrowDownToLine, Compass, Loader2, Sparkles } from "lucide-react";
 
+import AuthGuard from "@/components/auth/AuthGuard";
+import Navbar from "@/components/auth/Navbar";
 import BudgetBreakdown from "@/components/budget/BudgetBreakdown";
 import TravelChat from "@/components/chat/TravelChat";
 import RecommendationCards from "@/components/recommendations/RecommendationCards";
 import TripMap from "@/components/map/TripMap";
 import WeatherPanel from "@/components/weather/WeatherPanel";
+import { getAuthHeaders } from "@/lib/auth";
 import type {
   BudgetBreakdown as BudgetBreakdownType,
   PlannedTripResponse,
@@ -358,7 +361,10 @@ export default function HomePage() {
     try {
       const planResponse = await fetch("/api/trip/plan", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...getAuthHeaders(),
+        },
         body: JSON.stringify({
           origin: form.origin,
           destination: form.destination,
@@ -417,7 +423,11 @@ export default function HomePage() {
 
   async function downloadReport() {
     if (!state.trip?.trip_id) return;
-    const response = await fetch(`/api/trip/${state.trip.trip_id}/pdf`);
+    const response = await fetch(`/api/trip/${state.trip.trip_id}/pdf`, {
+      headers: {
+        ...getAuthHeaders(),
+      },
+    });
     if (!response.ok) {
       throw new Error("Unable to download the PDF report.");
     }
@@ -468,201 +478,177 @@ export default function HomePage() {
   ) : null;
 
   return (
-    <main className="min-h-screen text-slate-900 transition-colors dark:text-slate-100">
-      <nav className="sticky top-0 z-40 border-b border-white/60 bg-white/75 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/80">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
-          <a href="#" className="inline-flex items-center gap-2 text-base font-black tracking-tight text-slate-950 dark:text-white">
-            <PanelTop className="h-5 w-5 text-orange-500" />
-            RoadMind AI
-          </a>
-
-          <div className="flex items-center gap-2 sm:gap-3">
-            <a
-              href="#my-trips"
-              className="rounded-full px-4 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
-            >
-              My Trips
-            </a>
-            <button
-              type="button"
-              onClick={() => setTheme((current) => (current === "dark" ? "light" : "dark"))}
-              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
-              aria-label="Toggle dark mode"
-            >
-              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-              {theme === "dark" ? "Light" : "Dark"}
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <section className="overflow-hidden rounded-[2rem] border border-white/80 bg-white/70 shadow-glow backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/70">
-          <div className="grid gap-8 px-5 py-8 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
-            <div className="space-y-5">
-              <div className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-4 py-2 text-sm font-semibold text-orange-700 dark:border-orange-900/50 dark:bg-orange-950/40 dark:text-orange-300">
-                <Sparkles className="h-4 w-4" />
-                AI Road Trip Planner
-              </div>
-              <div className="space-y-3">
-                <h1 className="max-w-3xl text-4xl font-black tracking-tight sm:text-5xl dark:text-white">
-                  Plan the route, tune the budget, and keep every stop in view.
-                </h1>
-                <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg dark:text-slate-300">
-                  Enter your trip details, generate an AI-planned road trip, and review the route map, weather
-                  outlook, recommendations, and detailed budget breakdown in one responsive dashboard.
-                </p>
-              </div>
-              <div className="grid gap-3 sm:grid-cols-3">
-                <FeaturePill title="Scenic" text="Coastal and hill routes" />
-                <FeaturePill title="Budget" text="Stay within spending limits" />
-                <FeaturePill title="Weather" text="Spot risky conditions early" />
-              </div>
-            </div>
-
-            <form
-              onSubmit={handleSubmit}
-              className="rounded-[1.75rem] border border-slate-200 bg-slate-950 p-5 text-white shadow-2xl dark:border-slate-800"
-            >
-              <div className="flex items-center gap-2 text-sm text-slate-300">
-                <Compass className="h-4 w-4 text-orange-400" />
-                Trip details
-              </div>
-              <div className="mt-4 grid gap-4">
-                <TextField
-                  label="Origin"
-                  value={form.origin}
-                  onChange={(value) => setForm((current) => ({ ...current, origin: value }))}
-                  placeholder="e.g. Mumbai"
-                />
-                <TextField
-                  label="Destination"
-                  value={form.destination}
-                  onChange={(value) => setForm((current) => ({ ...current, destination: value }))}
-                  placeholder="e.g. Goa"
-                />
-
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <DateField
-                    label="Start date"
-                    value={form.startDate}
-                    onChange={(value) => setForm((current) => ({ ...current, startDate: value }))}
-                  />
-                  <DateField
-                    label="End date"
-                    value={form.endDate}
-                    onChange={(value) => setForm((current) => ({ ...current, endDate: value }))}
-                  />
+    <AuthGuard>
+      <Navbar theme={theme} onToggleTheme={() => setTheme((current) => (current === "dark" ? "light" : "dark"))} />
+      <main className="min-h-screen text-slate-900 transition-colors dark:text-slate-100">
+        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+          <section className="overflow-hidden rounded-[2rem] border border-white/80 bg-white/70 shadow-glow backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/70">
+            <div className="grid gap-8 px-5 py-8 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
+              <div className="space-y-5">
+                <div className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-4 py-2 text-sm font-semibold text-orange-700 dark:border-orange-900/50 dark:bg-orange-950/40 dark:text-orange-300">
+                  <Sparkles className="h-4 w-4" />
+                  AI Road Trip Planner
                 </div>
-
-                <div className="space-y-3 rounded-2xl border border-white/10 bg-white/5 p-4">
-                  <div className="flex items-center justify-between gap-3">
-                    <label className="text-sm font-medium text-slate-200">Budget</label>
-                    <span className="rounded-full bg-white px-3 py-1 text-sm font-bold text-slate-900">
-                      {"\u20b9"}
-                      {form.budget.toLocaleString("en-IN")}
-                    </span>
-                  </div>
-                  <input
-                    type="range"
-                    min={5000}
-                    max={100000}
-                    step={500}
-                    value={form.budget}
-                    onChange={(event) =>
-                      setForm((current) => ({ ...current, budget: Number(event.target.value) }))
-                    }
-                    className="h-2 w-full cursor-pointer appearance-none rounded-full bg-slate-800 accent-orange-500"
-                  />
-                  <div className="flex justify-between text-xs text-slate-400">
-                    <span>{"\u20b95,000"}</span>
-                    <span>{"\u20b9100,000"}</span>
-                  </div>
+                <div className="space-y-3">
+                  <h1 className="max-w-3xl text-4xl font-black tracking-tight sm:text-5xl dark:text-white">
+                    Plan the route, tune the budget, and keep every stop in view.
+                  </h1>
+                  <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg dark:text-slate-300">
+                    Enter your trip details, generate an AI-planned road trip, and review the route map, weather
+                    outlook, recommendations, and detailed budget breakdown in one responsive dashboard.
+                  </p>
                 </div>
-
-                <div className="grid gap-3 rounded-2xl border border-white/10 bg-white/5 p-4">
-                  <PreferenceCheck
-                    label="Scenic route"
-                    checked={form.scenicRoute}
-                    onChange={(checked) => setForm((current) => ({ ...current, scenicRoute: checked }))}
-                  />
-                  <PreferenceCheck
-                    label="Budget hotels"
-                    checked={form.budgetHotels}
-                    onChange={(checked) => setForm((current) => ({ ...current, budgetHotels: checked }))}
-                  />
-                  <PreferenceCheck
-                    label="Vegetarian food"
-                    checked={form.vegetarianFood}
-                    onChange={(checked) => setForm((current) => ({ ...current, vegetarianFood: checked }))}
-                  />
+                <div className="grid gap-3 sm:grid-cols-3">
+                  <FeaturePill title="Scenic" text="Coastal and hill routes" />
+                  <FeaturePill title="Budget" text="Stay within spending limits" />
+                  <FeaturePill title="Weather" text="Spot risky conditions early" />
                 </div>
-
-                {state.error && (
-                  <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
-                    {state.error}
-                  </div>
-                )}
-
-                <button
-                  type="submit"
-                  disabled={state.loading}
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-orange-500 px-5 py-3 text-sm font-bold text-white transition hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-70"
-                >
-                  {state.loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
-                  {state.loading ? "Planning trip..." : "Plan trip"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </section>
-
-        <div className="mt-6 space-y-6">
-          {topSummary}
-
-          {state.loading ? (
-            <LoadingSkeleton />
-          ) : state.trip && state.routeGeoJSON && state.budget && state.weather.length > 0 ? (
-            <div className="grid gap-6 lg:grid-cols-2">
-              <div className="space-y-6">
-                <TripMap routeGeoJSON={state.routeGeoJSON} markers={state.markers} focusPoint={state.focusPoint} />
-                <RecommendationCards recommendations={state.recommendations} onViewOnMap={focusOnRecommendation} />
               </div>
 
-              <div className="space-y-6">
-                <WeatherPanel weatherData={state.weather} />
-                <BudgetBreakdown budget={state.budget} />
-                <div className="flex flex-wrap items-center gap-3 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-glow backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/80">
+              <form
+                onSubmit={handleSubmit}
+                className="rounded-[1.75rem] border border-slate-200 bg-slate-950 p-5 text-white shadow-2xl dark:border-slate-800"
+              >
+                <div className="flex items-center gap-2 text-sm text-slate-300">
+                  <Compass className="h-4 w-4 text-orange-400" />
+                  Trip details
+                </div>
+                <div className="mt-4 grid gap-4">
+                  <TextField
+                    label="Origin"
+                    value={form.origin}
+                    onChange={(value) => setForm((current) => ({ ...current, origin: value }))}
+                    placeholder="e.g. Mumbai"
+                  />
+                  <TextField
+                    label="Destination"
+                    value={form.destination}
+                    onChange={(value) => setForm((current) => ({ ...current, destination: value }))}
+                    placeholder="e.g. Goa"
+                  />
+
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <DateField
+                      label="Start date"
+                      value={form.startDate}
+                      onChange={(value) => setForm((current) => ({ ...current, startDate: value }))}
+                    />
+                    <DateField
+                      label="End date"
+                      value={form.endDate}
+                      onChange={(value) => setForm((current) => ({ ...current, endDate: value }))}
+                    />
+                  </div>
+
+                  <div className="space-y-3 rounded-2xl border border-white/10 bg-white/5 p-4">
+                    <div className="flex items-center justify-between gap-3">
+                      <label className="text-sm font-medium text-slate-200">Budget</label>
+                      <span className="rounded-full bg-white px-3 py-1 text-sm font-bold text-slate-900">
+                        {"\u20b9"}
+                        {form.budget.toLocaleString("en-IN")}
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min={5000}
+                      max={100000}
+                      step={500}
+                      value={form.budget}
+                      onChange={(event) =>
+                        setForm((current) => ({ ...current, budget: Number(event.target.value) }))
+                      }
+                      className="h-2 w-full cursor-pointer appearance-none rounded-full bg-slate-800 accent-orange-500"
+                    />
+                    <div className="flex justify-between text-xs text-slate-400">
+                      <span>{"\u20b95,000"}</span>
+                      <span>{"\u20b9100,000"}</span>
+                    </div>
+                  </div>
+
+                  <div className="grid gap-3 rounded-2xl border border-white/10 bg-white/5 p-4">
+                    <PreferenceCheck
+                      label="Scenic route"
+                      checked={form.scenicRoute}
+                      onChange={(checked) => setForm((current) => ({ ...current, scenicRoute: checked }))}
+                    />
+                    <PreferenceCheck
+                      label="Budget hotels"
+                      checked={form.budgetHotels}
+                      onChange={(checked) => setForm((current) => ({ ...current, budgetHotels: checked }))}
+                    />
+                    <PreferenceCheck
+                      label="Vegetarian food"
+                      checked={form.vegetarianFood}
+                      onChange={(checked) => setForm((current) => ({ ...current, vegetarianFood: checked }))}
+                    />
+                  </div>
+
+                  {state.error && (
+                    <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+                      {state.error}
+                    </div>
+                  )}
+
                   <button
-                    type="button"
-                    onClick={() => {
-                      downloadReport().catch((error) => {
-                        setState((current) => ({
-                          ...current,
-                          error: error instanceof Error ? error.message : "Could not download PDF",
-                        }));
-                      });
-                    }}
-                    className="inline-flex items-center gap-2 rounded-2xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
-                    disabled={!canDownloadPdf}
+                    type="submit"
+                    disabled={state.loading}
+                    className="inline-flex items-center justify-center gap-2 rounded-2xl bg-orange-500 px-5 py-3 text-sm font-bold text-white transition hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-70"
                   >
-                    <ArrowDownToLine className="h-4 w-4" />
-                    Download PDF Report
+                    {state.loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+                    {state.loading ? "Planning trip..." : "Plan trip"}
                   </button>
-                  <div className="text-sm text-slate-600 dark:text-slate-300">
-                    {state.trip.report_summary || "Your trip report will appear here after planning."}
+                </div>
+              </form>
+            </div>
+          </section>
+
+          <div className="mt-6 space-y-6">
+            {topSummary}
+
+            {state.loading ? (
+              <LoadingSkeleton />
+            ) : state.trip && state.routeGeoJSON && state.budget && state.weather.length > 0 ? (
+              <div className="grid gap-6 lg:grid-cols-2">
+                <div className="space-y-6">
+                  <TripMap routeGeoJSON={state.routeGeoJSON} markers={state.markers} focusPoint={state.focusPoint} />
+                  <RecommendationCards recommendations={state.recommendations} onViewOnMap={focusOnRecommendation} />
+                </div>
+
+                <div className="space-y-6">
+                  <WeatherPanel weatherData={state.weather} />
+                  <BudgetBreakdown budget={state.budget} />
+                  <div className="flex flex-wrap items-center gap-3 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-glow backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/80">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        downloadReport().catch((error) => {
+                          setState((current) => ({
+                            ...current,
+                            error: error instanceof Error ? error.message : "Could not download PDF",
+                          }));
+                        });
+                      }}
+                      className="inline-flex items-center gap-2 rounded-2xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+                      disabled={!canDownloadPdf}
+                    >
+                      <ArrowDownToLine className="h-4 w-4" />
+                      Download PDF Report
+                    </button>
+                    <div className="text-sm text-slate-600 dark:text-slate-300">
+                      {state.trip.report_summary || "Your trip report will appear here after planning."}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ) : (
-            <LoadingSkeleton />
-          )}
+            ) : (
+              <LoadingSkeleton />
+            )}
+          </div>
         </div>
-      </div>
 
-      <TravelChat tripId={String(state.trip?.trip_id ?? "")} />
-    </main>
+        <TravelChat tripId={String(state.trip?.trip_id ?? "")} />
+      </main>
+    </AuthGuard>
   );
 }
 
