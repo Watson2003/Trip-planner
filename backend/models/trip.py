@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Any
 
-from sqlalchemy import DateTime, ForeignKey, Integer, String, Text, func
+from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, Text, func
 from sqlalchemy.dialects.sqlite import JSON
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
@@ -10,16 +10,35 @@ class Base(DeclarativeBase):
     pass
 
 
+class User(Base):
+    __tablename__ = "users"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    username: Mapped[str] = mapped_column(String(150), unique=True, nullable=False, index=True)
+    email: Mapped[str] = mapped_column(String(255), unique=True, nullable=False, index=True)
+    hashed_password: Mapped[str] = mapped_column(String(255), nullable=False)
+    full_name: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+
+    trips: Mapped[list["Trip"]] = relationship(
+        back_populates="user",
+        cascade="all, delete-orphan",
+        lazy="selectin",
+    )
+
+
 class Trip(Base):
     __tablename__ = "trips"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    user_id: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False, index=True)
     origin: Mapped[str] = mapped_column(String(255), nullable=False)
     destination: Mapped[str] = mapped_column(String(255), nullable=False)
     waypoints: Mapped[list[Any]] = mapped_column(JSON, nullable=False, default=list)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
+    user: Mapped[User] = relationship(back_populates="trips", lazy="selectin")
     reports: Mapped[list["TripReport"]] = relationship(
         back_populates="trip",
         cascade="all, delete-orphan",
@@ -36,4 +55,3 @@ class TripReport(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     trip: Mapped[Trip] = relationship(back_populates="reports")
-

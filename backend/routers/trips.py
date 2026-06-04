@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from models.database import async_session_maker
 from models.schemas import TripCreate, TripRead
 from models.trip import Trip
+from utils.auth import get_or_create_user_from_identifier
 
 router = APIRouter(tags=["trips"])
 
@@ -15,25 +16,56 @@ async def get_session() -> AsyncSession:
 
 
 @router.post("/trips", response_model=TripRead, status_code=status.HTTP_201_CREATED)
-async def create_trip(payload: TripCreate, session: AsyncSession = Depends(get_session)) -> Trip:
-    trip = Trip(**payload.model_dump())
+async def create_trip(payload: TripCreate, session: AsyncSession = Depends(get_session)) -> TripRead:
+    user = await get_or_create_user_from_identifier(session, payload.user_id)
+    trip = Trip(user_id=user.id, origin=payload.origin, destination=payload.destination, waypoints=payload.waypoints)
     session.add(trip)
     await session.commit()
     await session.refresh(trip)
-    return trip
+    return TripRead.model_validate(
+        {
+            "id": trip.id,
+            "user_id": str(trip.user_id),
+            "origin": trip.origin,
+            "destination": trip.destination,
+            "waypoints": trip.waypoints,
+            "created_at": trip.created_at,
+        }
+    )
 
 
 @router.get("/trips", response_model=list[TripRead])
-async def list_trips(session: AsyncSession = Depends(get_session)) -> list[Trip]:
+async def list_trips(session: AsyncSession = Depends(get_session)) -> list[TripRead]:
     result = await session.execute(select(Trip).order_by(Trip.created_at.desc()))
-    return list(result.scalars().all())
+    trips = result.scalars().all()
+    return [
+        TripRead.model_validate(
+            {
+                "id": trip.id,
+                "user_id": str(trip.user_id),
+                "origin": trip.origin,
+                "destination": trip.destination,
+                "waypoints": trip.waypoints,
+                "created_at": trip.created_at,
+            }
+        )
+        for trip in trips
+    ]
 
 
 @router.get("/trips/{trip_id}", response_model=TripRead)
-async def get_trip(trip_id: int, session: AsyncSession = Depends(get_session)) -> Trip:
+async def get_trip(trip_id: int, session: AsyncSession = Depends(get_session)) -> TripRead:
     result = await session.execute(select(Trip).where(Trip.id == trip_id))
     trip = result.scalar_one_or_none()
     if trip is None:
         raise HTTPException(status_code=404, detail="Trip not found")
-    return trip
-
+    return TripRead.model_validate(
+        {
+            "id": trip.id,
+            "user_id": str(trip.user_id),
+            "origin": trip.origin,
+            "destination": trip.destination,
+            "waypoints": trip.waypoints,
+            "created_at": trip.created_at,
+        }
+    )

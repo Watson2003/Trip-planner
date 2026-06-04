@@ -12,6 +12,7 @@ from agents.graph import trip_planner_graph
 from models.database import async_session_maker
 from models.schemas import TripDetailResponse, TripPlanResponse, TripRequest
 from models.trip import Trip, TripReport
+from utils.auth import get_or_create_user_from_identifier
 
 router = APIRouter(tags=["trip"])
 
@@ -73,6 +74,7 @@ def _normalize_plan_state(state: dict) -> dict:
 @router.post("/trip/plan", response_model=TripPlanResponse, status_code=status.HTTP_201_CREATED)
 async def plan_trip(payload: TripRequest, session: AsyncSession = Depends(get_session)) -> TripPlanResponse:
     try:
+        user = await get_or_create_user_from_identifier(session, payload.user_id)
         initial_state = {
             "user_input": _build_user_input(payload),
             "origin": payload.origin,
@@ -96,7 +98,7 @@ async def plan_trip(payload: TripRequest, session: AsyncSession = Depends(get_se
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=errors)
 
     trip = Trip(
-        user_id=payload.user_id,
+        user_id=user.id,
         origin=result_state.get("origin", payload.origin),
         destination=result_state.get("destination", payload.destination),
         waypoints=result_state.get("waypoints", payload.waypoints),
@@ -138,7 +140,7 @@ async def get_trip(trip_id: int, session: AsyncSession = Depends(get_session)) -
 
     return TripDetailResponse(
         id=trip.id,
-        user_id=trip.user_id,
+        user_id=str(trip.user_id),
         origin=trip.origin,
         destination=trip.destination,
         waypoints=trip.waypoints,

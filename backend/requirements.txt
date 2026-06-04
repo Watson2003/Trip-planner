@@ -13,3 +13,6 @@ aiosqlite
 pydantic
 sentence-transformers
 mcp
+python-jose[cryptography]
+passlib[bcrypt]
+python-multipart
