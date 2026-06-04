@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
 import type {
@@ -16,7 +16,6 @@ type PlaceRecommendation = HotelRecommendation | RestaurantRecommendation | Attr
 
 interface RecommendationCardsProps {
   recommendations: LocationRecommendation[];
-  origin: string;
   destination: string;
 }
 
@@ -30,10 +29,6 @@ const PlaceMiniMap = dynamic(() => import("./PlaceMiniMap"), {
   ssr: false,
   loading: () => <div className="h-[200px] w-full rounded-2xl border border-white/10 bg-slate-800/70 sm:h-[250px]" />,
 });
-
-function areSameLocation(a: string, b: string) {
-  return a.trim().toLowerCase() === b.trim().toLowerCase();
-}
 
 function buildStarDisplay(rating: number) {
   const clamped = Math.max(0, Math.min(5, rating));
@@ -109,24 +104,37 @@ function PlaceCard({
         ? "border-cyan-500/30 bg-cyan-500/10 text-cyan-200"
         : "border-violet-500/30 bg-violet-500/10 text-violet-200";
 
+  const fallbackIcon = category === "hotels" ? "🏨" : category === "restaurants" ? "🍽️" : "🎯";
+
   return (
     <article className="group overflow-hidden rounded-3xl border border-white/10 bg-slate-900/90 shadow-xl shadow-black/20 transition hover:-translate-y-0.5 hover:border-orange-400/30">
       <div className="relative">
         {place.photo_url ? (
-          <img
-            src={place.photo_url}
-            alt={place.name}
-            className="h-40 w-full object-cover sm:h-48"
-            loading="lazy"
-          />
+          <>
+            <img
+              src={place.photo_url}
+              alt={place.name}
+              className="w-full h-48 object-cover rounded-t-xl"
+              loading="lazy"
+              onError={(event) => {
+                event.currentTarget.style.display = "none";
+                event.currentTarget.nextElementSibling?.classList.remove("hidden");
+              }}
+            />
+            <div className="hidden w-full h-48 rounded-t-xl bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
+              <span className="text-4xl">{fallbackIcon}</span>
+            </div>
+          </>
         ) : (
-          <div className="flex h-40 w-full items-center justify-center bg-gradient-to-br from-slate-700 via-slate-800 to-slate-950 sm:h-48">
-            <span className="text-5xl font-black text-white/80">{placeInitial(place)}</span>
+          <div className="w-full h-48 rounded-t-xl bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
+            <span className="text-4xl">{fallbackIcon}</span>
           </div>
         )}
 
         {badge ? (
-          <span className={`absolute right-3 top-3 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] ${badge.tone}`}>
+          <span
+            className={`absolute right-3 top-3 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] ${badge.tone}`}
+          >
             {badge.label}
           </span>
         ) : null}
@@ -202,33 +210,11 @@ function PlaceCard({
   );
 }
 
-export default function RecommendationCards({ recommendations, origin, destination }: RecommendationCardsProps) {
-  const visibleRecommendations = useMemo(() => {
-    const routeMatches = recommendations.filter((item) =>
-      [origin, destination].some((target) => areSameLocation(item.location, target)),
-    );
-    return routeMatches.length > 0 ? routeMatches : recommendations;
-  }, [destination, origin, recommendations]);
-
-  const visibleLocations = useMemo(
-    () => Array.from(new Set(visibleRecommendations.map((item) => item.location))).filter(Boolean),
-    [visibleRecommendations],
-  );
-
-  const [activeLocation, setActiveLocation] = useState<string>(visibleLocations[0] ?? origin ?? destination);
+export default function RecommendationCards({ recommendations, destination }: RecommendationCardsProps) {
+  const activeLocationData = recommendations[0];
   const [activeCategory, setActiveCategory] = useState<CategoryKey>("hotels");
   const [selectedPlace, setSelectedPlace] = useState<PlaceRecommendation | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
-
-  useEffect(() => {
-    if (!visibleLocations.length) {
-      setActiveLocation("");
-      return;
-    }
-    if (!visibleLocations.includes(activeLocation)) {
-      setActiveLocation(visibleLocations[0]);
-    }
-  }, [activeLocation, visibleLocations]);
 
   useEffect(() => {
     if (!modalOpen) return;
@@ -245,12 +231,7 @@ export default function RecommendationCards({ recommendations, origin, destinati
     };
   }, [modalOpen]);
 
-  const activeLocationData = visibleRecommendations.find((item) => item.location === activeLocation) ?? visibleRecommendations[0];
-  const currentPlaces = useMemo(() => {
-    if (!activeLocationData) return [];
-    return activeLocationData[activeCategory];
-  }, [activeCategory, activeLocationData]);
-
+  const currentPlaces = activeLocationData?.[activeCategory] ?? [];
   const activeCounts = {
     hotels: activeLocationData?.hotels?.length ?? 0,
     restaurants: activeLocationData?.restaurants?.length ?? 0,
@@ -267,9 +248,9 @@ export default function RecommendationCards({ recommendations, origin, destinati
       <section className="rounded-[2rem] border border-white/10 bg-slate-950/90 p-8 text-center shadow-2xl">
         <div className="mx-auto flex max-w-md flex-col items-center gap-3">
           <div className="text-4xl">🗺️</div>
-          <h2 className="text-xl font-black text-white">Plan a trip to see recommendations for your route</h2>
+          <h2 className="text-xl font-black text-white">Plan a trip to see recommendations in {destination}</h2>
           <p className="text-sm leading-6 text-slate-400">
-            Once your route is planned, real hotels, restaurants, and attractions will appear here.
+            Once your route is planned, real hotels, restaurants, and attractions for the destination will appear here.
           </p>
         </div>
       </section>
@@ -281,27 +262,7 @@ export default function RecommendationCards({ recommendations, origin, destinati
       <section className="rounded-[2rem] border border-white/10 bg-slate-950/90 p-5 shadow-2xl shadow-black/20">
         <div className="mb-5 space-y-2">
           <p className="text-xs font-bold uppercase tracking-[0.28em] text-orange-300">RECOMMENDATIONS</p>
-          <h2 className="text-2xl font-black tracking-tight text-white">Stops Along Your Route</h2>
-        </div>
-
-        <div className="flex flex-wrap gap-2">
-          {visibleLocations.map((location) => {
-            const active = activeLocation === location;
-            return (
-              <button
-                key={location}
-                type="button"
-                onClick={() => setActiveLocation(location)}
-                className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-                  active
-                    ? "bg-orange-500 text-white shadow-lg shadow-orange-500/20"
-                    : "border border-white/15 bg-transparent text-slate-300 hover:bg-white/5"
-                }`}
-              >
-                {location}
-              </button>
-            );
-          })}
+          <h2 className="text-2xl font-black tracking-tight text-white">Recommendations in {destination}</h2>
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2 sm:gap-4">
@@ -330,15 +291,15 @@ export default function RecommendationCards({ recommendations, origin, destinati
         <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
           {currentPlaces.length === 0 ? (
             <div className="rounded-3xl border border-dashed border-white/10 bg-white/5 px-5 py-10 text-center text-sm text-slate-400 md:col-span-2">
-              No {activeCategory} found for {activeLocation}.
+              No {activeCategory} found for {destination}.
             </div>
           ) : (
             currentPlaces.map((place) => (
               <PlaceCard
-                key={`${activeLocation}-${place.place_id}`}
+                key={`${destination}-${place.place_id}`}
                 place={place}
                 category={activeCategory}
-                location={activeLocation}
+                location={destination}
                 onViewDetails={(selected) => {
                   setSelectedPlace(selected);
                   setModalOpen(true);

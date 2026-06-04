@@ -54,6 +54,27 @@ export const sampleTripPlan: TripPlan = {
     activities: 120,
     total: 865,
   },
+  vehicle: {
+    vehicle_type: "car",
+    vehicle_name: "Maruti Swift",
+    fuel_type: "petrol",
+    mileage_kmpl: 18,
+    tank_capacity_litres: 40,
+    number_of_people: 2,
+  },
+  fuel_calculation: {
+    distance_km: 615,
+    mileage_kmpl: 18,
+    fuel_required_litres: 34.17,
+    fuel_type: "petrol",
+    fuel_price_per_litre: 102.92,
+    total_fuel_cost_inr: 3517,
+    total_fuel_cost_usd: 42.1,
+    refueling_stops: 0,
+    cost_per_person_inr: 1758.5,
+    vehicle_name: "Maruti Swift",
+    vehicle_type: "car",
+  },
   recommendations: [
     {
       location: "San Francisco, CA",

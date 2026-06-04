@@ -7,6 +7,31 @@ export interface TripPlan {
   budget: BudgetBreakdown;
   recommendations: LocationRecommendation[];
   chat: ChatMessage[];
+  vehicle: VehicleDetails;
+  fuel_calculation: FuelCalculation;
+}
+
+export interface VehicleDetails {
+  vehicle_type: "bike" | "car" | "suv" | "truck";
+  vehicle_name: string;
+  fuel_type: "petrol" | "diesel" | "electric" | "cng";
+  mileage_kmpl: number;
+  tank_capacity_litres: number;
+  number_of_people: number;
+}
+
+export interface FuelCalculation {
+  distance_km: number;
+  mileage_kmpl: number;
+  fuel_required_litres: number;
+  fuel_type: string;
+  fuel_price_per_litre: number;
+  total_fuel_cost_inr: number;
+  total_fuel_cost_usd: number;
+  refueling_stops: number;
+  cost_per_person_inr: number;
+  vehicle_name: string;
+  vehicle_type: string;
 }
 
 export interface RouteInfo {
@@ -184,10 +209,16 @@ export interface PlannedTripResponse {
   recommendation_locations?: string[];
   report_summary: string;
   pdf_path?: string | null;
+  vehicle?: VehicleDetails | null;
+  fuel_calculation?: FuelCalculation | null;
   fuel_cost_inr?: number | null;
   toll_cost_inr?: number | null;
   hotel_cost_inr?: number | null;
   food_cost_inr?: number | null;
+  misc_cost_inr?: number | null;
+  number_of_people?: number | null;
+  trip_days?: number | null;
+  cost_per_person_inr?: number | null;
   total_inr?: number | null;
   total_usd?: number | null;
 }

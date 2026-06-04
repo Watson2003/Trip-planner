@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import logging
+import os
 from typing import Any
 from urllib.parse import quote_plus
 
@@ -17,7 +18,7 @@ GEOAPIFY_PLACES_URL = "https://api.geoapify.com/v2/places"
 GEOAPIFY_PLACE_DETAILS_URL = "https://api.geoapify.com/v2/place-details"
 
 _coordinates_cache: dict[str, dict[str, float]] = {}
-_search_cache: dict[tuple[str, str], list[dict[str, Any]]] = {}
+_search_cache: dict[tuple[str, str, str, int], list[dict[str, Any]]] = {}
 
 COMMON_CITY_COORDINATES: dict[str, tuple[float, float]] = {
     "chennai": (13.0827, 80.2707),
@@ -50,6 +51,11 @@ def _normalize_text(value: Any) -> str:
     return str(value or "").strip()
 
 
+def clear_cache() -> None:
+    _coordinates_cache.clear()
+    _search_cache.clear()
+
+
 def _geoapify_api_key() -> str | None:
     return settings.geoapify_api_key or None
 
@@ -58,7 +64,8 @@ def _geoapify_headers() -> dict[str, str]:
     return {"Accept": "application/json"}
 
 
-def _geoapify_categories(kind: str) -> str:
+def _geoapify_categories(kind: str, keyword: str = "") -> str:
+    keyword = _normalize_text(keyword).casefold()
     if kind == "hotel":
         return ",".join(
             [
@@ -78,6 +85,26 @@ def _geoapify_categories(kind: str) -> str:
                 "catering.fast_food",
                 "catering.food_court",
                 "catering.pub",
+            ]
+        )
+    if keyword == "park":
+        return ",".join(
+            [
+                "tourism.attraction",
+                "tourism.attraction.viewpoint",
+                "leisure.park",
+                "natural.wood",
+                "natural.water",
+                "natural.peak",
+            ]
+        )
+    if keyword == "temple":
+        return ",".join(
+            [
+                "tourism.attraction",
+                "religion.place_of_worship",
+                "historic.memorial",
+                "tourism.information",
             ]
         )
     return ",".join(
@@ -454,28 +481,32 @@ def _build_fallback_places(location: str, kind: str) -> list[dict[str, Any]]:
             (f"{location} Heritage Suites", "A slightly higher-comfort stay for travelers wanting a calmer night."),
             (f"{location} Grand Residency", "A premium-style option suited for travelers who want more space."),
         ]
-        return [
-            {
-                "place_id": f"fallback-{location.lower().replace(' ', '-')}-hotel-{index + 1}",
-                "name": name,
-                "description": description,
-                "address": location,
-                "rating": float(4.7 - (index * 0.2)),
-                "total_reviews": 180 - (index * 20),
-                "price_range": price_level_to_inr(index + 1, "hotel"),
-                "price_level": index + 1,
-                "photo_url": None,
-                "lat": lat + (index * 0.01),
-                "lng": lng + (index * 0.01),
-                "maps_url": f"https://www.google.com/maps/search/?api=1&query={quote_plus(name + ' ' + location)}",
-                "website": None,
-                "phone": None,
-                "open_now": None,
-                "category": ["Budget", "Mid-range", "Luxury"][min(max(index, 0), 2)],
-                "estimated_cost_inr": price_level_estimate_inr(index + 1, "hotel"),
-            }
-            for index, (name, description) in enumerate(items)
-        ]
+        results: list[dict[str, Any]] = []
+        for index in range(10):
+            base_name, description = items[index % len(items)]
+            name = base_name if index < len(items) else f"{base_name} {index + 1}"
+            results.append(
+                {
+                    "place_id": f"fallback-{location.lower().replace(' ', '-')}-hotel-{index + 1}",
+                    "name": name,
+                    "description": description,
+                    "address": location,
+                    "rating": float(4.7 - (index * 0.1)),
+                    "total_reviews": 180 - (index * 10),
+                    "price_range": price_level_to_inr((index % 4) + 1, "hotel"),
+                    "price_level": (index % 4) + 1,
+                    "photo_url": None,
+                    "lat": lat + (index * 0.01),
+                    "lng": lng + (index * 0.01),
+                    "maps_url": f"https://www.google.com/maps/search/?api=1&query={quote_plus(name + ' ' + location)}",
+                    "website": None,
+                    "phone": None,
+                    "open_now": None,
+                    "category": ["Budget", "Mid-range", "Luxury"][min(max(index % 3, 0), 2)],
+                    "estimated_cost_inr": price_level_estimate_inr((index % 4) + 1, "hotel"),
+                }
+            )
+        return results
 
     if kind == "restaurant":
         items = [
@@ -485,29 +516,33 @@ def _build_fallback_places(location: str, kind: str) -> list[dict[str, Any]]:
             (f"{location} Family Dining", "A balanced sit-down option for lunch or dinner on the route.", "Indian"),
         ]
         categories = ["Veg", "Both", "Veg", "Non-Veg"]
-        return [
-            {
-                "place_id": f"fallback-{location.lower().replace(' ', '-')}-restaurant-{index + 1}",
-                "name": name,
-                "description": description,
-                "address": location,
-                "rating": float(4.6 - (index * 0.2)),
-                "total_reviews": 220 - (index * 25),
-                "price_range": price_level_to_inr(index + 1, "restaurant"),
-                "price_level": index + 1,
-                "photo_url": None,
-                "lat": lat + (index * 0.01),
-                "lng": lng - (index * 0.01),
-                "maps_url": f"https://www.google.com/maps/search/?api=1&query={quote_plus(name + ' ' + location)}",
-                "website": None,
-                "phone": None,
-                "open_now": None,
-                "cuisine": cuisine,
-                "category": categories[index % len(categories)],
-                "estimated_cost_inr": price_level_estimate_inr(index + 1, "restaurant"),
-            }
-            for index, (name, description, cuisine) in enumerate(items)
-        ]
+        results: list[dict[str, Any]] = []
+        for index in range(10):
+            base_name, description, cuisine = items[index % len(items)]
+            name = base_name if index < len(items) else f"{base_name} {index + 1}"
+            results.append(
+                {
+                    "place_id": f"fallback-{location.lower().replace(' ', '-')}-restaurant-{index + 1}",
+                    "name": name,
+                    "description": description,
+                    "address": location,
+                    "rating": float(4.6 - (index * 0.1)),
+                    "total_reviews": 220 - (index * 15),
+                    "price_range": price_level_to_inr((index % 4) + 1, "restaurant"),
+                    "price_level": (index % 4) + 1,
+                    "photo_url": None,
+                    "lat": lat + (index * 0.01),
+                    "lng": lng - (index * 0.01),
+                    "maps_url": f"https://www.google.com/maps/search/?api=1&query={quote_plus(name + ' ' + location)}",
+                    "website": None,
+                    "phone": None,
+                    "open_now": None,
+                    "cuisine": cuisine,
+                    "category": categories[index % len(categories)],
+                    "estimated_cost_inr": price_level_estimate_inr((index % 4) + 1, "restaurant"),
+                }
+            )
+        return results
 
     items = [
         (f"{location} City Viewpoint", "A scenic stop that keeps the trip route-specific even without live place data.", 0, "Nature"),
@@ -515,32 +550,37 @@ def _build_fallback_places(location: str, kind: str) -> list[dict[str, Any]]:
         (f"{location} Local Market", "Useful for snacks, souvenirs, and a short reset before continuing the drive.", 0, "Nature"),
         (f"{location} Temple Stop", "A calm roadside stop when you want a low-effort break with local character.", 0, "Religious"),
     ]
-    return [
-        {
-            "place_id": f"fallback-{location.lower().replace(' ', '-')}-attraction-{index + 1}",
-            "name": name,
-            "description": description,
-            "address": location,
-            "rating": float(4.8 - (index * 0.2)),
-            "total_reviews": 160 - (index * 20),
-            "entry_fee": price_level_to_inr(entry_level, "attraction"),
-            "price_level": entry_level,
-            "photo_url": None,
-            "lat": lat + (index * 0.01),
-            "lng": lng + (index * 0.015),
-            "maps_url": f"https://www.google.com/maps/search/?api=1&query={quote_plus(name + ' ' + location)}",
-            "website": None,
-            "phone": None,
-            "open_now": None,
-            "type": type_name,
-            "entry_fee_inr": price_level_estimate_inr(entry_level, "attraction"),
-        }
-        for index, (name, description, entry_level, type_name) in enumerate(items)
-    ]
+    results: list[dict[str, Any]] = []
+    for index in range(10):
+        base_name, description, entry_level, type_name = items[index % len(items)]
+        name = base_name if index < len(items) else f"{base_name} {index + 1}"
+        results.append(
+            {
+                "place_id": f"fallback-{location.lower().replace(' ', '-')}-attraction-{index + 1}",
+                "name": name,
+                "description": description,
+                "address": location,
+                "rating": float(4.8 - (index * 0.1)),
+                "total_reviews": 160 - (index * 10),
+                "entry_fee": price_level_to_inr(entry_level, "attraction"),
+                "price_level": entry_level,
+                "photo_url": None,
+                "lat": lat + (index * 0.01),
+                "lng": lng + (index * 0.015),
+                "maps_url": f"https://www.google.com/maps/search/?api=1&query={quote_plus(name + ' ' + location)}",
+                "website": None,
+                "phone": None,
+                "open_now": None,
+                "type": type_name,
+                "entry_fee_inr": price_level_estimate_inr(entry_level, "attraction"),
+            }
+        )
+    return results
 
 
 async def get_coordinates(location: str) -> dict[str, float]:
     """Resolve a city name into latitude/longitude using Geoapify, with a local fallback."""
+    print(f"DEBUG get_coordinates: fetching for '{location}'")
     location_key = _normalize_text(location).casefold()
     if not location_key:
         return {}
@@ -598,10 +638,12 @@ async def search_places(
     location: str,
     place_type: str,
     keyword: str = "",
+    max_results: int = 10,
 ) -> list[dict[str, Any]]:
     """Search nearby real places around a location using Geoapify Places."""
     category = _place_type_for_search(place_type)
-    cache_key = (location.casefold(), category)
+    keyword_key = _normalize_text(keyword).casefold()
+    cache_key = (location.casefold(), category, keyword_key, int(max_results))
     cached = _search_cache.get(cache_key)
     if cached is not None:
         return cached
@@ -619,52 +661,66 @@ async def search_places(
 
     lat = coordinates["lat"]
     lng = coordinates["lng"]
-    radius = 7000 if category in {"hotel", "restaurant"} else 10000
+    radius = 8000 if category == "hotel" else 5000 if category == "restaurant" else 10000
+    limit = max(1, int(max_results or 10))
 
-    try:
-        async with httpx.AsyncClient(timeout=8.0, headers=_geoapify_headers()) as client:
-            response = await client.get(
-                GEOAPIFY_PLACES_URL,
-                params={
-                    "categories": _geoapify_categories(category),
-                    "filter": f"circle:{lng},{lat},{radius}",
-                    "bias": f"proximity:{lng},{lat}",
-                    "limit": 12,
-                    "apiKey": api_key,
-                },
-            )
-            response.raise_for_status()
-            payload = response.json()
-    except (httpx.HTTPError, ValueError) as exc:
-        logger.warning("Geoapify place search failed for %s (%s): %s", location, category, exc)
+    async def _single_search(search_keyword: str = "") -> list[dict[str, Any]]:
+        try:
+            async with httpx.AsyncClient(timeout=8.0, headers=_geoapify_headers()) as client:
+                response = await client.get(
+                    GEOAPIFY_PLACES_URL,
+                    params={
+                        "categories": _geoapify_categories(category, search_keyword),
+                        "filter": f"circle:{lng},{lat},{radius}",
+                        "bias": f"proximity:{lng},{lat}",
+                        "limit": limit,
+                        "apiKey": api_key,
+                    },
+                )
+                response.raise_for_status()
+                payload = response.json()
+        except (httpx.HTTPError, ValueError) as exc:
+            logger.warning("Geoapify place search failed for %s (%s): %s", location, category, exc)
+            return []
+
+        features = payload.get("features") if isinstance(payload, dict) else None
+        if not isinstance(features, list) or not features:
+            return []
+
+        results: list[dict[str, Any]] = []
+        for feature in features:
+            if not isinstance(feature, dict):
+                continue
+            entry = _place_search_payload(feature, category)
+            if not entry.get("place_id"):
+                continue
+            results.append(entry)
+        return results
+
+    if category == "attraction":
+        searches = ["", "park", "temple"]
+        combined: list[dict[str, Any]] = []
+        seen: set[str] = set()
+        for search_keyword in searches:
+            for entry in await _single_search(search_keyword):
+                dedupe_key = str(entry.get("place_id") or "").strip()
+                if not dedupe_key or dedupe_key in seen:
+                    continue
+                seen.add(dedupe_key)
+                combined.append(entry)
+        combined.sort(key=lambda item: (item.get("distance", 0.0), -item.get("rating", 0.0), -item.get("total_reviews", 0)))
+        limited = combined[:limit] or _build_fallback_places(location, category)
+        _search_cache[cache_key] = limited
+        return limited
+
+    results = await _single_search(keyword_key)
+    if not results:
         fallback_places = _build_fallback_places(location, category)
         _search_cache[cache_key] = fallback_places
         return fallback_places
-
-    features = payload.get("features") if isinstance(payload, dict) else None
-    if not isinstance(features, list) or not features:
-        fallback_places = _build_fallback_places(location, category)
-        _search_cache[cache_key] = fallback_places
-        return fallback_places
-
-    results: list[dict[str, Any]] = []
-    seen: set[str] = set()
-    for feature in features:
-        if not isinstance(feature, dict):
-            continue
-        entry = _place_search_payload(feature, category)
-        if not entry.get("place_id"):
-            continue
-        dedupe_key = f"{entry['place_id']}:{round(float(entry.get('lat', 0.0)), 4)}:{round(float(entry.get('lng', 0.0)), 4)}"
-        if dedupe_key in seen:
-            continue
-        seen.add(dedupe_key)
-        results.append(entry)
 
     results.sort(key=lambda item: (item.get("distance", 0.0), -item.get("rating", 0.0), -item.get("total_reviews", 0)))
-    limited = results[:8]
-    if not limited:
-        limited = _build_fallback_places(location, category)
+    limited = results[:limit] or _build_fallback_places(location, category)
     _search_cache[cache_key] = limited
     return limited
 
@@ -711,10 +767,16 @@ async def get_place_details(place_id: str) -> dict[str, Any]:
     return properties
 
 
-def get_photo_url(photo_reference: str, max_width: int = 400) -> str:
-    """Geoapify does not provide photo references in this flow, so return an empty string."""
-    _ = (photo_reference, max_width)
-    return ""
+def get_photo_url(photo_reference: str, max_width: int = 600) -> str:
+    google_api_key = os.getenv("GOOGLE_PLACES_API_KEY") or os.getenv("google_places_api_key") or ""
+    if not photo_reference or not google_api_key:
+        return ""
+    return (
+        "https://maps.googleapis.com/maps/api/place/photo"
+        f"?maxwidth={max_width}"
+        f"&photo_reference={photo_reference}"
+        f"&key={google_api_key}"
+    )
 
 
 def price_level_to_inr(price_level: int, category: str) -> str:

@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import hashlib
 import logging
+import re
 from pathlib import Path
 from typing import Any
 from urllib.parse import quote_plus
@@ -10,6 +11,7 @@ from urllib.parse import quote_plus
 from agents.state import TripState
 from tools import generate_pdf_report
 from utils.places import (
+    clear_cache,
     get_place_details,
     get_photo_url,
     price_level_estimate_inr,
@@ -90,6 +92,24 @@ def _normalize_location(value: Any) -> str:
     return str(value or "").strip()
 
 
+def _destination_from_user_input(user_input: Any) -> str:
+    text = str(user_input or "").strip()
+    if not text:
+        return ""
+
+    patterns = [
+        r"from\s+(.+?)\s+to\s+(.+?)(?:[.\n]|$)",
+        r"road trip from\s+(.+?)\s+to\s+(.+?)(?:[.\n]|$)",
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, text, flags=re.IGNORECASE)
+        if match:
+            candidate = match.group(2).strip().strip(".,;:")
+            if candidate:
+                return candidate
+    return ""
+
+
 def _collect_route_locations(state: TripState) -> list[str]:
     """Return unique route locations in trip order."""
     origin = _normalize_location(state.get("origin"))
@@ -122,12 +142,13 @@ def _extract_summary(details: dict[str, Any], fallback: str) -> str:
 
 def _first_photo_url(details: dict[str, Any]) -> str | None:
     photos = details.get("photos") or []
-    if not photos:
+    if not isinstance(photos, list) or len(photos) == 0:
         return None
-    photo_reference = photos[0].get("photo_reference")
+    first_photo = photos[0] if isinstance(photos[0], dict) else {}
+    photo_reference = first_photo.get("photo_reference")
     if not photo_reference:
         return None
-    return get_photo_url(str(photo_reference))
+    return get_photo_url(str(photo_reference), max_width=600)
 
 
 def _categories_list(payload: dict[str, Any]) -> list[str]:
@@ -325,13 +346,13 @@ def _build_fallback_places(location: str, kind: str) -> list[dict[str, Any]]:
         return [
             {
                 "place_id": _fallback_place_id(location, kind, index),
-                "name": name,
+                "name": name if index < len(items) else f"{name} {index + 1}",
                 "description": description,
                 "address": location,
-                "rating": float(4.7 - (index * 0.2)),
-                "total_reviews": 180 - (index * 20),
-                "price_range": price_level_to_inr(index + 1, "hotel"),
-                "price_level": index + 1,
+                "rating": float(4.7 - (index * 0.1)),
+                "total_reviews": 180 - (index * 10),
+                "price_range": price_level_to_inr((index % 4) + 1, "hotel"),
+                "price_level": (index % 4) + 1,
                 "photo_url": None,
                 "lat": lat + (index * 0.01),
                 "lng": lng + (index * 0.01),
@@ -339,10 +360,10 @@ def _build_fallback_places(location: str, kind: str) -> list[dict[str, Any]]:
                 "website": None,
                 "phone": None,
                 "open_now": None,
-                "category": _price_level_category(index + 1, "hotel"),
-                "estimated_cost_inr": price_level_estimate_inr(index + 1, "hotel"),
+                "category": _price_level_category((index % 4) + 1, "hotel"),
+                "estimated_cost_inr": price_level_estimate_inr((index % 4) + 1, "hotel"),
             }
-            for index, (name, description) in enumerate(items[:4])
+            for index, (name, description) in enumerate((items * 3)[:10])
         ]
 
     if kind == "restaurant":
@@ -351,13 +372,13 @@ def _build_fallback_places(location: str, kind: str) -> list[dict[str, Any]]:
         return [
             {
                 "place_id": _fallback_place_id(location, kind, index),
-                "name": name,
+                "name": name if index < len(items) else f"{name} {index + 1}",
                 "description": description,
                 "address": location,
-                "rating": float(4.6 - (index * 0.2)),
-                "total_reviews": 220 - (index * 25),
-                "price_range": price_level_to_inr(index + 1, "restaurant"),
-                "price_level": index + 1,
+                "rating": float(4.6 - (index * 0.1)),
+                "total_reviews": 220 - (index * 15),
+                "price_range": price_level_to_inr((index % 4) + 1, "restaurant"),
+                "price_level": (index % 4) + 1,
                 "photo_url": None,
                 "lat": lat + (index * 0.01),
                 "lng": lng - (index * 0.01),
@@ -367,20 +388,20 @@ def _build_fallback_places(location: str, kind: str) -> list[dict[str, Any]]:
                 "open_now": None,
                 "cuisine": cuisine,
                 "category": categories[index % len(categories)],
-                "estimated_cost_inr": price_level_estimate_inr(index + 1, "restaurant"),
+                "estimated_cost_inr": price_level_estimate_inr((index % 4) + 1, "restaurant"),
             }
-            for index, (name, description, cuisine) in enumerate(items[:4])
+            for index, (name, description, cuisine) in enumerate((items * 3)[:10])
         ]
 
     items = _fallback_attractions(location)
     return [
         {
             "place_id": _fallback_place_id(location, kind, index),
-            "name": name,
+            "name": name if index < len(items) else f"{name} {index + 1}",
             "description": description,
             "address": location,
-            "rating": float(4.8 - (index * 0.2)),
-            "total_reviews": 160 - (index * 20),
+            "rating": float(4.8 - (index * 0.1)),
+            "total_reviews": 160 - (index * 10),
             "entry_fee": price_level_to_inr(entry_level, "attraction"),
             "price_level": entry_level,
             "photo_url": None,
@@ -393,7 +414,7 @@ def _build_fallback_places(location: str, kind: str) -> list[dict[str, Any]]:
             "type": type_name,
             "entry_fee_inr": price_level_estimate_inr(entry_level, "attraction"),
         }
-        for index, (name, description, entry_level, _, type_name) in enumerate(items[:4])
+        for index, (name, description, entry_level, _, type_name) in enumerate((items * 3)[:10])
     ]
 
 
@@ -477,7 +498,7 @@ async def _search_and_build(location: str, kind: str, keyword: str = "") -> tupl
         logger.info("Using fallback %s recommendations for %s because live place search returned no results.", kind, location)
         return fallback_places, False
 
-    limited_places = raw_places[:4]
+    limited_places = raw_places[:10]
     enriched = await asyncio.gather(*[_enrich_place(location, place, kind) for place in limited_places])
     return enriched, False
 
@@ -543,24 +564,46 @@ def _make_pdf(
 
 async def recommendation_agent(state: TripState) -> TripState:
     origin = _normalize_location(state.get("origin"))
-    destination = _normalize_location(state.get("destination"))
+    destination = _destination_from_user_input(state.get("user_input")) or _normalize_location(state.get("destination"))
     waypoints_raw = state.get("waypoints", []) or []
     if not isinstance(waypoints_raw, list):
         waypoints_raw = [waypoints_raw]
 
-    # This route list keeps recommendations tied only to the user's actual trip cities.
-    route_locations = _collect_route_locations(state)
-    async def build_for_location(location: str) -> dict[str, Any]:
-        hotel_task = asyncio.create_task(_search_and_build(location, "hotel", keyword="hotel"))
-        restaurant_task = asyncio.create_task(_search_and_build(location, "restaurant", keyword="restaurant"))
-        attraction_task = asyncio.create_task(_search_and_build(location, "attraction"))
+    clear_cache()
+    print(f"DEBUG: origin={state.get('origin')}, destination={state.get('destination')}")
+    print(f"DEBUG: fetching recommendations for: {destination}")
 
-        hotels_result, restaurants_result, attractions_result = await asyncio.gather(
-            hotel_task, restaurant_task, attraction_task
+    route_locations = [destination] if destination else []
+
+    async def build_for_location(location: str) -> dict[str, Any]:
+        hotels_raw = await search_places(
+            location=location,
+            place_type="lodging",
+            keyword="hotel",
+            max_results=10,
         )
-        hotels, _ = hotels_result
-        restaurants, _ = restaurants_result
-        attractions, _ = attractions_result
+        restaurants_raw = await search_places(
+            location=location,
+            place_type="restaurant",
+            max_results=10,
+        )
+        attractions_raw = await search_places(
+            location=location,
+            place_type="tourist_attraction",
+            max_results=10,
+        )
+
+        print(f"✅ Destination: {destination}")
+        print(f"✅ Hotels found: {len(hotels_raw)}")
+        print(f"✅ Restaurants found: {len(restaurants_raw)}")
+        print(f"✅ Attractions found: {len(attractions_raw)}")
+
+        hotels, restaurants, attractions = await asyncio.gather(
+            asyncio.gather(*[_enrich_place(location, place, "hotel") for place in hotels_raw[:10]]),
+            asyncio.gather(*[_enrich_place(location, place, "restaurant") for place in restaurants_raw[:10]]),
+            asyncio.gather(*[_enrich_place(location, place, "attraction") for place in attractions_raw[:10]]),
+        )
+        print(f"✅ Final hotel count: {len(hotels)}")
         return {
             "location": location,
             "hotels": hotels,
@@ -593,6 +636,8 @@ async def recommendation_agent(state: TripState) -> TripState:
         f"{destination} is a strong road trip match for {origin or 'your origin'} "
         f"with practical stops for hotels, food, and attractions."
     )
+    if state.get("recommendations"):
+        print(f"✅ Final hotel count: {len(state['recommendations'][0]['hotels'])}")
     state["trip_report"] = {
         "summary": state["report_summary"],
         "highlights": [
