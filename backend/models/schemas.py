@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any, Literal, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
@@ -47,6 +47,66 @@ class TripSummaryResponse(BaseModel):
     created_at: datetime
 
 
+class VehicleDetails(BaseModel):
+    vehicle_type: Literal["bike", "car", "suv", "truck"] = "car"
+    vehicle_name: str = "Unknown Vehicle"
+    fuel_type: Literal["petrol", "diesel", "electric", "cng"] = "petrol"
+    mileage_kmpl: float = 15.0
+    tank_capacity_litres: float | None = None
+    number_of_people: int = 1
+
+    @field_validator("vehicle_type", "fuel_type", mode="before")
+    @classmethod
+    def _normalize_choice(cls, value: str) -> str:
+        value = str(value).strip()
+        if not value:
+            raise ValueError("This field cannot be empty.")
+        return value.lower()
+
+    @field_validator("vehicle_name")
+    @classmethod
+    def _strip_vehicle_name(cls, value: str) -> str:
+        value = str(value).strip()
+        if not value:
+            raise ValueError("This field cannot be empty.")
+        return value
+
+    @field_validator("mileage_kmpl")
+    @classmethod
+    def _validate_mileage(cls, value: float) -> float:
+        if value <= 0:
+            raise ValueError("mileage_kmpl must be greater than zero.")
+        return value
+
+    @field_validator("tank_capacity_litres")
+    @classmethod
+    def _validate_tank_capacity(cls, value: float | None) -> float | None:
+        if value is not None and value <= 0:
+            raise ValueError("tank_capacity_litres must be greater than zero when provided.")
+        return value
+
+    @field_validator("number_of_people")
+    @classmethod
+    def _validate_people_count(cls, value: int) -> int:
+        if value <= 0:
+            raise ValueError("number_of_people must be at least 1.")
+        return value
+
+
+class FuelCalculation(BaseModel):
+    distance_km: float
+    mileage_kmpl: float
+    fuel_required_litres: float
+    fuel_type: str
+    fuel_price_per_litre: float
+    total_fuel_cost_inr: float
+    total_fuel_cost_usd: float
+    refueling_stops: int
+    cost_per_person_inr: float
+    vehicle_name: str
+    vehicle_type: str
+
+
 class TripRequest(BaseModel):
     origin: str
     destination: str
@@ -56,6 +116,7 @@ class TripRequest(BaseModel):
     preferences: list[str] = Field(default_factory=list)
     user_id: str = "guest"
     waypoints: list[str] = Field(default_factory=list)
+    vehicle: VehicleDetails = Field(default_factory=VehicleDetails)
 
     @field_validator("origin", "destination", "user_id")
     @classmethod
@@ -89,6 +150,75 @@ class TripRequest(BaseModel):
         return self
 
 
+class HotelRecommendation(BaseModel):
+    place_id: str
+    name: str
+    description: str
+    address: str
+    rating: float
+    total_reviews: int
+    price_range: str
+    price_level: int
+    photo_url: Optional[str] = None
+    lat: float
+    lng: float
+    maps_url: str
+    website: Optional[str] = None
+    phone: Optional[str] = None
+    open_now: Optional[bool] = None
+    category: str
+    estimated_cost_inr: Optional[float] = None
+
+
+class RestaurantRecommendation(BaseModel):
+    place_id: str
+    name: str
+    description: str
+    address: str
+    rating: float
+    total_reviews: int
+    price_range: str
+    price_level: int
+    photo_url: Optional[str] = None
+    lat: float
+    lng: float
+    maps_url: str
+    website: Optional[str] = None
+    phone: Optional[str] = None
+    open_now: Optional[bool] = None
+    cuisine: str
+    category: str = "Both"
+    estimated_cost_inr: Optional[float] = None
+
+
+class AttractionRecommendation(BaseModel):
+    place_id: str
+    name: str
+    description: str
+    address: str
+    rating: float
+    total_reviews: int
+    entry_fee: str
+    price_level: int
+    photo_url: Optional[str] = None
+    lat: float
+    lng: float
+    maps_url: str
+    website: Optional[str] = None
+    phone: Optional[str] = None
+    open_now: Optional[bool] = None
+    type: str
+    entry_fee_inr: Optional[float] = None
+
+
+class LocationRecommendation(BaseModel):
+    location: str
+    hotels: list[HotelRecommendation] = Field(default_factory=list)
+    restaurants: list[RestaurantRecommendation] = Field(default_factory=list)
+    attractions: list[AttractionRecommendation] = Field(default_factory=list)
+    no_results: dict[str, bool] = Field(default_factory=dict)
+
+
 class TripPlanResponse(BaseModel):
     model_config = ConfigDict(from_attributes=False)
 
@@ -105,13 +235,19 @@ class TripPlanResponse(BaseModel):
     weather: list[dict[str, Any]] = Field(default_factory=list)
     weather_status: str = "success"
     weather_message: str | None = None
-    recommendations: dict[str, list[dict[str, Any]]] = Field(default_factory=dict)
+    recommendations: list[LocationRecommendation] = Field(default_factory=list)
+    recommendation_locations: list[str] = Field(default_factory=list)
     report_summary: str = ""
     pdf_path: str | None = None
+    vehicle: VehicleDetails | None = None
+    fuel_calculation: FuelCalculation | None = None
     fuel_cost_inr: float | None = None
     toll_cost_inr: float | None = None
     hotel_cost_inr: float | None = None
     food_cost_inr: float | None = None
+    misc_cost_inr: float | None = None
+    number_of_people: int | None = None
+    trip_days: int | None = None
     total_inr: float | None = None
     total_usd: float | None = None
     created_at: datetime | None = None
@@ -127,6 +263,8 @@ class TripDetailResponse(BaseModel):
     waypoints: list[Any]
     created_at: datetime
     pdf_path: str | None = None
+    recommendations: list[LocationRecommendation] = Field(default_factory=list)
+    recommendation_locations: list[str] = Field(default_factory=list)
 
 
 class DailyWeather(BaseModel):

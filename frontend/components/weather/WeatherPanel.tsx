@@ -34,7 +34,7 @@ function WeatherCard({ item }: { item: DailyWeather }) {
   const alert = item.alert;
 
   return (
-    <article className="min-w-[280px] rounded-3xl border border-slate-700/70 bg-slate-950/80 p-4 text-slate-100 shadow-lg backdrop-blur lg:min-w-0 lg:w-full">
+    <article className="min-w-[200px] rounded-3xl border border-slate-700/70 bg-slate-950/80 p-4 text-slate-100 shadow-lg backdrop-blur sm:min-w-0">
       <div className="mb-4 text-center">
         <div className="text-sm font-semibold text-slate-300">{formatWeatherDate(item.date, item.day_name)}</div>
         <div className="mt-3 text-5xl">{item.weather_icon}</div>
@@ -77,20 +77,20 @@ function WeatherCard({ item }: { item: DailyWeather }) {
 
 function WeatherSection({ title, weather }: { title: string; weather: DailyWeather[] }) {
   return (
-    <section className="rounded-[2rem] border border-slate-700/60 bg-slate-900/80 p-5 shadow-xl">
+    <section className="w-full rounded-[2rem] border border-slate-700/60 bg-slate-900/80 p-5 shadow-xl">
       <div className="mb-4">
         <p className="text-xs uppercase tracking-[0.22em] text-slate-400">Weather Window</p>
-        <h3 className="mt-1 text-lg font-bold text-slate-100">{title}</h3>
+        <h3 className="mt-1 text-base font-bold text-slate-100 sm:text-lg">{title}</h3>
       </div>
 
       {weather.length ? (
-        <div className="flex gap-4 overflow-x-auto pb-2 lg:flex-col lg:overflow-visible">
+        <div className="flex flex-row gap-4 overflow-x-auto pb-4">
           {weather.map((item) => (
             <WeatherCard key={`${item.location}-${item.date}`} item={item} />
           ))}
         </div>
       ) : (
-        <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-950/60 px-4 py-8 text-center text-sm text-slate-400">
+        <div className="w-full rounded-2xl border border-dashed border-slate-700 bg-slate-950/60 px-4 py-8 text-center text-sm text-slate-400">
           No weather data available for selected dates.
         </div>
       )}
@@ -109,7 +109,7 @@ export default function WeatherPanel({
 }: WeatherPanelProps) {
   if (status === "unavailable") {
     return (
-      <section className="rounded-[2rem] border border-blue-500/40 bg-blue-500/10 p-6 text-blue-50 shadow-xl">
+      <section className="w-full rounded-[2rem] border border-blue-500/40 bg-blue-500/10 p-6 text-center text-blue-50 shadow-xl">
         <div className="flex flex-col items-center text-center">
           <div className="text-6xl">📅</div>
           <h2 className="mt-4 text-2xl font-bold">Forecast Unavailable</h2>
@@ -124,7 +124,7 @@ export default function WeatherPanel({
 
   if (status === "past_dates") {
     return (
-      <section className="rounded-[2rem] border border-amber-500/40 bg-amber-500/10 p-6 text-amber-50 shadow-xl">
+      <section className="w-full rounded-[2rem] border border-amber-500/40 bg-amber-500/10 p-6 text-center text-amber-50 shadow-xl">
         <div className="flex flex-col items-center text-center">
           <div className="text-6xl">⚠️</div>
           <h2 className="mt-4 text-2xl font-bold">Past Travel Dates</h2>
@@ -140,11 +140,11 @@ export default function WeatherPanel({
   const hasWeather = weatherData.length > 0;
 
   return (
-    <section className="rounded-[2rem] border border-slate-700/60 bg-slate-950/90 p-5 shadow-2xl">
+    <section className="w-full rounded-[2rem] border border-slate-700/60 bg-slate-950/90 p-5 shadow-2xl">
       <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.22em] text-slate-400">Weather</p>
-          <h2 className="text-2xl font-black text-slate-100">Forecast for exact travel dates</h2>
+          <h2 className="text-xl font-black text-slate-100 sm:text-2xl">Forecast for exact travel dates</h2>
         </div>
         <div className="text-sm text-slate-400">
           {startDate} to {endDate}
@@ -152,11 +152,11 @@ export default function WeatherPanel({
       </div>
 
       {!hasWeather ? (
-        <div className="rounded-2xl border border-dashed border-slate-700 bg-slate-900/70 px-4 py-8 text-center text-sm text-slate-400">
+        <div className="w-full rounded-2xl border border-dashed border-slate-700 bg-slate-900/70 px-4 py-8 text-center text-sm text-slate-400">
           No weather data available for selected dates.
         </div>
       ) : (
-        <div className="grid gap-5 lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
           <WeatherSection title={`📍 Origin Weather — ${origin}`} weather={originWeather} />
           <WeatherSection title={`📍 Destination Weather — ${destination}`} weather={destinationWeather} />
         </div>

@@ -15,7 +15,8 @@ load_dotenv()
 
 mcp = FastMCP("road-trip-tools")
 ORS_BASE_URL = "https://api.openrouteservice.org"
-NOMINATIM_BASE_URL = "https://nominatim.openstreetmap.org"
+GEOAPIFY_GEOCODE_URL = "https://api.geoapify.com/v1/geocode/search"
+GEOAPIFY_PLACES_URL = "https://api.geoapify.com/v2/places"
 OPENWEATHER_BASE_URL = "https://api.openweathermap.org/data/2.5/forecast"
 INR_PER_USD = 83.0
 
@@ -25,6 +26,47 @@ def _require_env(name: str) -> str:
     if not value:
         raise ValueError(f"{name} is not set in the environment.")
     return value
+
+
+def _geoapify_api_key() -> str:
+    value = os.getenv("GEOAPIFY_API_KEY") or os.getenv("geoapify_api_key")
+    if not value:
+        raise ValueError("GEOAPIFY_API_KEY is not set in the environment.")
+    return value
+
+
+def _geoapify_categories(category: str) -> str:
+    normalized = category.strip().casefold()
+    if normalized in {"hotel", "hotels", "lodging"}:
+        return ",".join(
+            [
+                "accommodation.hotel",
+                "accommodation.guest_house",
+                "accommodation.hostel",
+                "accommodation.motel",
+                "accommodation.apartment",
+                "accommodation.chalet",
+            ]
+        )
+    if normalized in {"restaurant", "restaurants", "food"}:
+        return ",".join(
+            [
+                "catering.restaurant",
+                "catering.cafe",
+                "catering.fast_food",
+                "catering.food_court",
+                "catering.pub",
+            ]
+        )
+    return ",".join(
+        [
+            "tourism.attraction",
+            "tourism.attraction.artwork",
+            "tourism.attraction.viewpoint",
+            "tourism.information.map",
+            "tourism.information.office",
+        ]
+    )
 
 
 async def _geocode_place(client: httpx.AsyncClient, place: str, api_key: str) -> list[float]:
@@ -133,50 +175,58 @@ def _is_severe_weather(description: str) -> bool:
 
 @mcp.tool()
 async def search_places(query: str, location: str, category: str) -> dict[str, Any]:
-    """Find nearby hotels, restaurants, or attractions using Nominatim."""
-    user_agent = "AI-Road-Trip-Planner/1.0"
-    async with httpx.AsyncClient(timeout=25.0, headers={"User-Agent": user_agent}) as client:
+    """Find nearby hotels, restaurants, or attractions using Geoapify."""
+    api_key = _geoapify_api_key()
+    async with httpx.AsyncClient(timeout=25.0, headers={"Accept": "application/json"}) as client:
         geo = await client.get(
-            f"{NOMINATIM_BASE_URL}/search",
-            params={"q": location, "format": "jsonv2", "limit": 1},
+            GEOAPIFY_GEOCODE_URL,
+            params={"text": location, "format": "json", "limit": 1, "apiKey": api_key},
         )
         geo.raise_for_status()
         geo_payload = geo.json()
-        if not geo_payload:
+        results = geo_payload.get("results", []) if isinstance(geo_payload, dict) else []
+        if not results:
             raise ValueError(f"Could not geocode location: {location}")
 
-        lat = float(geo_payload[0]["lat"])
-        lon = float(geo_payload[0]["lon"])
-        offset = 0.35
-        viewbox = f"{lon - offset},{lat + offset},{lon + offset},{lat - offset}"
-
-        search_query = f"{category} {query}".strip()
+        lat = float(results[0]["lat"])
+        lon = float(results[0]["lon"])
+        radius = 7000 if category.strip().casefold() in {"hotel", "hotels", "lodging", "restaurant", "restaurants", "food"} else 10000
         response = await client.get(
-            f"{NOMINATIM_BASE_URL}/search",
+            GEOAPIFY_PLACES_URL,
             params={
-                "q": search_query,
-                "format": "jsonv2",
+                "categories": _geoapify_categories(category),
+                "filter": f"circle:{lon},{lat},{radius}",
+                "bias": f"proximity:{lon},{lat}",
                 "limit": 10,
-                "addressdetails": 1,
-                "extratags": 1,
-                "viewbox": viewbox,
-                "bounded": 1,
+                "apiKey": api_key,
             },
         )
         response.raise_for_status()
-        results = response.json()
+        payload = response.json()
 
+    features = payload.get("features", []) if isinstance(payload, dict) else []
     places: list[dict[str, Any]] = []
-    for item in results:
+    for feature in features:
+        if not isinstance(feature, dict):
+            continue
+        properties = feature.get("properties") or {}
+        geometry = feature.get("geometry") or {}
+        coordinates = geometry.get("coordinates") if isinstance(geometry, dict) else None
+        lon_value = float(properties.get("lon") or (coordinates[0] if isinstance(coordinates, list) and len(coordinates) > 0 else 0.0))
+        lat_value = float(properties.get("lat") or (coordinates[1] if isinstance(coordinates, list) and len(coordinates) > 1 else 0.0))
+        display_name = str(properties.get("formatted") or properties.get("address_line1") or properties.get("name") or "").strip()
         places.append(
             {
-                "name": item.get("display_name", "").split(",")[0],
-                "display_name": item.get("display_name"),
-                "lat": float(item["lat"]),
-                "lon": float(item["lon"]),
+                "name": str(properties.get("name") or display_name.split(",")[0]).strip(),
+                "display_name": display_name,
+                "lat": lat_value,
+                "lon": lon_value,
                 "category": category,
-                "type": item.get("type"),
-                "tags": item.get("extratags", {}),
+                "type": (properties.get("categories") or [None])[0],
+                "tags": {
+                    "categories": properties.get("categories", []),
+                    "place_id": properties.get("place_id"),
+                },
             }
         )
 

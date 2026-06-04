@@ -67,7 +67,7 @@ export default function BudgetBreakdown({ budget }: BudgetBreakdownProps) {
   const data = normalizeBudget(budget);
 
   return (
-    <section className="rounded-3xl border border-white/70 bg-white/80 p-5 shadow-glow backdrop-blur-xl">
+    <section className="w-full rounded-3xl border border-white/70 bg-white/80 p-5 shadow-glow backdrop-blur-xl">
       <div className="flex items-center justify-between gap-3">
         <div>
           <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Budget</p>
@@ -82,9 +82,9 @@ export default function BudgetBreakdown({ budget }: BudgetBreakdownProps) {
         </div>
       </div>
 
-      <div className="mt-5 grid gap-5 xl:grid-cols-[1.15fr_0.85fr]">
-        <div className="overflow-hidden rounded-3xl border border-slate-200 bg-slate-50">
-          <table className="w-full">
+      <div className="mt-5 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div className="w-full overflow-x-auto rounded-3xl border border-slate-200 bg-slate-50">
+          <table className="min-w-[520px] w-full">
             <thead className="bg-slate-900 text-white">
               <tr>
                 <th className="px-4 py-3 text-left text-sm font-semibold">Category</th>
@@ -113,18 +113,16 @@ export default function BudgetBreakdown({ budget }: BudgetBreakdownProps) {
             <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Distribution</p>
             <h3 className="text-base font-semibold text-slate-900">Budget Share</h3>
           </div>
-          <div className="h-72">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie data={data.chart} dataKey="value" nameKey="name" innerRadius={55} outerRadius={90} paddingAngle={3}>
-                  {data.chart.map((entry, index) => (
-                    <Cell key={entry.name} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip formatter={(value: number) => formatInr(value)} />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+          <ResponsiveContainer width="100%" height={250}>
+            <PieChart>
+              <Pie data={data.chart} dataKey="value" nameKey="name" innerRadius={55} outerRadius={90} paddingAngle={3}>
+                {data.chart.map((entry, index) => (
+                  <Cell key={entry.name} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip formatter={(value: number) => formatInr(value)} />
+            </PieChart>
+          </ResponsiveContainer>
         </div>
       </div>
     </section>

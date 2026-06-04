@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { Send } from "lucide-react";
@@ -24,7 +24,7 @@ export default function ChatPanel({ initialMessages }: { initialMessages: ChatMe
       {
         id: crypto.randomUUID(),
         role: "assistant",
-        content: "I’d suggest checking fuel and lodging around the next waypoint before the evening drive.",
+        content: "I'd suggest checking fuel and lodging around the next waypoint before the evening drive.",
         timestamp: new Date().toISOString(),
       },
     ]);
@@ -34,7 +34,7 @@ export default function ChatPanel({ initialMessages }: { initialMessages: ChatMe
   return (
     <section className="rounded-3xl border border-white/70 bg-white/80 p-6 shadow-glow backdrop-blur-xl">
       <h2 className="text-xl font-bold">Trip Chat</h2>
-      <div className="mt-4 flex h-[420px] flex-col rounded-3xl border border-slate-200 bg-slate-50 p-4">
+      <div className="mt-4 flex h-[320px] flex-col rounded-3xl border border-slate-200 bg-slate-50 p-4 sm:h-[420px]">
         <div className="flex-1 space-y-3 overflow-y-auto pr-1">
           {messages.map((message) => (
             <MessageBubble key={message.id} message={message} />

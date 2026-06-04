@@ -1,17 +1,6 @@
-(node:11084) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
-(Use `node --trace-warnings ...` to show where the warning was created)
-(node:11084) [DEP0060] DeprecationWarning: The `util._extend` API is deprecated. Please use Object.assign() instead.
-Failed to proxy http://localhost:8000/api/trip/plan Error: socket hang up
-    at Socket.socketCloseListener (node:_http_client:491:27)
-    at Socket.emit (node:events:519:35)
-    at TCP.<anonymous> (node:net:351:12)
-    at TCP.callbackTrampoline (node:internal/async_hooks:130:17) {
-  code: 'ECONNRESET'
-}
-Error: socket hang up
-    at Socket.socketCloseListener (node:_http_client:491:27)
-    at Socket.emit (node:events:519:35)
-    at TCP.<anonymous> (node:net:351:12)
-    at TCP.callbackTrampoline (node:internal/async_hooks:130:17) {
-  code: 'ECONNRESET'
-}
+(node:2448) [DEP0060] DeprecationWarning: The `util._extend` API is deprecated. Please use Object.assign() instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+[1m[33mwarn[39m[22m - As of Tailwind CSS v3.3, the `@tailwindcss/line-clamp` plugin is now included by default.
+[1m[33mwarn[39m[22m - Remove it from the `plugins` array in your configuration to eliminate this warning.
+(node:2448) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time

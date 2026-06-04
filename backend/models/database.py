@@ -25,6 +25,7 @@ def _should_migrate_sqlite_trips(sync_connection) -> bool:
         "travel_end_date",
         "budget",
         "waypoints",
+        "recommendations_json",
         "created_at",
     }
     if not expected_columns.issubset(columns.keys()):
@@ -107,6 +108,8 @@ def _migrate_sqlite_schema(sync_connection) -> None:
             sync_connection.exec_driver_sql("ALTER TABLE trips ADD COLUMN travel_end_date TEXT")
         if "budget" not in existing_columns:
             sync_connection.exec_driver_sql("ALTER TABLE trips ADD COLUMN budget REAL")
+        if "recommendations_json" not in existing_columns:
+            sync_connection.exec_driver_sql("ALTER TABLE trips ADD COLUMN recommendations_json TEXT")
     finally:
         sync_connection.exec_driver_sql("PRAGMA foreign_keys=ON")
 

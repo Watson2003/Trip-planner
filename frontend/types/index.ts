@@ -5,7 +5,7 @@ export interface TripPlan {
   route: RouteInfo;
   weather: DailyWeather[];
   budget: BudgetBreakdown;
-  recommendations: Recommendation[];
+  recommendations: LocationRecommendation[];
   chat: ChatMessage[];
 }
 
@@ -31,6 +31,38 @@ export interface DailyWeather {
   wind_speed_kmh: number;
   rain_chance_percent: number;
   alert: string | null;
+}
+
+export interface HotelRecommendation {
+  name: string;
+  description: string;
+  estimated_cost_inr: number;
+  rating: number;
+  category: string;
+}
+
+export interface RestaurantRecommendation {
+  name: string;
+  description: string;
+  estimated_cost_inr: number;
+  rating: number;
+  cuisine: string;
+  category: string;
+}
+
+export interface AttractionRecommendation {
+  name: string;
+  description: string;
+  entry_fee_inr: number;
+  rating: number;
+  type: string;
+}
+
+export interface LocationRecommendation {
+  location: string;
+  hotels: HotelRecommendation[];
+  restaurants: RestaurantRecommendation[];
+  attractions: AttractionRecommendation[];
 }
 
 export interface WeatherResponse {
@@ -79,16 +111,38 @@ export interface BudgetBreakdown {
   };
 }
 
-export interface Recommendation {
-  title: string;
+export interface PlaceBase {
+  place_id: string;
+  name: string;
   description: string;
+  address: string;
+  rating: number;
+  total_reviews: number;
+  photo_url: string | null;
+  lat: number;
+  lng: number;
+  maps_url: string;
+  website: string | null;
+  phone: string | null;
+  open_now: boolean | null;
+}
+
+export interface HotelRecommendation extends PlaceBase {
+  price_range: string;
+  price_level: number;
   category: string;
-  priority: number;
-  rating?: number;
-  estimatedCostInr?: number;
-  location?: string;
-  lat?: number;
-  lng?: number;
+}
+
+export interface RestaurantRecommendation extends PlaceBase {
+  price_range: string;
+  price_level: number;
+  cuisine: string;
+}
+
+export interface AttractionRecommendation extends PlaceBase {
+  entry_fee: string;
+  price_level: number;
+  type: string;
 }
 
 export interface ChatMessage {
@@ -126,7 +180,8 @@ export interface PlannedTripResponse {
   weather: DailyWeather[];
   weather_status?: "success" | "unavailable" | "past_dates";
   weather_message?: string | null;
-  recommendations: Record<string, Array<Record<string, unknown>>>;
+  recommendations: LocationRecommendation[];
+  recommendation_locations?: string[];
   report_summary: string;
   pdf_path?: string | null;
   fuel_cost_inr?: number | null;

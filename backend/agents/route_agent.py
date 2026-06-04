@@ -29,7 +29,7 @@ async def _fetch_route(origin: str, destination: str, waypoints: list[str]) -> d
         coords.append(geocode)
 
     body = {"coordinates": coords}
-    async with httpx.AsyncClient(timeout=30.0) as client:
+    async with httpx.AsyncClient(timeout=4.0) as client:
         response = await client.post(f"{ORS_BASE_URL}/v2/directions/driving-car/geojson", json=body, headers=headers)
         response.raise_for_status()
         payload = response.json()
@@ -49,7 +49,7 @@ async def _fetch_route(origin: str, destination: str, waypoints: list[str]) -> d
 async def _geocode_place(place: str, api_key: str) -> list[float]:
     headers = {"Authorization": api_key}
     params = {"text": place, "size": 1}
-    async with httpx.AsyncClient(timeout=20.0) as client:
+    async with httpx.AsyncClient(timeout=4.0) as client:
         response = await client.get(f"{ORS_BASE_URL}/geocode/search", params=params, headers=headers)
         response.raise_for_status()
         payload = response.json()
@@ -70,7 +70,7 @@ async def route_agent(state: TripState) -> TripState:
         return state
 
     try:
-        route = await asyncio.wait_for(_fetch_route(origin, destination, waypoints), timeout=8.0)
+        route = await asyncio.wait_for(_fetch_route(origin, destination, waypoints), timeout=4.0)
     except Exception:
         route = fallback_route(origin, destination, waypoints)
         if route is None:
@@ -81,4 +81,10 @@ async def route_agent(state: TripState) -> TripState:
     state["route_duration_hours"] = route["duration_hours"]
     state["polyline"] = route["polyline"]
     state["toll_roads"] = route["toll_roads"]
+    state["route"] = {
+        "distance_km": route["distance_km"],
+        "duration_hours": route["duration_hours"],
+        "polyline": route["polyline"],
+        "toll_roads": route["toll_roads"],
+    }
     return state

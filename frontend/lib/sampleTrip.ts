@@ -1,4 +1,4 @@
-import type { TripPlan } from "@/types";
+import type { LocationRecommendation, TripPlan } from "@/types";
 
 export const sampleTripPlan: TripPlan = {
   origin: "San Francisco, CA",
@@ -56,24 +56,156 @@ export const sampleTripPlan: TripPlan = {
   },
   recommendations: [
     {
-      title: "Big Sur scenic stop",
-      description: "Plan a sunset pause here to avoid driving the coastal curves after dark.",
-      category: "Scenic",
-      priority: 1,
+      location: "San Francisco, CA",
+      hotels: [
+        {
+          name: "Harbor View Inn",
+          description: "Comfortable stay close to the waterfront.",
+          estimated_cost_inr: 5200,
+          rating: 4.4,
+          category: "Mid-range",
+        },
+        {
+          name: "Civic Center Lodge",
+          description: "Budget-friendly option with easy city access.",
+          estimated_cost_inr: 3100,
+          rating: 4.0,
+          category: "Budget",
+        },
+        {
+          name: "Bay Crest Suites",
+          description: "Upscale suites with premium amenities.",
+          estimated_cost_inr: 8200,
+          rating: 4.8,
+          category: "Luxury",
+        },
+      ],
+      restaurants: [
+        {
+          name: "Mission Bowl",
+          description: "Popular spot for hearty local meals.",
+          estimated_cost_inr: 900,
+          rating: 4.5,
+          cuisine: "American",
+          category: "Both",
+        },
+        {
+          name: "Little Saffron",
+          description: "Vegetarian plates with fresh ingredients.",
+          estimated_cost_inr: 700,
+          rating: 4.2,
+          cuisine: "Mediterranean",
+          category: "Veg",
+        },
+        {
+          name: "Pier Street Grill",
+          description: "Casual seafood and grill menu near the bay.",
+          estimated_cost_inr: 1200,
+          rating: 4.3,
+          cuisine: "Seafood",
+          category: "Non-Veg",
+        },
+      ],
+      attractions: [
+        {
+          name: "Golden Gate Overlook",
+          description: "Iconic viewpoint for bridge photos.",
+          entry_fee_inr: 0,
+          rating: 4.8,
+          type: "Nature",
+        },
+        {
+          name: "City Museum",
+          description: "Local history and architecture exhibits.",
+          entry_fee_inr: 350,
+          rating: 4.4,
+          type: "Historical",
+        },
+        {
+          name: "Bay Trail Kayak",
+          description: "Guided water adventure on the bay.",
+          entry_fee_inr: 1200,
+          rating: 4.6,
+          type: "Adventure",
+        },
+      ],
     },
     {
-      title: "Refuel near Paso Robles",
-      description: "Prices tend to be friendlier inland, so top off before the final stretch.",
-      category: "Budget",
-      priority: 2,
+      location: "Los Angeles, CA",
+      hotels: [
+        {
+          name: "Sunset Boulevard Inn",
+          description: "Central stay for exploring the city.",
+          estimated_cost_inr: 6100,
+          rating: 4.3,
+          category: "Mid-range",
+        },
+        {
+          name: "Downtown Budget Stay",
+          description: "Compact and affordable for short visits.",
+          estimated_cost_inr: 2800,
+          rating: 3.9,
+          category: "Budget",
+        },
+        {
+          name: "Pacific Luxe Hotel",
+          description: "Luxury stay with rooftop views.",
+          estimated_cost_inr: 9800,
+          rating: 4.9,
+          category: "Luxury",
+        },
+      ],
+      restaurants: [
+        {
+          name: "Taco Harbor",
+          description: "Fresh tacos and California-style bowls.",
+          estimated_cost_inr: 850,
+          rating: 4.4,
+          cuisine: "Mexican",
+          category: "Both",
+        },
+        {
+          name: "Green Avenue Cafe",
+          description: "Vegetarian-friendly cafe with healthy plates.",
+          estimated_cost_inr: 650,
+          rating: 4.2,
+          cuisine: "Cafe",
+          category: "Veg",
+        },
+        {
+          name: "Grill District",
+          description: "Steaks, burgers, and late-night bites.",
+          estimated_cost_inr: 1300,
+          rating: 4.5,
+          cuisine: "American",
+          category: "Non-Veg",
+        },
+      ],
+      attractions: [
+        {
+          name: "Hollywood Sign Viewpoint",
+          description: "Classic photo stop with sweeping city views.",
+          entry_fee_inr: 0,
+          rating: 4.7,
+          type: "Nature",
+        },
+        {
+          name: "Arts District Walk",
+          description: "Street art and gallery district walk.",
+          entry_fee_inr: 250,
+          rating: 4.3,
+          type: "Historical",
+        },
+        {
+          name: "Beachfront Bike Trail",
+          description: "Scenic ride along the coast.",
+          entry_fee_inr: 500,
+          rating: 4.6,
+          type: "Adventure",
+        },
+      ],
     },
-    {
-      title: "Reserve lodging in advance",
-      description: "Coastal stays fill up early on weekends, especially in Santa Barbara.",
-      category: "Logistics",
-      priority: 3,
-    },
-  ],
+  ] as LocationRecommendation[],
   chat: [
     {
       id: "1",

@@ -22,6 +22,7 @@ if [ ! -f ".env" ]; then
   cat > .env <<'EOF'
 NVIDIA_API_KEY=your_key_here
 NVIDIA_MODEL=meta/llama-3.1-70b-instruct
+GEOAPIFY_API_KEY=your_key_here
 OPENWEATHERMAP_API_KEY=your_key_here
 OPENROUTESERVICE_API_KEY=your_key_here
 EOF

@@ -39,6 +39,7 @@ class Trip(Base):
     travel_end_date: Mapped[str | None] = mapped_column(String(32), nullable=True)
     budget: Mapped[float | None] = mapped_column(Float, nullable=True)
     waypoints: Mapped[list[Any]] = mapped_column(JSON, nullable=False, default=list)
+    recommendations_json: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     user: Mapped[User] = relationship(back_populates="trips", lazy="selectin")

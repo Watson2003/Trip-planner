@@ -12,8 +12,10 @@ class Settings(BaseModel):
     secret_key: str | None = os.getenv("SECRET_KEY")
     nvidia_api_key: str | None = os.getenv("NVIDIA_API_KEY")
     nvidia_model: str = os.getenv("NVIDIA_MODEL", "meta/llama-3.1-70b-instruct")
+    geoapify_api_key: str | None = os.getenv("GEOAPIFY_API_KEY") or os.getenv("geoapify_api_key")
     openweathermap_api_key: str | None = os.getenv("OPENWEATHERMAP_API_KEY")
     openrouteservice_api_key: str | None = os.getenv("OPENROUTESERVICE_API_KEY")
+    osm_user_agent: str = os.getenv("OSM_USER_AGENT", "RoadMindAI/1.0")
 
 
 @lru_cache

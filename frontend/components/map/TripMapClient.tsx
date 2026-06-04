@@ -48,12 +48,16 @@ function FitBounds({ routeGeoJSON, markers, focusPoint }: TripMapProps) {
   const map = useMap();
 
   useEffect(() => {
+    const timer = window.setTimeout(() => {
+      map.invalidateSize(true);
+    }, 50);
+
     if (focusPoint) {
       map.flyTo([focusPoint.lat, focusPoint.lng], focusPoint.zoom ?? 10, {
         animate: true,
         duration: 0.9,
       });
-      return;
+      return () => window.clearTimeout(timer);
     }
 
     const bounds = L.latLngBounds([]);
@@ -75,6 +79,8 @@ function FitBounds({ routeGeoJSON, markers, focusPoint }: TripMapProps) {
     if (bounds.isValid()) {
       map.fitBounds(bounds.pad(0.18), { animate: true, duration: 0.7 });
     }
+
+    return () => window.clearTimeout(timer);
   }, [focusPoint, map, markers, routeGeoJSON]);
 
   return null;
@@ -104,7 +110,7 @@ export default function TripMapClient({ routeGeoJSON, markers, focusPoint }: Tri
         </div>
         <p className="text-sm text-slate-300">Drag, zoom, and inspect every stop.</p>
       </div>
-      <div className="h-[72vh] min-h-[540px] w-full">
+      <div className="h-64 w-full sm:h-80 md:h-96 lg:h-[500px]">
         <MapContainer center={center} zoom={6} scrollWheelZoom className="h-full w-full">
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -143,4 +149,3 @@ export default function TripMapClient({ routeGeoJSON, markers, focusPoint }: Tri
     </section>
   );
 }
-

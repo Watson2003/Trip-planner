@@ -2,8 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+:root,
+html,
+body {
+  overflow-x: hidden;
+}
+
 :root {
   color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 html.dark {
@@ -12,14 +22,13 @@ html.dark {
 
 html {
   scroll-behavior: smooth;
+  background: #020617;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  background:
-    radial-gradient(circle at top left, rgba(255, 255, 255, 0.5), transparent 30%),
-    linear-gradient(180deg, #fffaf0 0%, #f8f2e8 44%, #e0f2fe 100%);
+  background: #020617;
   color: #0f172a;
   font-family: Arial, Helvetica, sans-serif;
 }

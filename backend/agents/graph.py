@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Any
+
 from langgraph.graph import END, StateGraph
 
 from agents.budget_agent import budget_agent
@@ -11,6 +13,9 @@ from agents.weather_agent import weather_agent
 
 
 class TripState(BaseTripState):
+    # The workflow state now explicitly carries the selected vehicle and route metadata.
+    vehicle: dict[str, Any]
+    route: dict[str, Any]
     pass
 
 

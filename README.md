@@ -10,7 +10,7 @@ RoadMind AI helps you plan a trip from natural language or structured inputs. It
 - Build a route with OpenRouteService
 - Pull weather forecasts from OpenWeatherMap
 - Estimate budget in INR and USD
-- Recommend hotels, restaurants, and attractions with RAG-backed context
+- Recommend hotels, restaurants, and attractions with Geoapify-backed context
 - Generate a branded multi-page PDF report
 - Support real-time follow-up questions through a WebSocket chat assistant
 
@@ -68,6 +68,7 @@ copy .env.example .env
 Fill in your keys in `backend/.env`:
 
 - `NVIDIA_API_KEY`
+- `GEOAPIFY_API_KEY`
 - `OPENWEATHERMAP_API_KEY`
 - `OPENROUTESERVICE_API_KEY`
 
@@ -127,6 +128,7 @@ Services:
 | `DATABASE_URL` | No | Async SQLAlchemy database URL |
 | `NVIDIA_API_KEY` | Yes | NVIDIA hosted LLM access |
 | `NVIDIA_MODEL` | No | NVIDIA chat model name |
+| `GEOAPIFY_API_KEY` | Yes | Hotels, restaurants, and attractions lookup |
 | `OPENWEATHERMAP_API_KEY` | Yes | Weather forecast API |
 | `OPENROUTESERVICE_API_KEY` | Yes | Route and geocoding API |
 

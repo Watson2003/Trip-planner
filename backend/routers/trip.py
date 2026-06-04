@@ -10,7 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from agents.graph import trip_planner_graph
 from models.database import async_session_maker
-from models.schemas import TripDetailResponse, TripPlanResponse, TripRequest, TripSummaryResponse
+from models.schemas import LocationRecommendation, TripDetailResponse, TripPlanResponse, TripRequest, TripSummaryResponse
 from models.trip import Trip, TripReport
 from models.user_schemas import UserResponse
 from utils.auth import get_current_user
@@ -30,29 +30,88 @@ def _build_user_input(payload: TripRequest) -> str:
     travel_dates = payload.dates or (
         f"{payload.travel_dates.start} to {payload.travel_dates.end}" if payload.travel_dates else "unknown"
     )
+    vehicle = payload.vehicle
+    vehicle_summary = (
+        f"Vehicle: {vehicle.vehicle_name} ({vehicle.vehicle_type}, {vehicle.fuel_type}, "
+        f"{vehicle.mileage_kmpl} km/l)"
+    )
     return (
         f"Plan a road trip from {payload.origin} to {payload.destination}. "
         f"Travel dates: {travel_dates}. "
         f"Budget: INR {payload.budget}. "
         f"Preferences: {prefs}. "
         f"User-provided waypoints: {waypoints}. "
+        f"{vehicle_summary}. "
         f"User ID: {payload.user_id}."
     )
 
 
+def _route_locations(origin: str, waypoints: list[str], destination: str) -> list[str]:
+    ordered: list[str] = []
+    seen: set[str] = set()
+    for location in [origin, *waypoints, destination]:
+        normalized = str(location or "").strip()
+        if not normalized or normalized.casefold() in seen:
+            continue
+        seen.add(normalized.casefold())
+        ordered.append(normalized)
+    return ordered
+
+
+def _parse_recommendation_blocks(raw: object) -> list[LocationRecommendation]:
+    if raw is None:
+        return []
+    if isinstance(raw, str):
+        try:
+            raw = json.loads(raw)
+        except json.JSONDecodeError:
+            return []
+    if not isinstance(raw, list):
+        return []
+    return [LocationRecommendation.model_validate(item) for item in raw if isinstance(item, dict)]
+
+
+def _validate_recommendation_locations(
+    recommendations: list[LocationRecommendation],
+    expected_locations: list[str],
+) -> list[str]:
+    expected_map = {location.casefold(): location for location in expected_locations}
+    recommendation_locations: list[str] = []
+
+    for recommendation in recommendations:
+        location = str(recommendation.location or "").strip()
+        if not location or location.casefold() not in expected_map:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Recommendation location {location!r} does not match the user's trip cities.",
+            )
+        recommendation_locations.append(expected_map[location.casefold()])
+
+    missing_locations = [location for location in expected_locations if location not in recommendation_locations]
+    if missing_locations:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Missing recommendations for trip cities: {', '.join(missing_locations)}.",
+        )
+
+    return recommendation_locations
+
+
 def _normalize_plan_state(state: dict) -> dict:
     """Shape the graph output into a stable response payload."""
+    route_data = state.get("route") or {}
     route = {
-        "distance_km": state.get("route_distance_km"),
-        "duration_hours": state.get("route_duration_hours"),
-        "polyline": state.get("polyline", []),
-        "toll_roads": state.get("toll_roads", False),
+        "distance_km": route_data.get("distance_km", state.get("route_distance_km")),
+        "duration_hours": route_data.get("duration_hours", state.get("route_duration_hours")),
+        "polyline": route_data.get("polyline", state.get("polyline", [])),
+        "toll_roads": route_data.get("toll_roads", state.get("toll_roads", False)),
     }
     recommendations = {
         "hotels": state.get("hotels", []),
         "restaurants": state.get("restaurants", []),
         "attractions": state.get("attractions", []),
     }
+    recommendation_blocks = _parse_recommendation_blocks(state.get("recommendations"))
     return {
         "user_id": state.get("user_id", "guest"),
         "origin": state.get("origin", ""),
@@ -65,13 +124,20 @@ def _normalize_plan_state(state: dict) -> dict:
         "weather": state.get("weather", []),
         "weather_status": state.get("weather_status", "success"),
         "weather_message": state.get("weather_message", ""),
-        "recommendations": recommendations,
+        "recommendations": recommendation_blocks,
+        "recommendation_locations": [item.location for item in recommendation_blocks],
         "report_summary": state.get("report_summary", ""),
         "pdf_path": state.get("pdf_path"),
+        "vehicle": state.get("vehicle"),
+        "fuel_calculation": state.get("fuel_calculation"),
         "fuel_cost_inr": state.get("fuel_cost_inr"),
         "toll_cost_inr": state.get("toll_cost_inr"),
         "hotel_cost_inr": state.get("hotel_cost_inr"),
         "food_cost_inr": state.get("food_cost_inr"),
+        "misc_cost_inr": state.get("misc_cost_inr"),
+        "number_of_people": state.get("number_of_people"),
+        "trip_days": state.get("trip_days"),
+        "cost_per_person_inr": state.get("cost_per_person_inr"),
         "total_inr": state.get("total_inr"),
         "total_usd": state.get("total_usd"),
     }
@@ -112,6 +178,7 @@ async def plan_trip(
             "preferences": payload.preferences,
             "waypoints": payload.waypoints,
             "user_id": current_user.username,
+            "vehicle": payload.vehicle.model_dump(),
         }
         result_state = await trip_planner_graph.ainvoke(initial_state)
     except ValueError as exc:
@@ -139,6 +206,18 @@ async def plan_trip(
     await session.refresh(trip)
 
     pdf_path = result_state.get("pdf_path")
+    recommendation_blocks = _parse_recommendation_blocks(result_state.get("recommendations"))
+    expected_locations = _route_locations(
+        origin=result_state.get("origin", payload.origin),
+        waypoints=result_state.get("waypoints", payload.waypoints) or [],
+        destination=result_state.get("destination", payload.destination),
+    )
+    recommendation_locations = _validate_recommendation_locations(recommendation_blocks, expected_locations)
+    trip.recommendations_json = json.dumps([block.model_dump() for block in recommendation_blocks], ensure_ascii=False)
+    session.add(trip)
+    await session.commit()
+    await session.refresh(trip)
+
     report = None
     if pdf_path:
         report = TripReport(trip_id=trip.id, pdf_path=str(pdf_path))
@@ -152,6 +231,8 @@ async def plan_trip(
             "trip_id": trip.id,
             "report_id": report.id if report else None,
             "created_at": trip.created_at,
+            "recommendations": recommendation_blocks,
+            "recommendation_locations": recommendation_locations,
         }
     )
     return TripPlanResponse.model_validate(response_data)
@@ -180,6 +261,8 @@ async def get_trip(trip_id: int, session: AsyncSession = Depends(get_session)) -
         select(TripReport).where(TripReport.trip_id == trip_id).order_by(TripReport.created_at.desc())
     )
     report = report_result.scalars().first()
+    recommendations = _parse_recommendation_blocks(trip.recommendations_json)
+    recommendation_locations = [item.location for item in recommendations]
 
     return TripDetailResponse(
         id=trip.id,
@@ -189,6 +272,8 @@ async def get_trip(trip_id: int, session: AsyncSession = Depends(get_session)) -
         waypoints=trip.waypoints,
         created_at=trip.created_at,
         pdf_path=report.pdf_path if report else None,
+        recommendations=recommendations,
+        recommendation_locations=recommendation_locations,
     )
 
 

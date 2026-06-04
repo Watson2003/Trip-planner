@@ -1,0 +1,5 @@
+INFO:     127.0.0.1:60570 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60570 - "POST /api/trip/plan HTTP/1.1" 201 Created
+INFO:     127.0.0.1:59437 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59440 - "POST /api/trip/plan HTTP/1.1" 201 Created
+INFO:     127.0.0.1:52114 - "POST /api/trip/plan HTTP/1.1" 201 Created

@@ -21,6 +21,8 @@ CITY_COORDINATES: dict[str, Coordinates] = {
     "bengaluru": Coordinates(12.9716, 77.5946),
     "bangalore": Coordinates(12.9716, 77.5946),
     "chennai": Coordinates(13.0827, 80.2707),
+    "tiruchirappalli": Coordinates(10.7905, 78.7047),
+    "trichy": Coordinates(10.7905, 78.7047),
     "hyderabad": Coordinates(17.3850, 78.4867),
     "pune": Coordinates(18.5204, 73.8567),
     "jaipur": Coordinates(26.9124, 75.7873),

@@ -22,6 +22,7 @@ if not exist ".env" (
   (
     echo NVIDIA_API_KEY=your_key_here
     echo NVIDIA_MODEL=meta/llama-3.1-70b-instruct
+    echo GEOAPIFY_API_KEY=your_key_here
     echo OPENWEATHERMAP_API_KEY=your_key_here
     echo OPENROUTESERVICE_API_KEY=your_key_here
   ) > .env

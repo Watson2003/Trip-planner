@@ -41,8 +41,8 @@ export default function RoadTripMap({ route }: { route: RouteInfo }) {
           <div>{route.durationHours} hours</div>
         </div>
       </div>
-      <div className="overflow-hidden rounded-3xl border border-slate-200">
-        <MapContainer center={center as [number, number]} zoom={5} scrollWheelZoom={false}>
+      <div className="h-64 overflow-hidden rounded-3xl border border-slate-200 sm:h-80 md:h-96 lg:h-[500px]">
+        <MapContainer center={center as [number, number]} zoom={5} scrollWheelZoom={false} className="h-full w-full">
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

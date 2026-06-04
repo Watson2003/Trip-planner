@@ -14,8 +14,8 @@ import { getAuthHeaders } from "@/lib/auth";
 import type {
   DailyWeather,
   BudgetBreakdown as BudgetBreakdownType,
+  LocationRecommendation,
   PlannedTripResponse,
-  Recommendation,
   TripMarker,
 } from "@/types";
 
@@ -38,7 +38,6 @@ type UiState = {
   weatherStatus: "success" | "unavailable" | "past_dates";
   weatherMessage?: string;
   budget: BudgetBreakdownType | null;
-  recommendations: Recommendation[];
   focusPoint: { lat: number; lng: number; zoom?: number } | null;
 };
 
@@ -178,51 +177,6 @@ function buildBudget(plan: PlannedTripResponse): BudgetBreakdownType {
   };
 }
 
-function buildRecommendations(plan: PlannedTripResponse, markers: TripMarker[]): Recommendation[] {
-  const routeMidpoint = markers[Math.floor(markers.length / 2)] ?? markers[markers.length - 1];
-  const destinationMarker = markers[markers.length - 1];
-  const categoryToFocus: Record<string, TripMarker | undefined> = {
-    Hotels: destinationMarker,
-    Restaurants: destinationMarker,
-    Attractions: routeMidpoint ?? destinationMarker,
-  };
-
-  const items: Recommendation[] = [];
-
-  (Object.entries(plan.recommendations) as Array<[string, Array<Record<string, unknown>>]>).forEach(
-    ([category, list]) => {
-      const tabLabel = category.toLowerCase().includes("hotel")
-        ? "Hotels"
-        : category.toLowerCase().includes("restaurant")
-          ? "Restaurants"
-          : "Attractions";
-
-      list.slice(0, 3).forEach((item, index) => {
-        const title = String(item.title ?? item.name ?? `${tabLabel.slice(0, -1)} ${index + 1}`);
-        const description = String(item.description ?? item.why_it_fits ?? "Recommended by the travel assistant.");
-        const baseRating = tabLabel === "Hotels" ? 5 : tabLabel === "Restaurants" ? 4 : 4;
-        const estimatedCost =
-          tabLabel === "Hotels" ? 3200 - index * 350 : tabLabel === "Restaurants" ? 850 - index * 100 : 300 + index * 75;
-        const focus = categoryToFocus[tabLabel];
-
-        items.push({
-          title,
-          description,
-          category: tabLabel,
-          priority: index + 1,
-          rating: Math.max(1, Math.min(5, baseRating - index)),
-          estimatedCostInr: Math.max(0, estimatedCost),
-          location: String(item.location ?? item.display_name ?? plan.destination),
-          lat: typeof focus?.lat === "number" ? focus.lat : undefined,
-          lng: typeof focus?.lng === "number" ? focus.lng : undefined,
-        });
-      });
-    },
-  );
-
-  return items;
-}
-
 function LoadingSkeleton() {
   return (
     <div className="space-y-6">
@@ -251,10 +205,15 @@ function LoadingSkeleton() {
           </div>
         </div>
       </div>
-      <div className="grid gap-4 lg:grid-cols-3">
-        <div className="h-48 rounded-3xl border border-slate-200 bg-white/70 p-5 shadow-sm" />
-        <div className="h-48 rounded-3xl border border-slate-200 bg-white/70 p-5 shadow-sm" />
-        <div className="h-48 rounded-3xl border border-slate-200 bg-white/70 p-5 shadow-sm" />
+      <div className="rounded-[2rem] border border-slate-200 bg-white/70 p-5 shadow-sm">
+        <div className="animate-pulse space-y-4">
+          <div className="h-5 w-40 rounded bg-slate-200 dark:bg-slate-700" />
+          <div className="h-8 w-72 rounded bg-slate-200 dark:bg-slate-700" />
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="h-72 rounded-3xl bg-slate-100 dark:bg-slate-800" />
+            <div className="h-72 rounded-3xl bg-slate-100 dark:bg-slate-800" />
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -262,10 +221,13 @@ function LoadingSkeleton() {
 
 export default function HomePage() {
   const [form, setForm] = useState<FormState>(DEFAULT_FORM);
+  const [origin, setOrigin] = useState("");
+  const [destination, setDestination] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [dateError, setDateError] = useState<string | null>(null);
   const [dateWarning, setDateWarning] = useState<string | null>(null);
+  const [recommendations, setRecommendations] = useState<LocationRecommendation[]>([]);
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [state, setState] = useState<UiState>({
     loading: false,
@@ -277,7 +239,6 @@ export default function HomePage() {
     weatherStatus: "success",
     weatherMessage: undefined,
     budget: null,
-    recommendations: [],
     focusPoint: null,
   });
 
@@ -306,6 +267,11 @@ export default function HomePage() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const trimmedOrigin = form.origin.trim();
+    const trimmedDestination = form.destination.trim();
+    setOrigin(trimmedOrigin);
+    setDestination(trimmedDestination);
+    setRecommendations([]);
     if (form.origin.trim().toLowerCase() === form.destination.trim().toLowerCase()) {
       setState((current) => ({
         ...current,
@@ -363,7 +329,6 @@ export default function HomePage() {
       const routeGeoJSON = buildRouteGeoJSON(plan.route.polyline);
       const markers = buildMarkers(plan);
       const budget = buildBudget(plan);
-      const recommendations = buildRecommendations(plan, markers);
 
       setState({
         loading: false,
@@ -375,9 +340,9 @@ export default function HomePage() {
         weatherStatus: plan.weather_status || "success",
         weatherMessage: plan.weather_message || "",
         budget,
-        recommendations,
         focusPoint: null,
       });
+      setRecommendations(plan.recommendations || []);
     } catch (error) {
       const message = normalizeErrorMessage(error);
       setState((current) => ({
@@ -411,32 +376,6 @@ export default function HomePage() {
     URL.revokeObjectURL(url);
   }
 
-  function focusOnRecommendation(recommendation: Recommendation) {
-    if (typeof recommendation.lat === "number" && typeof recommendation.lng === "number") {
-      setState((current) => ({
-        ...current,
-        focusPoint: {
-          lat: recommendation.lat as number,
-          lng: recommendation.lng as number,
-          zoom: 10,
-        },
-      }));
-      return;
-    }
-
-    const fallback = state.markers[state.markers.length - 1] ?? state.markers[0];
-    if (fallback) {
-      setState((current) => ({
-        ...current,
-        focusPoint: {
-          lat: fallback.lat,
-          lng: fallback.lng,
-          zoom: 9,
-        },
-      }));
-    }
-  }
-
   const topSummary = state.trip ? (
     <div className="grid gap-3 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-glow backdrop-blur-xl sm:grid-cols-2 xl:grid-cols-4 dark:border-slate-800 dark:bg-slate-900/80">
       <StatItem label="Origin" value={state.trip.origin} />
@@ -449,8 +388,8 @@ export default function HomePage() {
   return (
     <AuthGuard>
       <Navbar theme={theme} onToggleTheme={() => setTheme((current) => (current === "dark" ? "light" : "dark"))} />
-      <main className="min-h-screen text-slate-900 transition-colors dark:text-slate-100">
-        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <main className="min-h-screen overflow-x-hidden text-slate-900 transition-colors dark:text-slate-100">
+        <div className="mx-auto max-w-7xl px-4 py-6 md:px-8 md:py-10">
           <section className="overflow-hidden rounded-[2rem] border border-white/80 bg-white/70 shadow-glow backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/70">
             <div className="grid gap-8 px-5 py-8 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
               <div className="space-y-5">
@@ -476,7 +415,7 @@ export default function HomePage() {
 
               <form
                 onSubmit={handleSubmit}
-                className="rounded-[1.75rem] border border-slate-200 bg-slate-950 p-5 text-white shadow-2xl dark:border-slate-800"
+                className="mx-auto w-full max-w-2xl rounded-[1.75rem] border border-slate-200 bg-slate-950 p-5 text-white shadow-2xl dark:border-slate-800"
               >
                 <div className="flex items-center gap-2 text-sm text-slate-300">
                   <Compass className="h-4 w-4 text-orange-400" />
@@ -496,7 +435,7 @@ export default function HomePage() {
                     placeholder="e.g. Goa"
                   />
 
-                  <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="flex flex-col gap-3 md:flex-row">
                     <DateField
                       label="Start date"
                       value={startDate}
@@ -504,6 +443,7 @@ export default function HomePage() {
                         setStartDate(value);
                         setDateError(null);
                       }}
+                      className="w-full flex-1"
                     />
                     <DateField
                       label="End date"
@@ -512,6 +452,7 @@ export default function HomePage() {
                         setEndDate(value);
                         setDateError(null);
                       }}
+                      className="w-full flex-1"
                     />
                   </div>
                   {(dateError || dateWarning) && (
@@ -530,7 +471,7 @@ export default function HomePage() {
                   )}
 
                   <div className="space-y-3 rounded-2xl border border-white/10 bg-white/5 p-4">
-                    <div className="flex items-center justify-between gap-3">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
                       <label className="text-sm font-medium text-slate-200">Budget</label>
                       <span className="rounded-full bg-white px-3 py-1 text-sm font-bold text-slate-900">
                         {"\u20b9"}
@@ -554,7 +495,7 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  <div className="grid gap-3 rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <div className="flex flex-wrap gap-2 rounded-2xl border border-white/10 bg-white/5 p-4">
                     <PreferenceCheck
                       label="Scenic route"
                       checked={form.scenicRoute}
@@ -581,7 +522,7 @@ export default function HomePage() {
                   <button
                     type="submit"
                     disabled={state.loading}
-                    className="inline-flex items-center justify-center gap-2 rounded-2xl bg-orange-500 px-5 py-3 text-sm font-bold text-white transition hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-70"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-orange-500 px-5 py-3 text-sm font-bold text-white transition hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
                   >
                     {state.loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
                     {state.loading ? "Planning trip..." : "Plan trip"}
@@ -591,51 +532,67 @@ export default function HomePage() {
             </div>
           </section>
 
-          <div className="mt-6 space-y-6">
+          <div className="space-y-6 py-6 md:py-10">
             {topSummary}
 
             {state.loading ? (
               <LoadingSkeleton />
             ) : state.trip && state.routeGeoJSON && state.budget ? (
-              <div className="grid gap-6 lg:grid-cols-2">
-                <div className="space-y-6">
-                  <TripMap routeGeoJSON={state.routeGeoJSON} markers={state.markers} focusPoint={state.focusPoint} />
-                  <RecommendationCards recommendations={state.recommendations} onViewOnMap={focusOnRecommendation} />
-                </div>
+              <div className="space-y-6">
+                <div className="grid gap-6 lg:grid-cols-2">
+                  <div className="space-y-6">
+                    <TripMap routeGeoJSON={state.routeGeoJSON} markers={state.markers} focusPoint={state.focusPoint} />
+                  </div>
 
-                <div className="space-y-6">
-                  <WeatherPanel
-                    weatherData={state.weather}
-                    startDate={state.trip.travel_dates.start}
-                    endDate={state.trip.travel_dates.end}
-                    origin={state.trip.origin}
-                    destination={state.trip.destination}
-                    status={state.weatherStatus}
-                    message={state.weatherMessage}
-                  />
-                  <BudgetBreakdown budget={state.budget} />
-                  <div className="flex flex-wrap items-center gap-3 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-glow backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/80">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        downloadReport().catch((error) => {
-                          setState((current) => ({
-                            ...current,
-                            error: error instanceof Error ? error.message : "Could not download PDF",
-                          }));
-                        });
-                      }}
-                      className="inline-flex items-center gap-2 rounded-2xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
-                      disabled={!canDownloadPdf}
-                    >
-                      <ArrowDownToLine className="h-4 w-4" />
-                      Download PDF Report
-                    </button>
-                    <div className="text-sm text-slate-600 dark:text-slate-300">
-                      {state.trip.report_summary || "Your trip report will appear here after planning."}
+                  <div className="space-y-6">
+                    <WeatherPanel
+                      weatherData={state.weather}
+                      startDate={state.trip.travel_dates.start}
+                      endDate={state.trip.travel_dates.end}
+                      origin={state.trip.origin}
+                      destination={state.trip.destination}
+                      status={state.weatherStatus}
+                      message={state.weatherMessage}
+                    />
+                    <BudgetBreakdown budget={state.budget} />
+                    <div className="flex flex-wrap items-center gap-3 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-glow backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/80">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          downloadReport().catch((error) => {
+                            setState((current) => ({
+                              ...current,
+                              error: error instanceof Error ? error.message : "Could not download PDF",
+                            }));
+                          });
+                        }}
+                        className="inline-flex items-center gap-2 rounded-2xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+                        disabled={!canDownloadPdf}
+                      >
+                        <ArrowDownToLine className="h-4 w-4" />
+                        Download PDF Report
+                      </button>
+                      <div className="text-sm text-slate-600 dark:text-slate-300">
+                        {state.trip.report_summary || "Your trip report will appear here after planning."}
+                      </div>
                     </div>
                   </div>
                 </div>
+
+                {recommendations.length > 0 && (
+                  <section className="space-y-4">
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg">📍</span>
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-[0.24em] text-orange-300">
+                          RECOMMENDATIONS
+                        </p>
+                        <h2 className="text-xl font-black text-slate-100">Places Along Your Route</h2>
+                      </div>
+                    </div>
+                    <RecommendationCards recommendations={recommendations} origin={origin} destination={destination} />
+                  </section>
+                )}
               </div>
             ) : (
               <LoadingSkeleton />
@@ -677,19 +634,21 @@ function DateField({
   label,
   value,
   onChange,
+  className = "",
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
+  className?: string;
 }) {
   return (
-    <label className="grid gap-2">
+    <label className={`grid gap-2 ${className}`}>
       <span className="text-sm font-medium text-slate-200">{label}</span>
       <input
         type="date"
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-orange-400"
+        className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-orange-400"
       />
     </label>
   );
@@ -705,7 +664,7 @@ function PreferenceCheck({
   onChange: (checked: boolean) => void;
 }) {
   return (
-    <label className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-slate-900 px-4 py-3">
+    <label className="flex min-w-[180px] flex-1 items-center justify-between gap-3 rounded-2xl border border-white/10 bg-slate-900 px-4 py-3">
       <span className="text-sm text-slate-200">{label}</span>
       <input
         type="checkbox"

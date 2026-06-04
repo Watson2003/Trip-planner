@@ -1,0 +1,75 @@
+
+> ai-road-trip-planner@1.0.0 dev
+> next dev -p 3000
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
+
+ ✓ Starting...
+ ✓ Ready in 4.7s
+ ○ Compiling / ...
+ ✓ Compiled / in 20.8s (1711 modules)
+ GET / 200 in 20805ms
+ GET / 200 in 752ms
+ GET / 200 in 13606ms
+ GET /_next/static/webpack/f70ab5cd4b6608a7.webpack.hot-update.json 404 in 21625ms
+ GET / 200 in 80ms
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 3.7s (1929 modules)
+ GET / 200 in 434ms
+ ✓ Compiled in 641ms (1052 modules)
+ ✓ Compiled /_not-found in 397ms (891 modules)
+ GET /_next/static/css/app/layout.css?v=1780576395911 404 in 603ms
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 761ms (1929 modules)
+ GET / 500 in 3424ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 2.6s (1945 modules)
+ GET /_next/static/webpack/f70ab5cd4b6608a7.webpack.hot-update.json 404 in 2142ms
+ GET / 500 in 460ms
+ GET /_next/static/chunks/main-app.js 404 in 69ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 67ms
+ GET /_next/static/chunks/app/global-error.js 404 in 65ms
+ ✓ Compiled in 820ms (1945 modules)
+ ✓ Compiled in 605ms (1943 modules)
+ ✓ Compiled in 314ms (1053 modules)
+ ✓ Compiled in 465ms (1053 modules)
+ ✓ Compiled in 797ms (1945 modules)
+ ✓ Compiled in 1484ms (1945 modules)
+ ✓ Compiled in 1563ms (1949 modules)
+ ✓ Compiled in 567ms (1949 modules)
+ ✓ Compiled in 479ms (1949 modules)
+ ✓ Compiled in 571ms (1949 modules)
+ ✓ Compiled in 982ms (1949 modules)
+ ✓ Compiled in 1243ms (1949 modules)
+ ✓ Compiled in 878ms (1949 modules)
+ ✓ Compiled in 644ms (1949 modules)
+ ✓ Compiled in 649ms (1949 modules)
+ ✓ Compiled in 689ms (1949 modules)
+ ✓ Compiled in 732ms (1935 modules)
+ ✓ Compiled in 890ms (1949 modules)
+ ✓ Compiled in 1180ms (1073 modules)
+ ✓ Compiled in 1172ms (1949 modules)
+ ✓ Compiled in 872ms (1949 modules)
+ ✓ Compiled in 409ms (1056 modules)
+ ✓ Compiled in 314ms (1056 modules)
+ ✓ Compiled in 374ms (1056 modules)
+ ✓ Compiled in 320ms (1056 modules)
+ ✓ Compiled in 1095ms (1949 modules)
+ ✓ Compiled in 644ms (1949 modules)
+ ✓ Compiled in 575ms (1056 modules)
+ ✓ Compiled in 320ms (1056 modules)
+ ✓ Compiled in 678ms (1056 modules)
+ ✓ Compiled in 425ms (1056 modules)
+ ✓ Compiled in 1229ms (1949 modules)
+ GET / 200 in 350ms
+ ○ Compiling /my-trips ...
+ ✓ Compiled /my-trips in 1796ms (1953 modules)
+ ✓ Compiled /_not-found in 235ms (905 modules)
+ GET / 500 in 804ms
+ GET / 500 in 235ms
+ GET / 500 in 728ms
+ GET / 500 in 233ms
+ GET / 500 in 746ms
+ GET / 500 in 235ms
+[?25h

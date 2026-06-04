@@ -1,0 +1,1204 @@
+(node:20980) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+(node:20980) [DEP0060] DeprecationWarning: The `util._extend` API is deprecated. Please use Object.assign() instead.
+Failed to proxy http://localhost:8100/api/trip/plan Error: socket hang up
+    at Socket.socketCloseListener (node:_http_client:491:27)
+    at Socket.emit (node:events:519:35)
+    at TCP.<anonymous> (node:net:351:12)
+    at TCP.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNRESET'
+}
+Error: socket hang up
+    at Socket.socketCloseListener (node:_http_client:491:27)
+    at Socket.emit (node:events:519:35)
+    at TCP.<anonymous> (node:net:351:12)
+    at TCP.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNRESET'
+}
+Failed to proxy http://localhost:8100/api/trip/plan Error: socket hang up
+    at Socket.socketCloseListener (node:_http_client:491:27)
+    at Socket.emit (node:events:519:35)
+    at TCP.<anonymous> (node:net:351:12)
+    at TCP.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNRESET'
+}
+Error: socket hang up
+    at Socket.socketCloseListener (node:_http_client:491:27)
+    at Socket.emit (node:events:519:35)
+    at TCP.<anonymous> (node:net:351:12)
+    at TCP.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNRESET'
+}
+ ⨯ Error: Cannot find module './115.js'
+Require stack:
+- D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+- D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-middleware.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-reloader-webpack.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-utils\setup-dev-bundler.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1409:15)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1060:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1065:22)
+    at Function._load (node:internal/modules/cjs/loader:1214:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at __webpack_require__.f.require (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:198:28)
+    at D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:162:22)
+    at D:\ROOT\Trip planner\frontend\.next\server\app\page.js:1:396384
+    at Object.<anonymous> (D:\ROOT\Trip planner\frontend\.next\server\app\page.js:1:396427)
+    at Module._compile (node:internal/modules/cjs/loader:1739:14)
+    at Object..js (node:internal/modules/cjs/loader:1904:10)
+    at Module.load (node:internal/modules/cjs/loader:1473:32)
+    at Function._load (node:internal/modules/cjs/loader:1285:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js:109:84)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:103:84
+    at async loadComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:103:26)
+    at async DevServer.findPageComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:714:36)
+    at async DevServer.findPageComponents (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:577:20)
+    at async DevServer.renderPageComponent (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:1910:24)
+    at async DevServer.renderToResponseImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:1962:32)
+    at async DevServer.pipeImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:922:25)
+    at async NextNodeServer.handleCatchallRenderRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:272:17)
+    at async DevServer.handleRequestImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:818:17)
+    at async D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:339:20
+    at async Span.traceAsyncFn (D:\ROOT\Trip planner\frontend\node_modules\next\dist\trace\trace.js:154:20)
+    at async DevServer.handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:336:24)
+    at async invokeRender (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:179:21)
+    at async handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:359:24)
+    at async requestHandlerImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:383:13)
+    at async Server.requestListener (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js:141:13) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\webpack-runtime.js',
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\app\\_not-found\\page.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\load-components.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\build\\utils.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-middleware.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-reloader-webpack.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-utils\\setup-dev-bundler.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-server.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\start-server.js'
+  ],
+  page: '/'
+}
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+- D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-middleware.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-reloader-webpack.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-utils\setup-dev-bundler.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1409:15)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1060:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1065:22)
+    at Function._load (node:internal/modules/cjs/loader:1214:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at __webpack_require__.f.require (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:198:28)
+    at D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:162:22)
+    at D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js:1:335
+    at Object.<anonymous> (D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js:1:376)
+    at Module._compile (node:internal/modules/cjs/loader:1739:14)
+    at Object..js (node:internal/modules/cjs/loader:1904:10)
+    at Module.load (node:internal/modules/cjs/loader:1473:32)
+    at Function._load (node:internal/modules/cjs/loader:1285:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js:109:84)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\webpack-runtime.js',
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\pages\\_document.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\load-components.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\build\\utils.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-middleware.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-reloader-webpack.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-utils\\setup-dev-bundler.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-server.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\start-server.js'
+  ]
+}
+ ⨯ ./components/recommendations/RecommendationCards.tsx
+Error: Failed to read source code from D:\ROOT\Trip planner\frontend\components\recommendations\RecommendationCards.tsx
+
+Caused by:
+    The system cannot find the file specified. (os error 2)
+
+Import trace for requested module:
+./components/recommendations/RecommendationCards.tsx
+./app/page.tsx
+ ⨯ ./components/recommendations/RecommendationCards.tsx
+Error: Failed to read source code from D:\ROOT\Trip planner\frontend\components\recommendations\RecommendationCards.tsx
+
+Caused by:
+    The system cannot find the file specified. (os error 2)
+
+Import trace for requested module:
+./components/recommendations/RecommendationCards.tsx
+./app/page.tsx
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ ReferenceError: window is not defined
+    at __webpack_require__ (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:33:43)
+    at eval (./components/recommendations/RecommendationCards.tsx:9:65)
+    at (ssr)/./components/recommendations/RecommendationCards.tsx (D:\ROOT\Trip planner\frontend\.next\server\app\page.js:204:1)
+    at __webpack_require__ (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:33:43)
+    at eval (./app/page.tsx:17:105)
+    at (ssr)/./app/page.tsx (D:\ROOT\Trip planner\frontend\.next\server\app\page.js:138:1)
+    at Object.__webpack_require__ [as require] (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:33:43)
+digest: "2534456509"
+ ⨯ ReferenceError: window is not defined
+    at __webpack_require__ (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:33:43)
+    at eval (./components/recommendations/RecommendationCards.tsx:9:65)
+    at (ssr)/./components/recommendations/RecommendationCards.tsx (D:\ROOT\Trip planner\frontend\.next\server\app\page.js:204:1)
+    at __webpack_require__ (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:33:43)
+    at eval (./app/page.tsx:17:105)
+    at (ssr)/./app/page.tsx (D:\ROOT\Trip planner\frontend\.next\server\app\page.js:138:1)
+    at Object.__webpack_require__ [as require] (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:33:43)
+digest: "2534456509"
+ ⨯ ./components/auth/Navbar.tsx
+Error: Failed to read source code from D:\ROOT\Trip planner\frontend\components\auth\Navbar.tsx
+
+Caused by:
+    The system cannot find the file specified. (os error 2)
+
+Import trace for requested module:
+./components/auth/Navbar.tsx
+./app/page.tsx
+ ⨯ ./components/auth/Navbar.tsx
+Error: Failed to read source code from D:\ROOT\Trip planner\frontend\components\auth\Navbar.tsx
+
+Caused by:
+    The system cannot find the file specified. (os error 2)
+
+Import trace for requested module:
+./components/auth/Navbar.tsx
+./app/page.tsx
+ ⨯ ./components/weather/WeatherPanel.tsx
+Error: Failed to read source code from D:\ROOT\Trip planner\frontend\components\weather\WeatherPanel.tsx
+
+Caused by:
+    The system cannot find the file specified. (os error 2)
+
+Import trace for requested module:
+./components/weather/WeatherPanel.tsx
+./app/page.tsx
+ ⨯ ./components/weather/WeatherPanel.tsx
+Error: Failed to read source code from D:\ROOT\Trip planner\frontend\components\weather\WeatherPanel.tsx
+
+Caused by:
+    The system cannot find the file specified. (os error 2)
+
+Import trace for requested module:
+./components/weather/WeatherPanel.tsx
+./app/page.tsx
+ ⨯ ./components/budget/BudgetBreakdown.tsx
+Error: Failed to read source code from D:\ROOT\Trip planner\frontend\components\budget\BudgetBreakdown.tsx
+
+Caused by:
+    The system cannot find the file specified. (os error 2)
+
+Import trace for requested module:
+./components/budget/BudgetBreakdown.tsx
+./app/page.tsx
+ ⨯ ./components/budget/BudgetBreakdown.tsx
+Error: Failed to read source code from D:\ROOT\Trip planner\frontend\components\budget\BudgetBreakdown.tsx
+
+Caused by:
+    The system cannot find the file specified. (os error 2)
+
+Import trace for requested module:
+./components/budget/BudgetBreakdown.tsx
+./app/page.tsx
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+- D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-middleware.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-reloader-webpack.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-utils\setup-dev-bundler.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1409:15)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1060:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1065:22)
+    at Function._load (node:internal/modules/cjs/loader:1214:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at __webpack_require__.f.require (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:198:28)
+    at D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:162:22)
+    at D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js:1:335
+    at Object.<anonymous> (D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js:1:376)
+    at Module._compile (node:internal/modules/cjs/loader:1739:14)
+    at Object..js (node:internal/modules/cjs/loader:1904:10)
+    at Module.load (node:internal/modules/cjs/loader:1473:32)
+    at Function._load (node:internal/modules/cjs/loader:1285:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js:109:84)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\webpack-runtime.js',
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\app\\_not-found\\page.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\load-components.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\build\\utils.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-middleware.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-reloader-webpack.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-utils\\setup-dev-bundler.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-server.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\start-server.js'
+  ]
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\ROOT\Trip planner\frontend\.next\fallback-build-manifest.json'
+    at readFileSync (node:fs:443:20)
+    at loadManifest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-manifest.js:36:52)
+    at loadManifestWithRetries (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:40:51)
+    at async loadDefaultErrorComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-default-error-components.js:30:24)
+    at async DevServer.getFallbackErrorComponents (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:594:16)
+    at async DevServer.renderErrorToResponseImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2203:40)
+    at async DevServer.pipeImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:922:25)
+    at async NextNodeServer.handleCatchallRenderRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:272:17)
+    at async DevServer.handleRequestImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:818:17)
+    at async D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:339:20
+    at async Span.traceAsyncFn (D:\ROOT\Trip planner\frontend\node_modules\next\dist\trace\trace.js:154:20)
+    at async DevServer.handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:336:24)
+    at async invokeRender (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:179:21)
+    at async handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:359:24)
+    at async requestHandlerImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:383:13)
+    at async Server.requestListener (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js:141:13) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\ROOT\\Trip planner\\frontend\\.next\\fallback-build-manifest.json'
+}
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+- D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-middleware.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-reloader-webpack.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-utils\setup-dev-bundler.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1409:15)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1060:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1065:22)
+    at Function._load (node:internal/modules/cjs/loader:1214:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at __webpack_require__.f.require (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:198:28)
+    at D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:162:22)
+    at D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js:1:335
+    at Object.<anonymous> (D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js:1:376)
+    at Module._compile (node:internal/modules/cjs/loader:1739:14)
+    at Object..js (node:internal/modules/cjs/loader:1904:10)
+    at Module.load (node:internal/modules/cjs/loader:1473:32)
+    at Function._load (node:internal/modules/cjs/loader:1285:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js:109:84)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\webpack-runtime.js',
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\app\\_not-found\\page.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\load-components.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\build\\utils.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-middleware.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-reloader-webpack.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-utils\\setup-dev-bundler.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-server.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\start-server.js'
+  ]
+}
+Error: ENOENT: no such file or directory, open 'D:\ROOT\Trip planner\frontend\.next\fallback-build-manifest.json'
+    at readFileSync (node:fs:443:20)
+    at loadManifest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-manifest.js:36:52)
+    at loadManifestWithRetries (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:40:51)
+    at async loadDefaultErrorComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-default-error-components.js:30:24)
+    at async DevServer.getFallbackErrorComponents (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:594:16)
+    at async DevServer.renderErrorToResponseImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2203:40)
+    at async DevServer.pipeImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:922:25)
+    at async NextNodeServer.handleCatchallRenderRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:272:17)
+    at async DevServer.handleRequestImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:818:17)
+    at async D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:339:20
+    at async Span.traceAsyncFn (D:\ROOT\Trip planner\frontend\node_modules\next\dist\trace\trace.js:154:20)
+    at async DevServer.handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:336:24)
+    at async invokeRender (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:179:21)
+    at async handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:359:24)
+    at async requestHandlerImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:383:13)
+    at async Server.requestListener (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js:141:13) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\ROOT\\Trip planner\\frontend\\.next\\fallback-build-manifest.json'
+}
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+- D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-middleware.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-reloader-webpack.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-utils\setup-dev-bundler.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1409:15)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1060:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1065:22)
+    at Function._load (node:internal/modules/cjs/loader:1214:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at __webpack_require__.f.require (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:198:28)
+    at D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:162:22)
+    at D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js:1:335
+    at Object.<anonymous> (D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js:1:376)
+    at Module._compile (node:internal/modules/cjs/loader:1739:14)
+    at Object..js (node:internal/modules/cjs/loader:1904:10)
+    at Module.load (node:internal/modules/cjs/loader:1473:32)
+    at Function._load (node:internal/modules/cjs/loader:1285:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js:109:84)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\webpack-runtime.js',
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\app\\_not-found\\page.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\load-components.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\build\\utils.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-middleware.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-reloader-webpack.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-utils\\setup-dev-bundler.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-server.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\start-server.js'
+  ]
+}
+Error: ENOENT: no such file or directory, open 'D:\ROOT\Trip planner\frontend\.next\fallback-build-manifest.json'
+    at readFileSync (node:fs:443:20)
+    at loadManifest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-manifest.js:36:52)
+    at loadManifestWithRetries (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:40:51)
+    at async loadDefaultErrorComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-default-error-components.js:30:24)
+    at async DevServer.getFallbackErrorComponents (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:594:16)
+    at async DevServer.renderErrorToResponseImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2203:40)
+    at async pipe.req.req (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2056:30)
+    at async DevServer.pipeImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:922:25)
+    at async D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:339:20
+    at async Span.traceAsyncFn (D:\ROOT\Trip planner\frontend\node_modules\next\dist\trace\trace.js:154:20)
+    at async DevServer.handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:336:24)
+    at async invokeRender (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:179:21)
+    at async requestHandlerImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:395:24)
+    at async Server.requestListener (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js:141:13) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\ROOT\\Trip planner\\frontend\\.next\\fallback-build-manifest.json'
+}
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+- D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-middleware.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-reloader-webpack.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-utils\setup-dev-bundler.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1409:15)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1060:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1065:22)
+    at Function._load (node:internal/modules/cjs/loader:1214:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at __webpack_require__.f.require (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:198:28)
+    at D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:162:22)
+    at D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js:1:335
+    at Object.<anonymous> (D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js:1:376)
+    at Module._compile (node:internal/modules/cjs/loader:1739:14)
+    at Object..js (node:internal/modules/cjs/loader:1904:10)
+    at Module.load (node:internal/modules/cjs/loader:1473:32)
+    at Function._load (node:internal/modules/cjs/loader:1285:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js:109:84)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\webpack-runtime.js',
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\app\\_not-found\\page.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\load-components.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\build\\utils.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-middleware.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-reloader-webpack.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-utils\\setup-dev-bundler.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-server.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\start-server.js'
+  ]
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\ROOT\Trip planner\frontend\.next\fallback-build-manifest.json'
+    at readFileSync (node:fs:443:20)
+    at loadManifest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-manifest.js:36:52)
+    at loadManifestWithRetries (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:40:51)
+    at async loadDefaultErrorComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-default-error-components.js:30:24)
+    at async DevServer.getFallbackErrorComponents (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:594:16)
+    at async DevServer.renderErrorToResponseImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2203:40)
+    at async DevServer.pipeImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:922:25)
+    at async NextNodeServer.handleCatchallRenderRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:272:17)
+    at async DevServer.handleRequestImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:818:17)
+    at async D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:339:20
+    at async Span.traceAsyncFn (D:\ROOT\Trip planner\frontend\node_modules\next\dist\trace\trace.js:154:20)
+    at async DevServer.handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:336:24)
+    at async invokeRender (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:179:21)
+    at async handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:359:24)
+    at async requestHandlerImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:383:13)
+    at async Server.requestListener (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js:141:13) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\ROOT\\Trip planner\\frontend\\.next\\fallback-build-manifest.json'
+}
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+- D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-middleware.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-reloader-webpack.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-utils\setup-dev-bundler.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1409:15)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1060:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1065:22)
+    at Function._load (node:internal/modules/cjs/loader:1214:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at __webpack_require__.f.require (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:198:28)
+    at D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:162:22)
+    at D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js:1:335
+    at Object.<anonymous> (D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js:1:376)
+    at Module._compile (node:internal/modules/cjs/loader:1739:14)
+    at Object..js (node:internal/modules/cjs/loader:1904:10)
+    at Module.load (node:internal/modules/cjs/loader:1473:32)
+    at Function._load (node:internal/modules/cjs/loader:1285:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js:109:84)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\webpack-runtime.js',
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\app\\_not-found\\page.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\load-components.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\build\\utils.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-middleware.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-reloader-webpack.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-utils\\setup-dev-bundler.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-server.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\start-server.js'
+  ]
+}
+Error: ENOENT: no such file or directory, open 'D:\ROOT\Trip planner\frontend\.next\fallback-build-manifest.json'
+    at readFileSync (node:fs:443:20)
+    at loadManifest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-manifest.js:36:52)
+    at loadManifestWithRetries (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:40:51)
+    at async loadDefaultErrorComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-default-error-components.js:30:24)
+    at async DevServer.getFallbackErrorComponents (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:594:16)
+    at async DevServer.renderErrorToResponseImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2203:40)
+    at async DevServer.pipeImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:922:25)
+    at async NextNodeServer.handleCatchallRenderRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:272:17)
+    at async DevServer.handleRequestImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:818:17)
+    at async D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:339:20
+    at async Span.traceAsyncFn (D:\ROOT\Trip planner\frontend\node_modules\next\dist\trace\trace.js:154:20)
+    at async DevServer.handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:336:24)
+    at async invokeRender (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:179:21)
+    at async handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:359:24)
+    at async requestHandlerImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:383:13)
+    at async Server.requestListener (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js:141:13) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\ROOT\\Trip planner\\frontend\\.next\\fallback-build-manifest.json'
+}
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+- D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-middleware.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-reloader-webpack.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-utils\setup-dev-bundler.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1409:15)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1060:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1065:22)
+    at Function._load (node:internal/modules/cjs/loader:1214:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at __webpack_require__.f.require (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:198:28)
+    at D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:162:22)
+    at D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js:1:335
+    at Object.<anonymous> (D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js:1:376)
+    at Module._compile (node:internal/modules/cjs/loader:1739:14)
+    at Object..js (node:internal/modules/cjs/loader:1904:10)
+    at Module.load (node:internal/modules/cjs/loader:1473:32)
+    at Function._load (node:internal/modules/cjs/loader:1285:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js:109:84)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\webpack-runtime.js',
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\app\\_not-found\\page.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\load-components.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\build\\utils.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-middleware.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-reloader-webpack.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-utils\\setup-dev-bundler.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-server.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\start-server.js'
+  ]
+}
+Error: ENOENT: no such file or directory, open 'D:\ROOT\Trip planner\frontend\.next\fallback-build-manifest.json'
+    at readFileSync (node:fs:443:20)
+    at loadManifest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-manifest.js:36:52)
+    at loadManifestWithRetries (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:40:51)
+    at async loadDefaultErrorComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-default-error-components.js:30:24)
+    at async DevServer.getFallbackErrorComponents (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:594:16)
+    at async DevServer.renderErrorToResponseImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2203:40)
+    at async pipe.req.req (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2056:30)
+    at async DevServer.pipeImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:922:25)
+    at async D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:339:20
+    at async Span.traceAsyncFn (D:\ROOT\Trip planner\frontend\node_modules\next\dist\trace\trace.js:154:20)
+    at async DevServer.handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:336:24)
+    at async invokeRender (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:179:21)
+    at async requestHandlerImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:395:24)
+    at async Server.requestListener (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js:141:13) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\ROOT\\Trip planner\\frontend\\.next\\fallback-build-manifest.json'
+}
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+- D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-middleware.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-reloader-webpack.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-utils\setup-dev-bundler.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1409:15)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1060:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1065:22)
+    at Function._load (node:internal/modules/cjs/loader:1214:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at __webpack_require__.f.require (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:198:28)
+    at D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:162:22)
+    at D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js:1:335
+    at Object.<anonymous> (D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js:1:376)
+    at Module._compile (node:internal/modules/cjs/loader:1739:14)
+    at Object..js (node:internal/modules/cjs/loader:1904:10)
+    at Module.load (node:internal/modules/cjs/loader:1473:32)
+    at Function._load (node:internal/modules/cjs/loader:1285:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js:109:84)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\webpack-runtime.js',
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\app\\_not-found\\page.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\load-components.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\build\\utils.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-middleware.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-reloader-webpack.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-utils\\setup-dev-bundler.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-server.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\start-server.js'
+  ]
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\ROOT\Trip planner\frontend\.next\fallback-build-manifest.json'
+    at readFileSync (node:fs:443:20)
+    at loadManifest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-manifest.js:36:52)
+    at loadManifestWithRetries (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:40:51)
+    at async loadDefaultErrorComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-default-error-components.js:30:24)
+    at async DevServer.getFallbackErrorComponents (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:594:16)
+    at async DevServer.renderErrorToResponseImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2203:40)
+    at async DevServer.pipeImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:922:25)
+    at async NextNodeServer.handleCatchallRenderRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:272:17)
+    at async DevServer.handleRequestImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:818:17)
+    at async D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:339:20
+    at async Span.traceAsyncFn (D:\ROOT\Trip planner\frontend\node_modules\next\dist\trace\trace.js:154:20)
+    at async DevServer.handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:336:24)
+    at async invokeRender (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:179:21)
+    at async handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:359:24)
+    at async requestHandlerImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:383:13)
+    at async Server.requestListener (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js:141:13) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\ROOT\\Trip planner\\frontend\\.next\\fallback-build-manifest.json'
+}
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+- D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-middleware.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-reloader-webpack.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-utils\setup-dev-bundler.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1409:15)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1060:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1065:22)
+    at Function._load (node:internal/modules/cjs/loader:1214:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at __webpack_require__.f.require (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:198:28)
+    at D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:162:22)
+    at D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js:1:335
+    at Object.<anonymous> (D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js:1:376)
+    at Module._compile (node:internal/modules/cjs/loader:1739:14)
+    at Object..js (node:internal/modules/cjs/loader:1904:10)
+    at Module.load (node:internal/modules/cjs/loader:1473:32)
+    at Function._load (node:internal/modules/cjs/loader:1285:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js:109:84)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\webpack-runtime.js',
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\app\\_not-found\\page.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\load-components.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\build\\utils.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-middleware.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-reloader-webpack.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-utils\\setup-dev-bundler.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-server.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\start-server.js'
+  ]
+}
+Error: ENOENT: no such file or directory, open 'D:\ROOT\Trip planner\frontend\.next\fallback-build-manifest.json'
+    at readFileSync (node:fs:443:20)
+    at loadManifest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-manifest.js:36:52)
+    at loadManifestWithRetries (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:40:51)
+    at async loadDefaultErrorComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-default-error-components.js:30:24)
+    at async DevServer.getFallbackErrorComponents (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:594:16)
+    at async DevServer.renderErrorToResponseImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2203:40)
+    at async DevServer.pipeImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:922:25)
+    at async NextNodeServer.handleCatchallRenderRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:272:17)
+    at async DevServer.handleRequestImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:818:17)
+    at async D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:339:20
+    at async Span.traceAsyncFn (D:\ROOT\Trip planner\frontend\node_modules\next\dist\trace\trace.js:154:20)
+    at async DevServer.handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:336:24)
+    at async invokeRender (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:179:21)
+    at async handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:359:24)
+    at async requestHandlerImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:383:13)
+    at async Server.requestListener (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js:141:13) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\ROOT\\Trip planner\\frontend\\.next\\fallback-build-manifest.json'
+}
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+- D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-middleware.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-reloader-webpack.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-utils\setup-dev-bundler.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1409:15)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1060:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1065:22)
+    at Function._load (node:internal/modules/cjs/loader:1214:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at __webpack_require__.f.require (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:198:28)
+    at D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:162:22)
+    at D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js:1:335
+    at Object.<anonymous> (D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js:1:376)
+    at Module._compile (node:internal/modules/cjs/loader:1739:14)
+    at Object..js (node:internal/modules/cjs/loader:1904:10)
+    at Module.load (node:internal/modules/cjs/loader:1473:32)
+    at Function._load (node:internal/modules/cjs/loader:1285:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js:109:84)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\webpack-runtime.js',
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\app\\_not-found\\page.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\load-components.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\build\\utils.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-middleware.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-reloader-webpack.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-utils\\setup-dev-bundler.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-server.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\start-server.js'
+  ]
+}
+Error: ENOENT: no such file or directory, open 'D:\ROOT\Trip planner\frontend\.next\fallback-build-manifest.json'
+    at readFileSync (node:fs:443:20)
+    at loadManifest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-manifest.js:36:52)
+    at loadManifestWithRetries (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:40:51)
+    at async loadDefaultErrorComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-default-error-components.js:30:24)
+    at async DevServer.getFallbackErrorComponents (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:594:16)
+    at async DevServer.renderErrorToResponseImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2203:40)
+    at async pipe.req.req (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2056:30)
+    at async DevServer.pipeImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:922:25)
+    at async D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:339:20
+    at async Span.traceAsyncFn (D:\ROOT\Trip planner\frontend\node_modules\next\dist\trace\trace.js:154:20)
+    at async DevServer.handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:336:24)
+    at async invokeRender (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:179:21)
+    at async requestHandlerImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:395:24)
+    at async Server.requestListener (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js:141:13) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\ROOT\\Trip planner\\frontend\\.next\\fallback-build-manifest.json'
+}
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+- D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-middleware.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-reloader-webpack.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-utils\setup-dev-bundler.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1409:15)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1060:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1065:22)
+    at Function._load (node:internal/modules/cjs/loader:1214:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at __webpack_require__.f.require (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:198:28)
+    at D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:162:22)
+    at D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js:1:335
+    at Object.<anonymous> (D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js:1:376)
+    at Module._compile (node:internal/modules/cjs/loader:1739:14)
+    at Object..js (node:internal/modules/cjs/loader:1904:10)
+    at Module.load (node:internal/modules/cjs/loader:1473:32)
+    at Function._load (node:internal/modules/cjs/loader:1285:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js:109:84)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\webpack-runtime.js',
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\app\\_not-found\\page.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\load-components.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\build\\utils.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-middleware.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-reloader-webpack.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-utils\\setup-dev-bundler.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-server.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\start-server.js'
+  ]
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\ROOT\Trip planner\frontend\.next\fallback-build-manifest.json'
+    at readFileSync (node:fs:443:20)
+    at loadManifest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-manifest.js:36:52)
+    at loadManifestWithRetries (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:40:51)
+    at async loadDefaultErrorComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-default-error-components.js:30:24)
+    at async DevServer.getFallbackErrorComponents (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:594:16)
+    at async DevServer.renderErrorToResponseImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2203:40)
+    at async DevServer.pipeImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:922:25)
+    at async NextNodeServer.handleCatchallRenderRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:272:17)
+    at async DevServer.handleRequestImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:818:17)
+    at async D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:339:20
+    at async Span.traceAsyncFn (D:\ROOT\Trip planner\frontend\node_modules\next\dist\trace\trace.js:154:20)
+    at async DevServer.handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:336:24)
+    at async invokeRender (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:179:21)
+    at async handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:359:24)
+    at async requestHandlerImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:383:13)
+    at async Server.requestListener (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js:141:13) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\ROOT\\Trip planner\\frontend\\.next\\fallback-build-manifest.json'
+}
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+- D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-middleware.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-reloader-webpack.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-utils\setup-dev-bundler.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1409:15)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1060:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1065:22)
+    at Function._load (node:internal/modules/cjs/loader:1214:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at __webpack_require__.f.require (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:198:28)
+    at D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:162:22)
+    at D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js:1:335
+    at Object.<anonymous> (D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js:1:376)
+    at Module._compile (node:internal/modules/cjs/loader:1739:14)
+    at Object..js (node:internal/modules/cjs/loader:1904:10)
+    at Module.load (node:internal/modules/cjs/loader:1473:32)
+    at Function._load (node:internal/modules/cjs/loader:1285:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js:109:84)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\webpack-runtime.js',
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\app\\_not-found\\page.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\load-components.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\build\\utils.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-middleware.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-reloader-webpack.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-utils\\setup-dev-bundler.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-server.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\start-server.js'
+  ]
+}
+Error: ENOENT: no such file or directory, open 'D:\ROOT\Trip planner\frontend\.next\fallback-build-manifest.json'
+    at readFileSync (node:fs:443:20)
+    at loadManifest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-manifest.js:36:52)
+    at loadManifestWithRetries (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:40:51)
+    at async loadDefaultErrorComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-default-error-components.js:30:24)
+    at async DevServer.getFallbackErrorComponents (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:594:16)
+    at async DevServer.renderErrorToResponseImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2203:40)
+    at async DevServer.pipeImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:922:25)
+    at async NextNodeServer.handleCatchallRenderRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:272:17)
+    at async DevServer.handleRequestImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:818:17)
+    at async D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:339:20
+    at async Span.traceAsyncFn (D:\ROOT\Trip planner\frontend\node_modules\next\dist\trace\trace.js:154:20)
+    at async DevServer.handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:336:24)
+    at async invokeRender (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:179:21)
+    at async handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:359:24)
+    at async requestHandlerImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:383:13)
+    at async Server.requestListener (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js:141:13) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\ROOT\\Trip planner\\frontend\\.next\\fallback-build-manifest.json'
+}
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+- D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-middleware.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-reloader-webpack.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-utils\setup-dev-bundler.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1409:15)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1060:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1065:22)
+    at Function._load (node:internal/modules/cjs/loader:1214:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at __webpack_require__.f.require (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:198:28)
+    at D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:162:22)
+    at D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js:1:335
+    at Object.<anonymous> (D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js:1:376)
+    at Module._compile (node:internal/modules/cjs/loader:1739:14)
+    at Object..js (node:internal/modules/cjs/loader:1904:10)
+    at Module.load (node:internal/modules/cjs/loader:1473:32)
+    at Function._load (node:internal/modules/cjs/loader:1285:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js:109:84)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\webpack-runtime.js',
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\app\\_not-found\\page.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\load-components.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\build\\utils.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-middleware.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-reloader-webpack.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-utils\\setup-dev-bundler.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-server.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\start-server.js'
+  ]
+}
+Error: ENOENT: no such file or directory, open 'D:\ROOT\Trip planner\frontend\.next\fallback-build-manifest.json'
+    at readFileSync (node:fs:443:20)
+    at loadManifest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-manifest.js:36:52)
+    at loadManifestWithRetries (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:40:51)
+    at async loadDefaultErrorComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-default-error-components.js:30:24)
+    at async DevServer.getFallbackErrorComponents (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:594:16)
+    at async DevServer.renderErrorToResponseImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2203:40)
+    at async pipe.req.req (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2056:30)
+    at async DevServer.pipeImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:922:25)
+    at async D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:339:20
+    at async Span.traceAsyncFn (D:\ROOT\Trip planner\frontend\node_modules\next\dist\trace\trace.js:154:20)
+    at async DevServer.handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:336:24)
+    at async invokeRender (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:179:21)
+    at async requestHandlerImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:395:24)
+    at async Server.requestListener (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js:141:13) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\ROOT\\Trip planner\\frontend\\.next\\fallback-build-manifest.json'
+}
