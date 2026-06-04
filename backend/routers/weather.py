@@ -1,82 +1,125 @@
 from __future__ import annotations
 
-import asyncio
-from datetime import datetime
-from typing import Any
+from datetime import date, datetime, timedelta
+from typing import Any, Optional
 
 import httpx
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, Query, status
+from pydantic import BaseModel, ConfigDict, Field
 
 from agents.fallbacks import fallback_weather_forecast_response
-from models.schemas import WeatherForecastResponse
+from agents.weather_agent import filter_openweather_forecast_by_date_range
+from models.schemas import DailyWeather
 from utils.config import settings
 
 router = APIRouter(tags=["weather"])
 OPENWEATHER_URL = "https://api.openweathermap.org/data/2.5/forecast"
 
 
-@router.get("/weather/{location}", response_model=WeatherForecastResponse)
-async def get_weather(location: str) -> WeatherForecastResponse:
-    if not settings.openweathermap_api_key:
-        return WeatherForecastResponse.model_validate(fallback_weather_forecast_response(location))
+class WeatherRangeResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
 
+    status: str
+    location: str | None = None
+    start_date: str | None = None
+    end_date: str | None = None
+    total_days: int | None = None
+    weather: list[DailyWeather] = Field(default_factory=list)
+    message: str | None = None
+
+
+def _parse_iso_date(value: str, field_name: str) -> date:
     try:
-        async with httpx.AsyncClient(timeout=25.0) as client:
-            response = await asyncio.wait_for(
-                client.get(
-                    OPENWEATHER_URL,
-                    params={"q": location, "appid": settings.openweathermap_api_key, "units": "metric"},
-                ),
-                timeout=5.0,
-            )
-            response.raise_for_status()
-            payload = response.json()
-    except httpx.HTTPStatusError as exc:
-        status_code = exc.response.status_code
-        if status_code == 404:
-            return WeatherForecastResponse.model_validate(fallback_weather_forecast_response(location))
-        return WeatherForecastResponse.model_validate(fallback_weather_forecast_response(location))
-    except httpx.HTTPError as exc:
-        return WeatherForecastResponse.model_validate(fallback_weather_forecast_response(location))
+        return date.fromisoformat(value)
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=[{"loc": ["query", field_name], "msg": "Invalid date format. Use YYYY-MM-DD.", "type": "value_error"}],
+        ) from exc
 
-    grouped: dict[str, list[dict[str, Any]]] = {}
-    for item in payload.get("list", []):
-        date_key = datetime.fromtimestamp(item["dt"]).date().isoformat()
-        grouped.setdefault(date_key, []).append(
-            {
-                "time": datetime.fromtimestamp(item["dt"]).isoformat(),
-                "temp_celsius": round(item["main"]["temp"], 1),
-                "condition": item["weather"][0]["description"],
-                "humidity": item["main"]["humidity"],
-                "wind_speed": item["wind"]["speed"],
-            }
+
+async def _fetch_openweather_payload(location: str) -> dict[str, Any]:
+    if not settings.openweathermap_api_key:
+        return fallback_weather_forecast_response(location)
+
+    async with httpx.AsyncClient(timeout=25.0) as client:
+        response = await client.get(
+            OPENWEATHER_URL,
+            params={"q": location, "appid": settings.openweathermap_api_key, "units": "metric"},
+        )
+        response.raise_for_status()
+        return response.json()
+
+
+@router.get(
+    "/weather/{location}",
+    response_model=WeatherRangeResponse,
+    response_model_exclude_none=True,
+)
+async def get_weather(
+    location: str,
+    start_date: Optional[str] = Query(default=None, description="Travel start date in YYYY-MM-DD format"),
+    end_date: Optional[str] = Query(default=None, description="Travel end date in YYYY-MM-DD format"),
+) -> WeatherRangeResponse:
+    location_name = location.strip() or location
+    payload = await _fetch_openweather_payload(location_name)
+
+    # If only one date is provided, treat it as an invalid date-range request.
+    if bool(start_date) != bool(end_date):
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Both start_date and end_date must be provided together.",
         )
 
-    days = []
-    for date_key, entries in list(grouped.items())[:5]:
-        temps = [entry["temp_celsius"] for entry in entries]
-        conditions = [entry["condition"] for entry in entries]
-        days.append(
-            {
-                "location": payload.get("city", {}).get("name", location),
-                "date": date_key,
-                "temp_celsius": {
-                    "min": round(min(temps), 1),
-                    "max": round(max(temps), 1),
-                    "avg": round(sum(temps) / len(temps), 1),
-                },
-                "condition": conditions[0] if conditions else "unknown",
-                "alert": next((cond for cond in conditions if _is_severe_weather(cond)), None),
-                "entries": entries,
-            }
+    if not start_date and not end_date:
+        # Fallback to the legacy 5-day forecast behavior when no travel dates are supplied.
+        today = date.today()
+        weather = filter_openweather_forecast_by_date_range(
+            payload,
+            location_name,
+            today,
+            today + timedelta(days=4),
+        )
+        return WeatherRangeResponse(
+            status="success",
+            location=payload.get("city", {}).get("name", location_name),
+            total_days=len(weather),
+            weather=weather,
         )
 
-    if not days:
-        return WeatherForecastResponse.model_validate(fallback_weather_forecast_response(location))
+    parsed_start = _parse_iso_date(start_date, "start_date")
+    parsed_end = _parse_iso_date(end_date, "end_date")
 
-    return WeatherForecastResponse(location=payload.get("city", {}).get("name", location), days=days)
+    if parsed_end < parsed_start:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="end_date must be the same as or later than start_date.",
+        )
 
+    today = date.today()
+    if parsed_start < today:
+        return WeatherRangeResponse(
+            status="past_dates",
+            message="These travel dates have already passed.",
+            weather=[],
+        )
 
-def _is_severe_weather(description: str) -> bool:
-    lowered = description.lower()
-    return any(word in lowered for word in ["storm", "thunder", "snow", "hail", "extreme", "tornado"])
+    if parsed_start > today + timedelta(days=5):
+        return WeatherRangeResponse(
+            status="unavailable",
+            message=(
+                "Forecast not available yet. OpenWeatherMap provides forecasts up to 5 days ahead. "
+                "Check back closer to your travel date."
+            ),
+            weather=[],
+        )
+
+    weather = filter_openweather_forecast_by_date_range(payload, location_name, parsed_start, parsed_end)
+    return WeatherRangeResponse(
+        status="success",
+        location=payload.get("city", {}).get("name", location_name),
+        start_date=parsed_start.isoformat(),
+        end_date=parsed_end.isoformat(),
+        total_days=len({item["date"] for item in weather}),
+        weather=weather,
+    )

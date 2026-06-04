@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any
+from typing import Any, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
@@ -50,7 +50,8 @@ class TripSummaryResponse(BaseModel):
 class TripRequest(BaseModel):
     origin: str
     destination: str
-    travel_dates: TravelDates
+    dates: str | None = None
+    travel_dates: TravelDates | None = None
     budget: float
     preferences: list[str] = Field(default_factory=list)
     user_id: str = "guest"
@@ -68,6 +69,23 @@ class TripRequest(BaseModel):
     def _validate_trip(self) -> "TripRequest":
         if self.origin.casefold() == self.destination.casefold():
             raise ValueError("Origin and destination must be different.")
+        if not self.dates and not self.travel_dates:
+            raise ValueError("Travel dates are required.")
+        if self.dates and not self.travel_dates:
+            try:
+                start, end = [part.strip() for part in self.dates.split("to", maxsplit=1)]
+            except ValueError as exc:
+                raise ValueError("dates must be in the format 'YYYY-MM-DD to YYYY-MM-DD'.") from exc
+            try:
+                datetime.strptime(start, "%Y-%m-%d")
+                datetime.strptime(end, "%Y-%m-%d")
+            except ValueError as exc:
+                raise ValueError("dates must be in the format 'YYYY-MM-DD to YYYY-MM-DD'.") from exc
+            self.travel_dates = TravelDates(start=start, end=end)
+        elif self.travel_dates and not self.dates:
+            self.dates = f"{self.travel_dates.start} to {self.travel_dates.end}"
+        elif self.dates and self.travel_dates:
+            self.dates = f"{self.travel_dates.start} to {self.travel_dates.end}"
         return self
 
 
@@ -85,6 +103,8 @@ class TripPlanResponse(BaseModel):
     waypoints: list[str]
     route: dict[str, Any] = Field(default_factory=dict)
     weather: list[dict[str, Any]] = Field(default_factory=list)
+    weather_status: str = "success"
+    weather_message: str | None = None
     recommendations: dict[str, list[dict[str, Any]]] = Field(default_factory=dict)
     report_summary: str = ""
     pdf_path: str | None = None
@@ -107,6 +127,23 @@ class TripDetailResponse(BaseModel):
     waypoints: list[Any]
     created_at: datetime
     pdf_path: str | None = None
+
+
+class DailyWeather(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    date: str
+    day_name: str
+    location: str
+    temp_min_celsius: float
+    temp_max_celsius: float
+    temp_feels_like: float
+    humidity_percent: int
+    condition: str
+    weather_icon: str
+    wind_speed_kmh: float
+    rain_chance_percent: int
+    alert: Optional[str] = None
 
 
 class WeatherDayResponse(BaseModel):

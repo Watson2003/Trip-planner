@@ -12,30 +12,16 @@ import TripMap from "@/components/map/TripMap";
 import WeatherPanel from "@/components/weather/WeatherPanel";
 import { getAuthHeaders } from "@/lib/auth";
 import type {
+  DailyWeather,
   BudgetBreakdown as BudgetBreakdownType,
   PlannedTripResponse,
   Recommendation,
   TripMarker,
-  WeatherData,
 } from "@/types";
-
-type WeatherApiResponse = {
-  location: string;
-  days: Array<{
-    location: string;
-    date: string;
-    temp_celsius: { min: number; max: number; avg: number };
-    condition: string;
-    alert: string | null;
-    entries: Array<Record<string, unknown>>;
-  }>;
-};
 
 type FormState = {
   origin: string;
   destination: string;
-  startDate: string;
-  endDate: string;
   budget: number;
   scenicRoute: boolean;
   budgetHotels: boolean;
@@ -48,7 +34,9 @@ type UiState = {
   trip: PlannedTripResponse | null;
   routeGeoJSON: GeoJSON.FeatureCollection | null;
   markers: TripMarker[];
-  weather: WeatherData[];
+  weather: DailyWeather[];
+  weatherStatus: "success" | "unavailable" | "past_dates";
+  weatherMessage?: string;
   budget: BudgetBreakdownType | null;
   recommendations: Recommendation[];
   focusPoint: { lat: number; lng: number; zoom?: number } | null;
@@ -57,8 +45,6 @@ type UiState = {
 const DEFAULT_FORM: FormState = {
   origin: "",
   destination: "",
-  startDate: "",
-  endDate: "",
   budget: 25000,
   scenicRoute: true,
   budgetHotels: false,
@@ -72,13 +58,6 @@ function formatEta(hours: number) {
   if (wholeHours === 0) return `ETA ~ ${minutes} min`;
   if (minutes === 0) return `ETA ~ ${wholeHours} hr`;
   return `ETA ~ ${wholeHours} hr ${minutes} min`;
-}
-
-function capitalize(text: string) {
-  return text
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
 }
 
 function normalizeErrorMessage(error: unknown) {
@@ -103,6 +82,12 @@ function formatApiDetail(detail: unknown) {
   return "Trip planning failed";
 }
 
+function getTodayIsoDate() {
+  const now = new Date();
+  const localDate = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+  return localDate.toISOString().slice(0, 10);
+}
+
 function isMissingKeyMessage(message: string) {
   const lowered = message.toLowerCase();
   return (
@@ -112,15 +97,8 @@ function isMissingKeyMessage(message: string) {
   );
 }
 
-function conditionToEmoji(condition: string) {
-  const value = condition.toLowerCase();
-  if (value.includes("thunder") || value.includes("storm")) return "\u26c8\ufe0f";
-  if (value.includes("rain") || value.includes("drizzle")) return "\ud83c\udf27\ufe0f";
-  if (value.includes("snow")) return "\u2744\ufe0f";
-  if (value.includes("cloud")) return "\u2601\ufe0f";
-  if (value.includes("fog") || value.includes("mist")) return "\ud83c\udf2b\ufe0f";
-  if (value.includes("wind")) return "\ud83d\udca8";
-  return "\u2600\ufe0f";
+function isValidIsoDate(value: string) {
+  return /^\d{4}-\d{2}-\d{2}$/.test(value);
 }
 
 function buildRouteGeoJSON(polyline: Array<[number, number]> | undefined | null) {
@@ -163,25 +141,6 @@ function buildMarkers(plan: PlannedTripResponse): TripMarker[] {
       eta,
     };
   });
-}
-
-function convertWeather(apiResponse: WeatherApiResponse, fallbackLocation: string): WeatherData[] {
-  return apiResponse.days.map((day) => ({
-    location: apiResponse.location || fallbackLocation,
-    city: apiResponse.location || fallbackLocation,
-    day: new Date(day.date).toLocaleDateString("en-US", {
-      weekday: "short",
-      month: "short",
-      day: "numeric",
-    }),
-    temperatureC: day.temp_celsius.avg,
-    condition: capitalize(day.condition),
-    icon: conditionToEmoji(day.condition),
-    highC: day.temp_celsius.max,
-    lowC: day.temp_celsius.min,
-    precipitationChance: 0,
-    severeAlert: day.alert,
-  }));
 }
 
 function buildBudget(plan: PlannedTripResponse): BudgetBreakdownType {
@@ -303,6 +262,10 @@ function LoadingSkeleton() {
 
 export default function HomePage() {
   const [form, setForm] = useState<FormState>(DEFAULT_FORM);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [dateError, setDateError] = useState<string | null>(null);
+  const [dateWarning, setDateWarning] = useState<string | null>(null);
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [state, setState] = useState<UiState>({
     loading: false,
@@ -311,6 +274,8 @@ export default function HomePage() {
     routeGeoJSON: null,
     markers: [],
     weather: [],
+    weatherStatus: "success",
+    weatherMessage: undefined,
     budget: null,
     recommendations: [],
     focusPoint: null,
@@ -333,19 +298,11 @@ export default function HomePage() {
 
   const selectedPreferences = useMemo(() => {
     const preferences: string[] = [];
-    if (form.scenicRoute) preferences.push("scenic route");
+    if (form.scenicRoute) preferences.push("scenic");
     if (form.budgetHotels) preferences.push("budget hotels");
     if (form.vegetarianFood) preferences.push("vegetarian food");
     return preferences;
   }, [form.budgetHotels, form.scenicRoute, form.vegetarianFood]);
-
-  async function fetchWeather(location: string) {
-    const response = await fetch(`/api/weather/${encodeURIComponent(location)}`);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch weather for ${location}`);
-    }
-    return (await response.json()) as WeatherApiResponse;
-  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -356,6 +313,28 @@ export default function HomePage() {
       }));
       return;
     }
+    const trimmedStartDate = startDate.trim();
+    const trimmedEndDate = endDate.trim();
+    setDateError(null);
+    setDateWarning(null);
+
+    if (!trimmedStartDate) {
+      setDateError("Please select start date");
+      return;
+    }
+    if (!trimmedEndDate) {
+      setDateError("Please select end date");
+      return;
+    }
+    if (!isValidIsoDate(trimmedStartDate) || !isValidIsoDate(trimmedEndDate) || trimmedEndDate < trimmedStartDate) {
+      setDateError("End date must be after start date");
+      return;
+    }
+    const todayIso = getTodayIsoDate();
+    if (trimmedStartDate < todayIso) {
+      setDateWarning("Start date is in the past. Weather forecast may not be available.");
+    }
+
     setState((current) => ({ ...current, loading: true, error: null, focusPoint: null }));
 
     try {
@@ -368,13 +347,9 @@ export default function HomePage() {
         body: JSON.stringify({
           origin: form.origin,
           destination: form.destination,
-          travel_dates: {
-            start: form.startDate,
-            end: form.endDate,
-          },
+          dates: `${trimmedStartDate} to ${trimmedEndDate}`,
           budget: form.budget,
           preferences: selectedPreferences,
-          user_id: "frontend-user",
         }),
       });
 
@@ -384,17 +359,9 @@ export default function HomePage() {
       }
 
       const plan = (await planResponse.json()) as PlannedTripResponse;
-      const [originWeather, destinationWeather] = await Promise.all([
-        fetchWeather(plan.origin),
-        fetchWeather(plan.destination),
-      ]);
 
       const routeGeoJSON = buildRouteGeoJSON(plan.route.polyline);
       const markers = buildMarkers(plan);
-      const weather = [
-        ...convertWeather(originWeather, plan.origin),
-        ...convertWeather(destinationWeather, plan.destination),
-      ];
       const budget = buildBudget(plan);
       const recommendations = buildRecommendations(plan, markers);
 
@@ -404,7 +371,9 @@ export default function HomePage() {
         trip: plan,
         routeGeoJSON,
         markers,
-        weather,
+        weather: plan.weather,
+        weatherStatus: plan.weather_status || "success",
+        weatherMessage: plan.weather_message || "",
         budget,
         recommendations,
         focusPoint: null,
@@ -530,15 +499,35 @@ export default function HomePage() {
                   <div className="grid gap-3 sm:grid-cols-2">
                     <DateField
                       label="Start date"
-                      value={form.startDate}
-                      onChange={(value) => setForm((current) => ({ ...current, startDate: value }))}
+                      value={startDate}
+                      onChange={(value) => {
+                        setStartDate(value);
+                        setDateError(null);
+                      }}
                     />
                     <DateField
                       label="End date"
-                      value={form.endDate}
-                      onChange={(value) => setForm((current) => ({ ...current, endDate: value }))}
+                      value={endDate}
+                      onChange={(value) => {
+                        setEndDate(value);
+                        setDateError(null);
+                      }}
                     />
                   </div>
+                  {(dateError || dateWarning) && (
+                    <div className="space-y-2">
+                      {dateError ? (
+                        <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+                          {dateError}
+                        </div>
+                      ) : null}
+                      {dateWarning ? (
+                        <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-700">
+                          {dateWarning}
+                        </div>
+                      ) : null}
+                    </div>
+                  )}
 
                   <div className="space-y-3 rounded-2xl border border-white/10 bg-white/5 p-4">
                     <div className="flex items-center justify-between gap-3">
@@ -607,7 +596,7 @@ export default function HomePage() {
 
             {state.loading ? (
               <LoadingSkeleton />
-            ) : state.trip && state.routeGeoJSON && state.budget && state.weather.length > 0 ? (
+            ) : state.trip && state.routeGeoJSON && state.budget ? (
               <div className="grid gap-6 lg:grid-cols-2">
                 <div className="space-y-6">
                   <TripMap routeGeoJSON={state.routeGeoJSON} markers={state.markers} focusPoint={state.focusPoint} />
@@ -615,7 +604,15 @@ export default function HomePage() {
                 </div>
 
                 <div className="space-y-6">
-                  <WeatherPanel weatherData={state.weather} />
+                  <WeatherPanel
+                    weatherData={state.weather}
+                    startDate={state.trip.travel_dates.start}
+                    endDate={state.trip.travel_dates.end}
+                    origin={state.trip.origin}
+                    destination={state.trip.destination}
+                    status={state.weatherStatus}
+                    message={state.weatherMessage}
+                  />
                   <BudgetBreakdown budget={state.budget} />
                   <div className="flex flex-wrap items-center gap-3 rounded-3xl border border-white/70 bg-white/80 p-5 shadow-glow backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/80">
                     <button

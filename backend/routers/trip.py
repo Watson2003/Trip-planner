@@ -27,9 +27,12 @@ def _build_user_input(payload: TripRequest) -> str:
     """Convert structured input into a natural-language prompt for the planner agent."""
     prefs = ", ".join(payload.preferences) if payload.preferences else "no special preferences"
     waypoints = ", ".join(payload.waypoints) if payload.waypoints else "no fixed waypoints"
+    travel_dates = payload.dates or (
+        f"{payload.travel_dates.start} to {payload.travel_dates.end}" if payload.travel_dates else "unknown"
+    )
     return (
         f"Plan a road trip from {payload.origin} to {payload.destination}. "
-        f"Travel dates: {payload.travel_dates.start} to {payload.travel_dates.end}. "
+        f"Travel dates: {travel_dates}. "
         f"Budget: INR {payload.budget}. "
         f"Preferences: {prefs}. "
         f"User-provided waypoints: {waypoints}. "
@@ -60,6 +63,8 @@ def _normalize_plan_state(state: dict) -> dict:
         "waypoints": state.get("waypoints", []),
         "route": route,
         "weather": state.get("weather", []),
+        "weather_status": state.get("weather_status", "success"),
+        "weather_message": state.get("weather_message", ""),
         "recommendations": recommendations,
         "report_summary": state.get("report_summary", ""),
         "pdf_path": state.get("pdf_path"),
@@ -101,7 +106,8 @@ async def plan_trip(
             "user_input": _build_user_input(payload),
             "origin": payload.origin,
             "destination": payload.destination,
-            "travel_dates": payload.travel_dates.model_dump(),
+            "travel_dates": payload.dates or (payload.travel_dates.model_dump() if payload.travel_dates else {}),
+            "dates": payload.dates or "",
             "budget": payload.budget,
             "preferences": payload.preferences,
             "waypoints": payload.waypoints,

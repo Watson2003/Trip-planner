@@ -4,6 +4,7 @@ import json
 import re
 import asyncio
 from datetime import date
+from collections.abc import Mapping
 from typing import Any
 
 from langchain_core.messages import HumanMessage
@@ -22,6 +23,25 @@ def _extract_json(text: str) -> dict[str, Any]:
         return {}
 
 
+def _normalize_travel_dates(travel_dates: Any) -> dict[str, str]:
+    """Accept either the legacy dict shape or the new single-string date range."""
+    if isinstance(travel_dates, str):
+        if " to " in travel_dates:
+            start_date, end_date = [part.strip() for part in travel_dates.split(" to ", maxsplit=1)]
+            return {"start": start_date, "end": end_date}
+        return {"start": "", "end": ""}
+
+    if isinstance(travel_dates, Mapping):
+        return {
+            "start": str(travel_dates.get("start") or travel_dates.get("start_date") or "").strip(),
+            "end": str(travel_dates.get("end") or travel_dates.get("end_date") or "").strip(),
+        }
+
+    start = getattr(travel_dates, "start", "")
+    end = getattr(travel_dates, "end", "")
+    return {"start": str(start).strip(), "end": str(end).strip()}
+
+
 async def planner_agent(state: TripState) -> TripState:
     trip_state: TripState = dict(state)
     trip_state.setdefault("errors", [])
@@ -31,9 +51,9 @@ async def planner_agent(state: TripState) -> TripState:
     trip_state["preferences"] = list(trip_state.get("preferences") or [])
     trip_state["waypoints"] = [waypoint.strip() for waypoint in (trip_state.get("waypoints") or []) if str(waypoint).strip()][:2]
 
-    travel_dates = trip_state.get("travel_dates") or {}
-    start_date = str(travel_dates.get("start") or "").strip()
-    end_date = str(travel_dates.get("end") or "").strip()
+    travel_dates = _normalize_travel_dates(trip_state.get("travel_dates") or trip_state.get("dates") or {})
+    start_date = travel_dates.get("start", "")
+    end_date = travel_dates.get("end", "")
     if not start_date or not end_date:
         today = date.today().isoformat()
         trip_state["travel_dates"] = {"start": start_date or today, "end": end_date or today}
@@ -61,7 +81,7 @@ async def planner_agent(state: TripState) -> TripState:
         parsed = _extract_json(response.content)
         trip_state["origin"] = parsed.get("origin") or trip_state.get("origin") or ""
         trip_state["destination"] = parsed.get("destination") or trip_state.get("destination") or ""
-        trip_state["travel_dates"] = parsed.get("travel_dates") or trip_state.get("travel_dates") or {}
+        trip_state["travel_dates"] = _normalize_travel_dates(parsed.get("travel_dates") or parsed.get("dates") or trip_state.get("travel_dates") or {})
         trip_state["budget"] = float(parsed.get("budget") or trip_state.get("budget") or 0)
         trip_state["preferences"] = parsed.get("preferences") or trip_state.get("preferences") or []
         trip_state["waypoints"] = (parsed.get("waypoints") or trip_state.get("waypoints") or [])[:2]

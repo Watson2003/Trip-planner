@@ -3,7 +3,7 @@ export interface TripPlan {
   destination: string;
   waypoints: string[];
   route: RouteInfo;
-  weather: WeatherData[];
+  weather: DailyWeather[];
   budget: BudgetBreakdown;
   recommendations: Recommendation[];
   chat: ChatMessage[];
@@ -18,17 +18,40 @@ export interface RouteInfo {
   destination?: string;
 }
 
-export interface WeatherData {
-  location?: string;
-  day?: string;
-  severeAlert?: string | null;
-  city?: string;
-  temperatureC: number;
+export interface DailyWeather {
+  date: string;
+  day_name: string;
+  location: string;
+  temp_min_celsius: number;
+  temp_max_celsius: number;
+  temp_feels_like: number;
+  humidity_percent: number;
   condition: string;
-  icon: string;
-  highC: number;
-  lowC: number;
-  precipitationChance: number;
+  weather_icon: string;
+  wind_speed_kmh: number;
+  rain_chance_percent: number;
+  alert: string | null;
+}
+
+export interface WeatherResponse {
+  status: "success" | "unavailable" | "past_dates";
+  message?: string;
+  location: string;
+  start_date: string;
+  end_date: string;
+  total_days: number;
+  weather: DailyWeather[];
+}
+
+export interface WeatherData extends DailyWeather {
+  day?: string;
+  city?: string;
+  temperatureC?: number;
+  icon?: string;
+  highC?: number;
+  lowC?: number;
+  precipitationChance?: number;
+  severeAlert?: string | null;
 }
 
 export interface BudgetBreakdown {
@@ -100,7 +123,9 @@ export interface PlannedTripResponse {
     polyline: Array<[number, number]>;
     toll_roads: boolean;
   };
-  weather: Array<Record<string, unknown>>;
+  weather: DailyWeather[];
+  weather_status?: "success" | "unavailable" | "past_dates";
+  weather_message?: string | null;
   recommendations: Record<string, Array<Record<string, unknown>>>;
   report_summary: string;
   pdf_path?: string | null;
