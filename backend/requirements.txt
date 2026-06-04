@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+langgraph
+langchain
+langchain-community
+chromadb
+faiss-cpu
+reportlab
+python-dotenv
+httpx
+sqlalchemy
+aiosqlite
+pydantic
+sentence-transformers
+mcp

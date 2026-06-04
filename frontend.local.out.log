@@ -1,0 +1,15 @@
+
+> ai-road-trip-planner@1.0.0 dev
+> next dev
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
+
+ ✓ Starting...
+ ✓ Ready in 5.5s
+ ○ Compiling / ...
+ ✓ Compiled / in 19.9s (1707 modules)
+ GET / 200 in 22301ms
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 5.1s (1924 modules)
+ GET / 200 in 1155ms

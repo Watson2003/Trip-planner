@@ -1,0 +1,15 @@
+backend/venv/
+backend/.env
+backend/road_trip_planner.db
+backend/reports/
+backend/rag/chroma_store/
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.turbo/
+venv/
+.env
+__pycache__/
+*.py[cod]
+*.egg-info/
+.DS_Store

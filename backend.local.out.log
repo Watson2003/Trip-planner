@@ -1,0 +1,13 @@
+INFO:     127.0.0.1:64691 - "POST /api/trip/plan HTTP/1.1" 201 Created
+ INFO:     127.0.0.1:59601 - "POST /api/trip/plan HTTP/1.1" 201 Created
+INFO:     127.0.0.1:64322 - "POST /api/trip/plan HTTP/1.1" 201 Created
+INFO:     127.0.0.1:64095 - "GET /api/weather/Bangalore HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64094 - "GET /api/weather/Chennai HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57013 - "POST /api/trip/plan HTTP/1.1" 201 Created
+INFO:     127.0.0.1:50205 - "GET /api/weather/Trichy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50204 - "GET /api/weather/Lalgudi HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62664 - "POST /api/trip/plan HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:58275 - "POST /api/trip/plan HTTP/1.1" 201 Created
+INFO:     127.0.0.1:54599 - "GET /api/weather/Valadi HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54600 - "GET /api/weather/Lalgudi HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54461 - "POST /api/trip/plan HTTP/1.1" 422 Unprocessable Content

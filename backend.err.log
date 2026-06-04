@@ -1,0 +1,39 @@
+INFO:     Will watch for changes in these directories: ['D:\\ROOT\\Trip planner\\backend']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [19148] using WatchFiles
+INFO:     Started server process [4732]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+D:\ROOT\Trip planner\backend\rag\setup.py:20: LangChainDeprecationWarning: The class `HuggingFaceEmbeddings` was deprecated in LangChain 0.2.2 and will be removed in 1.0. An updated version of the class exists in the `langchain-huggingface package and should be used instead. To use it run `pip install -U `langchain-huggingface` and import as `from `langchain_huggingface import HuggingFaceEmbeddings``.
+  return HuggingFaceEmbeddings(
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|##########| 103/103 [00:00<00:00, 1942.10it/s]
+WARNING:  WatchFiles detected changes in 'agents\fallbacks.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for connections to close. (CTRL+C to force quit)
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [4732]
+WARNING:  WatchFiles detected changes in 'routers\map.py', 'agents\route_agent.py', 'routers\weather.py', 'agents\planner_agent.py', 'agents\recommendation_agent.py', 'agents\fallbacks.py', 'agents\llm.py', 'agents\budget_agent.py', 'agents\weather_agent.py'. Reloading...
+INFO:     Started server process [19136]
+INFO:     Waiting for application startup.
+INFO:     Started server process [11564]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+D:\ROOT\Trip planner\backend\rag\setup.py:20: LangChainDeprecationWarning: The class `HuggingFaceEmbeddings` was deprecated in LangChain 0.2.2 and will be removed in 1.0. An updated version of the class exists in the `langchain-huggingface package and should be used instead. To use it run `pip install -U `langchain-huggingface` and import as `from `langchain_huggingface import HuggingFaceEmbeddings``.
+  return HuggingFaceEmbeddings(
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|##########| 103/103 [00:00<00:00, 2152.61it/s]
+WARNING:  WatchFiles detected changes in 'agents\route_agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [11564]
+WARNING:  WatchFiles detected changes in 'routers\map.py', 'routers\weather.py', 'agents\weather_agent.py'. Reloading...
+INFO:     Started server process [17768]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+D:\ROOT\Trip planner\backend\rag\setup.py:20: LangChainDeprecationWarning: The class `HuggingFaceEmbeddings` was deprecated in LangChain 0.2.2 and will be removed in 1.0. An updated version of the class exists in the `langchain-huggingface package and should be used instead. To use it run `pip install -U `langchain-huggingface` and import as `from `langchain_huggingface import HuggingFaceEmbeddings``.
+  return HuggingFaceEmbeddings(
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|##########| 103/103 [00:00<00:00, 3088.99it/s]

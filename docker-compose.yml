@@ -1,0 +1,28 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/.env
+    environment:
+      DATABASE_URL: sqlite+aiosqlite:///./road_trip_planner.db
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        BACKEND_URL: http://backend:8000
+        NEXT_PUBLIC_CHAT_WS_URL: ws://localhost:8000/api/chat/ws
+    env_file:
+      - ./frontend/.env.example
+    environment:
+      BACKEND_URL: http://backend:8000
+      NEXT_PUBLIC_CHAT_WS_URL: ws://localhost:8000/api/chat/ws
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
