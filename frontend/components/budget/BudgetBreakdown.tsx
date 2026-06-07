@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
 import type { BudgetBreakdown as BudgetBreakdownData, FuelCalculation, VehicleDetails } from "@/types";
@@ -170,16 +171,68 @@ export default function BudgetBreakdown({
   userBudget,
   routeDistanceKm,
 }: BudgetBreakdownProps) {
+  const budgetDetails = budget as BudgetBreakdownData & {
+    hotel_cost_inr?: number;
+    food_cost_inr?: number;
+  };
   const data = normalizeBudget(budget, fuelCalculation, vehicle, routeDistanceKm);
   const fuelDetails =
     fuelCalculation && fuelCalculation.distance_km > 0
       ? fuelCalculation
       : buildFallbackFuelCalculation(vehicle, routeDistanceKm, vehicle?.number_of_people ?? 1, data.fuelInr);
+  const [showHotelBreakdown, setShowHotelBreakdown] = useState(false);
+  const [showFoodBreakdown, setShowFoodBreakdown] = useState(false);
   const difference = userBudget - data.totalInr;
   const overBudget = difference < 0;
   const differenceAbs = Math.abs(difference);
   const budgetProgress = Math.min(100, (data.totalInr / Math.max(userBudget, 1)) * 100);
   const travellers = vehicle?.number_of_people ?? 1;
+  const hotelTotalInr = budgetDetails.hotel_cost_inr ?? budget.hotels ?? budget.lodging ?? data.rows[1]?.inr ?? 0;
+  const foodTotalInr = budgetDetails.food_cost_inr ?? budget.food ?? data.rows[2]?.inr ?? 0;
+  const hotelPricePerNight =
+    budget.hotel_price_per_night ?? (budget.hotel_nights ? hotelTotalInr / Math.max(budget.hotel_nights, 1) : hotelTotalInr);
+  const hotelNights = budget.hotel_nights ?? Math.max(1, Math.round(hotelTotalInr / Math.max(hotelPricePerNight, 1)));
+  const foodPricePerDayPerPerson =
+    budget.food_price_per_day_per_person ??
+    (budget.food_days ? foodTotalInr / Math.max(budget.food_days * Math.max(travellers, 1), 1) : foodTotalInr / Math.max(travellers, 1));
+  const foodDays = budget.food_days ?? Math.max(1, Math.round(foodTotalInr / Math.max(foodPricePerDayPerPerson * Math.max(travellers, 1), 1)));
+  const hotelExplanation =
+    budget.hotel_explanation ??
+    (hotelTotalInr > 0 ? `Estimated at ${formatInr(hotelPricePerNight)} per night for ${hotelNights} night${hotelNights === 1 ? "" : "s"}` : "Hotel details unavailable");
+  const foodExplanation =
+    budget.food_explanation ??
+    (foodTotalInr > 0
+      ? `${formatInr(foodPricePerDayPerPerson)} per person per day for ${foodDays} day${foodDays === 1 ? "" : "s"}`
+      : "Food details unavailable");
+  const hotelBreakdownRows: NonNullable<BudgetBreakdownData["hotel_daily_breakdown"]> =
+    (budget.hotel_daily_breakdown?.length ?? 0) > 0
+      ? (budget.hotel_daily_breakdown ?? [])
+      : hotelTotalInr > 0
+        ? [
+            {
+              night: 1,
+              date: "Night 1",
+              checkout_date: "Day 2",
+              label: "Night 1",
+              cost: hotelTotalInr,
+            },
+          ]
+        : [];
+  const foodBreakdownRows: NonNullable<BudgetBreakdownData["food_daily_breakdown"]> =
+    (budget.food_daily_breakdown?.length ?? 0) > 0
+      ? (budget.food_daily_breakdown ?? [])
+      : foodTotalInr > 0
+        ? [
+            {
+              day: 1,
+              date: "Day 1",
+              label: "Day 1",
+              cost_per_person: foodPricePerDayPerPerson,
+              total_cost: foodTotalInr,
+              people: travellers,
+            },
+          ]
+        : [];
 
   return (
     <section className="w-full overflow-hidden rounded-[2rem] border border-gray-700 bg-gray-900 text-white shadow-2xl">
@@ -231,6 +284,101 @@ export default function BudgetBreakdown({
             <tbody>
               {data.rows.map((row, index) => {
                 const isTotal = row.label === "Total";
+                if (row.label === "Hotels") {
+                  return (
+                    <tr
+                      key={row.label}
+                      className={isTotal ? "bg-orange-500/15 font-bold text-white" : index % 2 === 0 ? "bg-gray-900" : "bg-gray-950"}
+                    >
+                      <td className="border-t border-gray-800 px-4 py-3 align-top">
+                        <div className="flex items-start gap-2">
+                          <span>
+                            {iconForRow(row.label)} {row.label}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => setShowHotelBreakdown((prev: boolean) => !prev)}
+                            className="text-xs text-orange-400 underline underline-offset-2"
+                          >
+                            {showHotelBreakdown ? "▲ hide" : "▼ details"}
+                          </button>
+                        </div>
+                        <div className="mt-1 text-xs text-gray-400">{hotelExplanation}</div>
+                        {showHotelBreakdown ? (
+                          <div className="mt-2 space-y-1">
+                            {hotelBreakdownRows.map((day) => (
+                              <div
+                                key={day.night}
+                                className="flex justify-between rounded bg-gray-800 px-3 py-1.5 text-xs text-gray-300"
+                              >
+                                <span>🌙 {day.label}</span>
+                                <span>{formatInr(day.cost)}</span>
+                              </div>
+                            ))}
+                            <div className="flex justify-between px-3 py-1 text-xs font-medium text-orange-400">
+                              <span>Total ({hotelNights} nights)</span>
+                              <span>{formatInr(hotelTotalInr)}</span>
+                            </div>
+                          </div>
+                        ) : null}
+                      </td>
+                      <td className="border-t border-gray-800 px-4 py-3 text-right">{formatInr(row.inr)}</td>
+                      <td className="border-t border-gray-800 px-4 py-3 text-right">{formatUsd(row.usd)}</td>
+                    </tr>
+                  );
+                }
+
+                if (row.label === "Food") {
+                  return (
+                    <tr
+                      key={row.label}
+                      className={isTotal ? "bg-orange-500/15 font-bold text-white" : index % 2 === 0 ? "bg-gray-900" : "bg-gray-950"}
+                    >
+                      <td className="border-t border-gray-800 px-4 py-3 align-top">
+                        <div className="flex items-start gap-2">
+                          <span>
+                            {iconForRow(row.label)} {row.label}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => setShowFoodBreakdown((prev: boolean) => !prev)}
+                            className="text-xs text-orange-400 underline underline-offset-2"
+                          >
+                            {showFoodBreakdown ? "▲ hide" : "▼ details"}
+                          </button>
+                        </div>
+                        <div className="mt-1 text-xs text-gray-400">{foodExplanation}</div>
+                        {showFoodBreakdown ? (
+                          <div className="mt-2 space-y-1">
+                            {foodBreakdownRows.map((day) => (
+                              <div
+                                key={day.day}
+                                className="flex justify-between rounded bg-gray-800 px-3 py-1.5 text-xs text-gray-300"
+                              >
+                                <span>
+                                  🍽️ {day.label}
+                                  <span className="ml-1 text-gray-500">
+                                    (₹{Number(day.cost_per_person).toLocaleString("en-IN")}/person × {day.people})
+                                  </span>
+                                </span>
+                                <span>{formatInr(day.total_cost)}</span>
+                              </div>
+                            ))}
+                            <div className="flex justify-between px-3 py-1 text-xs font-medium text-orange-400">
+                              <span>
+                                Total ({foodDays} days, {travellers} people{budget.food_is_vegetarian ? ", Veg" : ", Non-veg"})
+                              </span>
+                              <span>{formatInr(foodTotalInr)}</span>
+                            </div>
+                          </div>
+                        ) : null}
+                      </td>
+                      <td className="border-t border-gray-800 px-4 py-3 text-right">{formatInr(row.inr)}</td>
+                      <td className="border-t border-gray-800 px-4 py-3 text-right">{formatUsd(row.usd)}</td>
+                    </tr>
+                  );
+                }
+
                 return (
                   <tr
                     key={row.label}

@@ -126,6 +126,30 @@ export interface BudgetBreakdown {
   totalUsd?: number;
   lodging?: number;
   activities?: number;
+  hotel_price_per_night?: number;
+  hotel_category?: string;
+  hotel_nights?: number;
+  hotel_daily_breakdown?: Array<{
+    night: number;
+    date: string;
+    checkout_date: string;
+    label: string;
+    cost: number;
+  }>;
+  hotel_explanation?: string;
+  food_price_per_day_per_person?: number;
+  food_type?: string;
+  food_days?: number;
+  food_is_vegetarian?: boolean;
+  food_daily_breakdown?: Array<{
+    day: number;
+    date: string;
+    label: string;
+    cost_per_person: number;
+    total_cost: number;
+    people: number;
+  }>;
+  food_explanation?: string;
   breakdown?: {
     fuel: { inr: number; usd: number };
     tolls: { inr: number; usd: number };
@@ -214,7 +238,31 @@ export interface PlannedTripResponse {
   fuel_cost_inr?: number | null;
   toll_cost_inr?: number | null;
   hotel_cost_inr?: number | null;
+  hotel_price_per_night?: number | null;
+  hotel_category?: string | null;
+  hotel_nights?: number | null;
+  hotel_daily_breakdown?: Array<{
+    night: number;
+    date: string;
+    checkout_date: string;
+    label: string;
+    cost: number;
+  }> | null;
+  hotel_explanation?: string | null;
   food_cost_inr?: number | null;
+  food_price_per_day_per_person?: number | null;
+  food_type?: string | null;
+  food_days?: number | null;
+  food_is_vegetarian?: boolean | null;
+  food_daily_breakdown?: Array<{
+    day: number;
+    date: string;
+    label: string;
+    cost_per_person: number;
+    total_cost: number;
+    people: number;
+  }> | null;
+  food_explanation?: string | null;
   misc_cost_inr?: number | null;
   number_of_people?: number | null;
   trip_days?: number | null;

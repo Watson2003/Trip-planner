@@ -1,0 +1,721 @@
+INFO:     Will watch for changes in these directories: ['D:\\ROOT\\Trip planner\\backend']
+INFO:     Uvicorn running on http://0.0.0.0:8100 (Press CTRL+C to quit)
+INFO:     Started reloader process [5716] using WatchFiles
+INFO:     Started server process [18500]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+Geoapify place search failed for Trichy (attraction): Client error '400 Bad Request' for url 'https://api.geoapify.com/v2/places?categories=tourism.attraction%2Ctourism.attraction.viewpoint%2Cleisure.park%2Cnatural.wood%2Cnatural.water%2Cnatural.peak&filter=circle%3A78.69875%2C10.80289%2C10000&bias=proximity%3A78.69875%2C10.80289&limit=10&apiKey=e8890f71d34d480bb43cd1b983b28af4'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+Geoapify place search failed for Trichy (attraction): Client error '400 Bad Request' for url 'https://api.geoapify.com/v2/places?categories=tourism.attraction%2Creligion.place_of_worship%2Chistoric.memorial%2Ctourism.information&filter=circle%3A78.69875%2C10.80289%2C10000&bias=proximity%3A78.69875%2C10.80289&limit=10&apiKey=e8890f71d34d480bb43cd1b983b28af4'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+Timed out fetching details for 51c8ddd6cc90ac534059117008556a9e2540f00103f901c5daadb802000000 in Trichy
+Timed out fetching details for 51591fc5ef5cac5340597f2d54a3fc9d2540f00103f9010861cd0e010000009203104d6f68616d6164204275696c64696e67 in Trichy
+Timed out fetching details for 518a06fe912eac534059d852fcd2f69d2540f00102f901271d2e4900000000 in Trichy
+Timed out fetching details for 519d2b4a0941ad534059758ea61f79a02540f00103f901bb038a2f0100000092031053524d20486f74656c20416e6e657865 in Trichy
+Timed out fetching details for 511e621256cdab5340590ea55c889f982540f00102f9017bf8b40f00000000 in Trichy
+Timed out fetching details for 51b77988ebbdab5340596fd34444d6972540f00103f90122fe4b80000000009203044172756e in Trichy
+Timed out fetching details for 515aa8eb3fa1ab534059b8729b15f6992540f00103f901b425aa260000000092030646656d696e61 in Trichy
+Timed out fetching details for 5157aab0bea6ab5340591e09ea4aba982540f00103f9011395c09701000000 in Trichy
+Timed out fetching details for 5175da649ea6ab534059c690f7054f982540f00103f901792cc12e01000000920306416a616e7461 in Trichy
+Timed out fetching details for 514260e5d0a2ab534059b3bc06d8a2982540f00103f90166c61c09010000009203244b616e6368616e6e61204c6f6467653b4b616e6368616e6e612052657374617572616e74 in Trichy
+Timed out fetching details for 5139c42e4091ac534059e0e302869b9e2540f00103f901ea61cd0e01000000 in Trichy
+Timed out fetching details for 51336e6aa0f9ab53405902ac9f4841992540f00103f901e084438401000000920308446f6d696e6f2773 in Trichy
+Timed out fetching details for 51c7f31950efab534059689192c3cc9b2540f00103f901b76cbc2702000000920308416d6d696b6b616c in Trichy
+Timed out fetching details for 51c1a8a44ec0ac5340595d09939856a12540f00103f9013809fd1b0100000092030c54616a204269726979616e69 in Trichy
+Timed out fetching details for 51f1ba7ec1eeab5340594c5a4cc7f7982540f00103f901df844384010000009203034b4643 in Trichy
+Timed out fetching details for 51c77b7a1192ac534059478d093197942540f00103f901b4a5725201000000 in Trichy
+Timed out fetching details for 511118eb1b98ac534059e0b9f770c9a12540f00103f9014023382a0100000092031e507563636120546561207374616c6c20616e6420636f6f6c6472696e6b73 in Trichy
+Timed out fetching details for 51eeb4352298ac534059377d87eccda12540f00103f901e320382a0100000092030a486174686976696c6173 in Trichy
+Timed out fetching details for 514abf33909dac5340590609f6042e942540f00103f901f4e6565c0200000092031b4172616253706963652046616d696c792052657374617572616e74 in Trichy
+Timed out fetching details for 514236dabbd0ab5340599370218fe09a2540f00103f901ea9f45030100000092030a4d6172727962726f776e in Trichy
+Timed out fetching details for 51f2ca9afd26ac534059613596b0369a2540f00103f901f3dd1683010000009203154d616861746d612047616e64686920537461747565 in Trichy
+Timed out fetching details for 510fd8309e9cab534059a82dbf1df2982540f00103f9016095eac0020000009203175468616e64686169205065726979617220537461747565 in Trichy
+Timed out fetching details for 5103942b6192ab5340592db87aa9339e2540f00103f90115ad03380100000092030a4d475220737461747565 in Trichy
+Timed out fetching details for 517dcf488446ab53405944edc8a2fa902540f00103f901adc0f10901000000 in Trichy
+Timed out fetching details for 519d989aa935ab534059f51906e22b902540f00103f901a605540801000000 in Trichy
+Timed out fetching details for 512844b04d24ac5340596466135663b72540f00102f901b2d6c4050000000092031553726972616e67616d2052616a61676f707572616d in Trichy
+Geoapify place search failed for Ooty (attraction): Client error '400 Bad Request' for url 'https://api.geoapify.com/v2/places?categories=tourism.attraction%2Ctourism.attraction.viewpoint%2Cleisure.park%2Cnatural.wood%2Cnatural.water%2Cnatural.peak&filter=circle%3A76.7030504%2C11.4126769%2C10000&bias=proximity%3A76.7030504%2C11.4126769&limit=10&apiKey=e8890f71d34d480bb43cd1b983b28af4'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+Geoapify place search failed for Ooty (attraction): Client error '400 Bad Request' for url 'https://api.geoapify.com/v2/places?categories=tourism.attraction%2Creligion.place_of_worship%2Chistoric.memorial%2Ctourism.information&filter=circle%3A76.7030504%2C11.4126769%2C10000&bias=proximity%3A76.7030504%2C11.4126769&limit=10&apiKey=e8890f71d34d480bb43cd1b983b28af4'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+Timed out fetching details for 510d5f87b6032d534059b47969e5a3d22640f00102f901eecbb60100000000920318426c75652048696c6c7320496e7465726e6174696f6e616c in Ooty
+Timed out fetching details for 51c14e56b11d2d5340595357e31181d32640f00103f9011cf2a88d000000009203104d61727574686920436f747461676573 in Ooty
+Timed out fetching details for 51d80e46ec132d53405999f0f0434ad42640f00103f901d5d87a520100000092031148696c6c207669657720636f7474616765 in Ooty
+Timed out fetching details for 511f0cf514db2c534059dc43d93d32d42640f00102f901f6cbb6010000000092030d686f74656c2062656d6f756e74 in Ooty
+Timed out fetching details for 51a717c6272e2d53405999cef34cd4d32640f00103f90113f2a88d00000000920312476f6f642054696d657320436f7474616765 in Ooty
+Timed out fetching details for 512a1dc7c4d12c5340590ee6b01006d42640f00102f901a49f2c0900000000920312776573746f6e20686f6c6964617920696e6e in Ooty
+Timed out fetching details for 5147510c352f2d5340597cfdffeed3d32640f00103f90110f2a88d0000000092030f436f7474616765204c616b73686d69 in Ooty
+Timed out fetching details for 5102b27c02cd2c5340593b681b24e9d32640f00103f90142d76764000000009203105261696e626f7720436f747461676573 in Ooty
+Timed out fetching details for 510b02d0cd232d534059743804d891d42640f00103f90126f2a88d0000000092030853756e205061726b in Ooty
+Timed out fetching details for 5134d2f7bfc82c534059ca8ae1ea00d42640f00103f90144d76764000000009203105261696e626f7720436f747461676573 in Ooty
+Timed out fetching details for 513a15ba5c0e2d5340592c6519e258d32640f00103f901b6578e7b01000000 in Ooty
+Timed out fetching details for 5151e6d5eff82c534059ae62f19bc2d22640f00103f901ac238621000000009203085368696e6b6f7773 in Ooty
+Timed out fetching details for 511b8b5c26f92c5340597823980fadd22640f00103f9019b2386210000000092030470616c73 in Ooty
+Timed out fetching details for 510d5f87b6032d534059b47969e5a3d22640f00102f901eecbb60100000000920318426c75652048696c6c7320496e7465726e6174696f6e616c in Ooty
+Timed out fetching details for 5148a7ae7c162d534059520b259353d32640f00103f901726a64560000000092030f4361666520436f6666656520446179 in Ooty
+Timed out fetching details for 51c03dac8ef22c5340591e3ee0ae73d22640f00102f901152d1e090000000092030f56696a617961205465612053686f70 in Ooty
+Timed out fetching details for 51bcf284ff032d534059991c63e1e7d12640f00102f901330d09090000000092031253746174652042616e6b2043616e7465656e in Ooty
+Timed out fetching details for 51d0db8e5f2e2d53405944a852b307d22640f00103f901ecb8704500000000920311537567617220446164647920436166c3a9 in Ooty
+Timed out fetching details for 510db8f8252c2d534059490ed8d5e4d12640f00103f9013cc2834500000000 in Ooty
+Timed out fetching details for 517444be4b292d534059eacbd24ecdd12640f00103f90121c383450000000092030c4b6162616220436f726e6572 in Ooty
+Timed out fetching details for 517d06d49b512d53405954cf38c3c3d22640f00103f901b0548e7b01000000 in Ooty
+Timed out fetching details for 51d0863f8b5f2d534059de20d985eed22640f00102f90110aff30100000000920314546f646173204172742053616c657320756e6974 in Ooty
+Timed out fetching details for 51e5a210b7792d534059fb0d6ec6c4d52640f00103f9016ee95d1201000000 in Ooty
+Timed out fetching details for 512351c3126a2c5340598d5d47c1f8ce2640f00103f9017191291201000000 in Ooty
+Timed out fetching details for 51d8ac44ea072c534059dcd7817346d02640f00103f901fcc183450000000092030d5468726561642047617264656e in Ooty
+Timed out fetching details for 51f8a41309262c5340598f69126168ce2640f00103f901a0f879170000000092030944656572205061726b in Ooty
+Timed out fetching details for 5111d48448212e5340591465259cccd22640f00102f901c8cc071200000000920351e0aea4e0af87e0aeafe0aebfe0aeb2e0af8820e0ae85e0aeb0e0af81e0ae99e0af8de0ae95e0aebee0ae9fe0af8de0ae9ae0aebfe0aeafe0ae95e0aeaee0af8d2c20e0ae8ae0ae9fe0af8de0ae9fe0aebf in Ooty
+WARNING:  WatchFiles detected changes in 'agents\recommendation_agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [18500]
+INFO:     Started server process [3032]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'agents\recommendation_agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for connections to close. (CTRL+C to force quit)
+Geoapify place search failed for Trichy (attraction): Client error '400 Bad Request' for url 'https://api.geoapify.com/v2/places?categories=tourism.attraction%2Ctourism.attraction.viewpoint%2Cleisure.park%2Cnatural.wood%2Cnatural.water%2Cnatural.peak&filter=circle%3A78.69875%2C10.80289%2C10000&bias=proximity%3A78.69875%2C10.80289&limit=10&apiKey=e8890f71d34d480bb43cd1b983b28af4'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+Geoapify place search failed for Ooty (attraction): Client error '400 Bad Request' for url 'https://api.geoapify.com/v2/places?categories=tourism.attraction%2Ctourism.attraction.viewpoint%2Cleisure.park%2Cnatural.wood%2Cnatural.water%2Cnatural.peak&filter=circle%3A76.7030504%2C11.4126769%2C10000&bias=proximity%3A76.7030504%2C11.4126769&limit=10&apiKey=e8890f71d34d480bb43cd1b983b28af4'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+Geoapify place search failed for Trichy (attraction): Client error '400 Bad Request' for url 'https://api.geoapify.com/v2/places?categories=tourism.attraction%2Creligion.place_of_worship%2Chistoric.memorial%2Ctourism.information&filter=circle%3A78.69875%2C10.80289%2C10000&bias=proximity%3A78.69875%2C10.80289&limit=10&apiKey=e8890f71d34d480bb43cd1b983b28af4'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+Timed out fetching details for 51c8ddd6cc90ac534059117008556a9e2540f00103f901c5daadb802000000 in Trichy
+Timed out fetching details for 51591fc5ef5cac5340597f2d54a3fc9d2540f00103f9010861cd0e010000009203104d6f68616d6164204275696c64696e67 in Trichy
+Timed out fetching details for 518a06fe912eac534059d852fcd2f69d2540f00102f901271d2e4900000000 in Trichy
+Timed out fetching details for 519d2b4a0941ad534059758ea61f79a02540f00103f901bb038a2f0100000092031053524d20486f74656c20416e6e657865 in Trichy
+Timed out fetching details for 511e621256cdab5340590ea55c889f982540f00102f9017bf8b40f00000000 in Trichy
+Timed out fetching details for 51b77988ebbdab5340596fd34444d6972540f00103f90122fe4b80000000009203044172756e in Trichy
+Timed out fetching details for 515aa8eb3fa1ab534059b8729b15f6992540f00103f901b425aa260000000092030646656d696e61 in Trichy
+Timed out fetching details for 5157aab0bea6ab5340591e09ea4aba982540f00103f9011395c09701000000 in Trichy
+Timed out fetching details for 5175da649ea6ab534059c690f7054f982540f00103f901792cc12e01000000920306416a616e7461 in Trichy
+Timed out fetching details for 514260e5d0a2ab534059b3bc06d8a2982540f00103f90166c61c09010000009203244b616e6368616e6e61204c6f6467653b4b616e6368616e6e612052657374617572616e74 in Trichy
+Timed out fetching details for 5139c42e4091ac534059e0e302869b9e2540f00103f901ea61cd0e01000000 in Trichy
+Timed out fetching details for 51336e6aa0f9ab53405902ac9f4841992540f00103f901e084438401000000920308446f6d696e6f2773 in Trichy
+Timed out fetching details for 51c7f31950efab534059689192c3cc9b2540f00103f901b76cbc2702000000920308416d6d696b6b616c in Trichy
+Timed out fetching details for 51c1a8a44ec0ac5340595d09939856a12540f00103f9013809fd1b0100000092030c54616a204269726979616e69 in Trichy
+Timed out fetching details for 51f1ba7ec1eeab5340594c5a4cc7f7982540f00103f901df844384010000009203034b4643 in Trichy
+Timed out fetching details for 51c77b7a1192ac534059478d093197942540f00103f901b4a5725201000000 in Trichy
+Timed out fetching details for 511118eb1b98ac534059e0b9f770c9a12540f00103f9014023382a0100000092031e507563636120546561207374616c6c20616e6420636f6f6c6472696e6b73 in Trichy
+Timed out fetching details for 51eeb4352298ac534059377d87eccda12540f00103f901e320382a0100000092030a486174686976696c6173 in Trichy
+Timed out fetching details for 514abf33909dac5340590609f6042e942540f00103f901f4e6565c0200000092031b4172616253706963652046616d696c792052657374617572616e74 in Trichy
+Timed out fetching details for 514236dabbd0ab5340599370218fe09a2540f00103f901ea9f45030100000092030a4d6172727962726f776e in Trichy
+Timed out fetching details for 51f2ca9afd26ac534059613596b0369a2540f00103f901f3dd1683010000009203154d616861746d612047616e64686920537461747565 in Trichy
+Geoapify place search failed for Ooty (attraction): Client error '400 Bad Request' for url 'https://api.geoapify.com/v2/places?categories=tourism.attraction%2Creligion.place_of_worship%2Chistoric.memorial%2Ctourism.information&filter=circle%3A76.7030504%2C11.4126769%2C10000&bias=proximity%3A76.7030504%2C11.4126769&limit=10&apiKey=e8890f71d34d480bb43cd1b983b28af4'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+INFO:     Waiting for background tasks to complete. (CTRL+C to force quit)
+Timed out fetching details for 510d5f87b6032d534059b47969e5a3d22640f00102f901eecbb60100000000920318426c75652048696c6c7320496e7465726e6174696f6e616c in Ooty
+Timed out fetching details for 51c14e56b11d2d5340595357e31181d32640f00103f9011cf2a88d000000009203104d61727574686920436f747461676573 in Ooty
+Timed out fetching details for 51d80e46ec132d53405999f0f0434ad42640f00103f901d5d87a520100000092031148696c6c207669657720636f7474616765 in Ooty
+Timed out fetching details for 511f0cf514db2c534059dc43d93d32d42640f00102f901f6cbb6010000000092030d686f74656c2062656d6f756e74 in Ooty
+Timed out fetching details for 51a717c6272e2d53405999cef34cd4d32640f00103f90113f2a88d00000000920312476f6f642054696d657320436f7474616765 in Ooty
+Timed out fetching details for 512a1dc7c4d12c5340590ee6b01006d42640f00102f901a49f2c0900000000920312776573746f6e20686f6c6964617920696e6e in Ooty
+Timed out fetching details for 5147510c352f2d5340597cfdffeed3d32640f00103f90110f2a88d0000000092030f436f7474616765204c616b73686d69 in Ooty
+Timed out fetching details for 5102b27c02cd2c5340593b681b24e9d32640f00103f90142d76764000000009203105261696e626f7720436f747461676573 in Ooty
+Timed out fetching details for 510b02d0cd232d534059743804d891d42640f00103f90126f2a88d0000000092030853756e205061726b in Ooty
+Timed out fetching details for 5134d2f7bfc82c534059ca8ae1ea00d42640f00103f90144d76764000000009203105261696e626f7720436f747461676573 in Ooty
+Timed out fetching details for 513a15ba5c0e2d5340592c6519e258d32640f00103f901b6578e7b01000000 in Ooty
+Timed out fetching details for 5151e6d5eff82c534059ae62f19bc2d22640f00103f901ac238621000000009203085368696e6b6f7773 in Ooty
+Timed out fetching details for 511b8b5c26f92c5340597823980fadd22640f00103f9019b2386210000000092030470616c73 in Ooty
+Timed out fetching details for 510d5f87b6032d534059b47969e5a3d22640f00102f901eecbb60100000000920318426c75652048696c6c7320496e7465726e6174696f6e616c in Ooty
+Timed out fetching details for 5148a7ae7c162d534059520b259353d32640f00103f901726a64560000000092030f4361666520436f6666656520446179 in Ooty
+Timed out fetching details for 51c03dac8ef22c5340591e3ee0ae73d22640f00102f901152d1e090000000092030f56696a617961205465612053686f70 in Ooty
+Timed out fetching details for 51bcf284ff032d534059991c63e1e7d12640f00102f901330d09090000000092031253746174652042616e6b2043616e7465656e in Ooty
+Timed out fetching details for 51d0db8e5f2e2d53405944a852b307d22640f00103f901ecb8704500000000920311537567617220446164647920436166c3a9 in Ooty
+Timed out fetching details for 510db8f8252c2d534059490ed8d5e4d12640f00103f9013cc2834500000000 in Ooty
+Timed out fetching details for 517444be4b292d534059eacbd24ecdd12640f00103f90121c383450000000092030c4b6162616220436f726e6572 in Ooty
+Timed out fetching details for 517d06d49b512d53405954cf38c3c3d22640f00103f901b0548e7b01000000 in Ooty
+Timed out fetching details for 51d0863f8b5f2d534059de20d985eed22640f00102f90110aff30100000000920314546f646173204172742053616c657320756e6974 in Ooty
+Timed out fetching details for 51e5a210b7792d534059fb0d6ec6c4d52640f00103f9016ee95d1201000000 in Ooty
+Timed out fetching details for 512351c3126a2c5340598d5d47c1f8ce2640f00103f9017191291201000000 in Ooty
+Timed out fetching details for 51d8ac44ea072c534059dcd7817346d02640f00103f901fcc183450000000092030d5468726561642047617264656e in Ooty
+Timed out fetching details for 51f8a41309262c5340598f69126168ce2640f00103f901a0f879170000000092030944656572205061726b in Ooty
+Geoapify place details failed for 5103942b6192ab5340592db87aa9339e2540f00103f90115ad03380100000092030a4d475220737461747565: 
+Geoapify place details failed for 510fd8309e9cab534059a82dbf1df2982540f00103f9016095eac0020000009203175468616e64686169205065726979617220537461747565: 
+Geoapify place details failed for 51b1ee113d3aac5340597856650e85b92540f00102f901f8d6c405000000009203124561737420576869746520476f707572616d: 
+Geoapify place details failed for 517dcf488446ab53405944edc8a2fa902540f00103f901adc0f10901000000: 
+Geoapify place details failed for 512844b04d24ac5340596466135663b72540f00102f901b2d6c4050000000092031553726972616e67616d2052616a61676f707572616d: 
+Geoapify place details failed for 51abd61de626ac53405918dd30c0f4b82540f00103f90150789cad0100000092031954656d706c6520526f6f66746f70205669657720506f696e74: 
+Geoapify place details failed for 519d989aa935ab534059f51906e22b902540f00103f901a605540801000000: 
+Geoapify place details failed for 511f14f06127ac53405902414f0d6cba2540f00102f901044939440000000092030d4e6f72746820476f707572616d: 
+Timed out fetching details for 5111d48448212e5340591465259cccd22640f00102f901c8cc071200000000920351e0aea4e0af87e0aeafe0aebfe0aeb2e0af8820e0ae85e0aeb0e0af81e0ae99e0af8de0ae95e0aebee0ae9fe0af8de0ae9ae0aebfe0aeafe0ae95e0aeaee0af8d2c20e0ae8ae0ae9fe0af8de0ae9fe0aebf in Ooty
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [3032]
+INFO:     Started server process [12744]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'agents\recommendation_agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for connections to close. (CTRL+C to force quit)
+Geoapify place search failed for Trichy (attraction): Client error '400 Bad Request' for url 'https://api.geoapify.com/v2/places?categories=tourism.attraction%2Ctourism.attraction.viewpoint%2Cleisure.park%2Cnatural.wood%2Cnatural.water%2Cnatural.peak&filter=circle%3A78.69875%2C10.80289%2C10000&bias=proximity%3A78.69875%2C10.80289&limit=10&apiKey=e8890f71d34d480bb43cd1b983b28af4'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+Geoapify place search failed for Ooty (attraction): Client error '400 Bad Request' for url 'https://api.geoapify.com/v2/places?categories=tourism.attraction%2Ctourism.attraction.viewpoint%2Cleisure.park%2Cnatural.wood%2Cnatural.water%2Cnatural.peak&filter=circle%3A76.7030504%2C11.4126769%2C10000&bias=proximity%3A76.7030504%2C11.4126769&limit=10&apiKey=e8890f71d34d480bb43cd1b983b28af4'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+Geoapify place search failed for Trichy (attraction): Client error '400 Bad Request' for url 'https://api.geoapify.com/v2/places?categories=tourism.attraction%2Creligion.place_of_worship%2Chistoric.memorial%2Ctourism.information&filter=circle%3A78.69875%2C10.80289%2C10000&bias=proximity%3A78.69875%2C10.80289&limit=10&apiKey=e8890f71d34d480bb43cd1b983b28af4'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+Timed out fetching details for 51c8ddd6cc90ac534059117008556a9e2540f00103f901c5daadb802000000 in Trichy
+Timed out fetching details for 51591fc5ef5cac5340597f2d54a3fc9d2540f00103f9010861cd0e010000009203104d6f68616d6164204275696c64696e67 in Trichy
+Timed out fetching details for 518a06fe912eac534059d852fcd2f69d2540f00102f901271d2e4900000000 in Trichy
+Timed out fetching details for 519d2b4a0941ad534059758ea61f79a02540f00103f901bb038a2f0100000092031053524d20486f74656c20416e6e657865 in Trichy
+Timed out fetching details for 511e621256cdab5340590ea55c889f982540f00102f9017bf8b40f00000000 in Trichy
+Timed out fetching details for 51b77988ebbdab5340596fd34444d6972540f00103f90122fe4b80000000009203044172756e in Trichy
+Timed out fetching details for 515aa8eb3fa1ab534059b8729b15f6992540f00103f901b425aa260000000092030646656d696e61 in Trichy
+Timed out fetching details for 5157aab0bea6ab5340591e09ea4aba982540f00103f9011395c09701000000 in Trichy
+Timed out fetching details for 5175da649ea6ab534059c690f7054f982540f00103f901792cc12e01000000920306416a616e7461 in Trichy
+Timed out fetching details for 514260e5d0a2ab534059b3bc06d8a2982540f00103f90166c61c09010000009203244b616e6368616e6e61204c6f6467653b4b616e6368616e6e612052657374617572616e74 in Trichy
+Timed out fetching details for 5139c42e4091ac534059e0e302869b9e2540f00103f901ea61cd0e01000000 in Trichy
+Timed out fetching details for 51336e6aa0f9ab53405902ac9f4841992540f00103f901e084438401000000920308446f6d696e6f2773 in Trichy
+Timed out fetching details for 51c7f31950efab534059689192c3cc9b2540f00103f901b76cbc2702000000920308416d6d696b6b616c in Trichy
+Timed out fetching details for 51c1a8a44ec0ac5340595d09939856a12540f00103f9013809fd1b0100000092030c54616a204269726979616e69 in Trichy
+Timed out fetching details for 51f1ba7ec1eeab5340594c5a4cc7f7982540f00103f901df844384010000009203034b4643 in Trichy
+Timed out fetching details for 51c77b7a1192ac534059478d093197942540f00103f901b4a5725201000000 in Trichy
+Timed out fetching details for 511118eb1b98ac534059e0b9f770c9a12540f00103f9014023382a0100000092031e507563636120546561207374616c6c20616e6420636f6f6c6472696e6b73 in Trichy
+Timed out fetching details for 51eeb4352298ac534059377d87eccda12540f00103f901e320382a0100000092030a486174686976696c6173 in Trichy
+Timed out fetching details for 514abf33909dac5340590609f6042e942540f00103f901f4e6565c0200000092031b4172616253706963652046616d696c792052657374617572616e74 in Trichy
+Timed out fetching details for 514236dabbd0ab5340599370218fe09a2540f00103f901ea9f45030100000092030a4d6172727962726f776e in Trichy
+Timed out fetching details for 51f2ca9afd26ac534059613596b0369a2540f00103f901f3dd1683010000009203154d616861746d612047616e64686920537461747565 in Trichy
+Timed out fetching details for 510fd8309e9cab534059a82dbf1df2982540f00103f9016095eac0020000009203175468616e64686169205065726979617220537461747565 in Trichy
+Geoapify place search failed for Ooty (attraction): Client error '400 Bad Request' for url 'https://api.geoapify.com/v2/places?categories=tourism.attraction%2Creligion.place_of_worship%2Chistoric.memorial%2Ctourism.information&filter=circle%3A76.7030504%2C11.4126769%2C10000&bias=proximity%3A76.7030504%2C11.4126769&limit=10&apiKey=e8890f71d34d480bb43cd1b983b28af4'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+INFO:     Waiting for background tasks to complete. (CTRL+C to force quit)
+Timed out fetching details for 510d5f87b6032d534059b47969e5a3d22640f00102f901eecbb60100000000920318426c75652048696c6c7320496e7465726e6174696f6e616c in Ooty
+Timed out fetching details for 51c14e56b11d2d5340595357e31181d32640f00103f9011cf2a88d000000009203104d61727574686920436f747461676573 in Ooty
+Timed out fetching details for 51d80e46ec132d53405999f0f0434ad42640f00103f901d5d87a520100000092031148696c6c207669657720636f7474616765 in Ooty
+Timed out fetching details for 511f0cf514db2c534059dc43d93d32d42640f00102f901f6cbb6010000000092030d686f74656c2062656d6f756e74 in Ooty
+Timed out fetching details for 51a717c6272e2d53405999cef34cd4d32640f00103f90113f2a88d00000000920312476f6f642054696d657320436f7474616765 in Ooty
+Timed out fetching details for 512a1dc7c4d12c5340590ee6b01006d42640f00102f901a49f2c0900000000920312776573746f6e20686f6c6964617920696e6e in Ooty
+Timed out fetching details for 5147510c352f2d5340597cfdffeed3d32640f00103f90110f2a88d0000000092030f436f7474616765204c616b73686d69 in Ooty
+Timed out fetching details for 5102b27c02cd2c5340593b681b24e9d32640f00103f90142d76764000000009203105261696e626f7720436f747461676573 in Ooty
+Timed out fetching details for 510b02d0cd232d534059743804d891d42640f00103f90126f2a88d0000000092030853756e205061726b in Ooty
+Timed out fetching details for 5134d2f7bfc82c534059ca8ae1ea00d42640f00103f90144d76764000000009203105261696e626f7720436f747461676573 in Ooty
+Timed out fetching details for 513a15ba5c0e2d5340592c6519e258d32640f00103f901b6578e7b01000000 in Ooty
+Timed out fetching details for 5151e6d5eff82c534059ae62f19bc2d22640f00103f901ac238621000000009203085368696e6b6f7773 in Ooty
+Timed out fetching details for 511b8b5c26f92c5340597823980fadd22640f00103f9019b2386210000000092030470616c73 in Ooty
+Timed out fetching details for 510d5f87b6032d534059b47969e5a3d22640f00102f901eecbb60100000000920318426c75652048696c6c7320496e7465726e6174696f6e616c in Ooty
+Timed out fetching details for 5148a7ae7c162d534059520b259353d32640f00103f901726a64560000000092030f4361666520436f6666656520446179 in Ooty
+Timed out fetching details for 51c03dac8ef22c5340591e3ee0ae73d22640f00102f901152d1e090000000092030f56696a617961205465612053686f70 in Ooty
+Timed out fetching details for 51bcf284ff032d534059991c63e1e7d12640f00102f901330d09090000000092031253746174652042616e6b2043616e7465656e in Ooty
+Timed out fetching details for 51d0db8e5f2e2d53405944a852b307d22640f00103f901ecb8704500000000920311537567617220446164647920436166c3a9 in Ooty
+Timed out fetching details for 510db8f8252c2d534059490ed8d5e4d12640f00103f9013cc2834500000000 in Ooty
+Timed out fetching details for 517444be4b292d534059eacbd24ecdd12640f00103f90121c383450000000092030c4b6162616220436f726e6572 in Ooty
+Timed out fetching details for 517d06d49b512d53405954cf38c3c3d22640f00103f901b0548e7b01000000 in Ooty
+Timed out fetching details for 51d0863f8b5f2d534059de20d985eed22640f00102f90110aff30100000000920314546f646173204172742053616c657320756e6974 in Ooty
+Geoapify place details failed for 512844b04d24ac5340596466135663b72540f00102f901b2d6c4050000000092031553726972616e67616d2052616a61676f707572616d: 
+Geoapify place details failed for 517dcf488446ab53405944edc8a2fa902540f00103f901adc0f10901000000: 
+Geoapify place details failed for 519d989aa935ab534059f51906e22b902540f00103f901a605540801000000: 
+Geoapify place details failed for 511f14f06127ac53405902414f0d6cba2540f00102f901044939440000000092030d4e6f72746820476f707572616d: 
+Geoapify place details failed for 51abd61de626ac53405918dd30c0f4b82540f00103f90150789cad0100000092031954656d706c6520526f6f66746f70205669657720506f696e74: 
+Timed out fetching details for 5103942b6192ab5340592db87aa9339e2540f00103f90115ad03380100000092030a4d475220737461747565 in Trichy
+Geoapify place details failed for 51b1ee113d3aac5340597856650e85b92540f00102f901f8d6c405000000009203124561737420576869746520476f707572616d: 
+Timed out fetching details for 51e5a210b7792d534059fb0d6ec6c4d52640f00103f9016ee95d1201000000 in Ooty
+Timed out fetching details for 512351c3126a2c5340598d5d47c1f8ce2640f00103f9017191291201000000 in Ooty
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [12744]
+INFO:     Started server process [744]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'agents\recommendation_agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for connections to close. (CTRL+C to force quit)
+Geoapify place search failed for Ooty (attraction): Client error '400 Bad Request' for url 'https://api.geoapify.com/v2/places?categories=tourism.attraction%2Ctourism.attraction.viewpoint%2Cleisure.park%2Cnatural.wood%2Cnatural.water%2Cnatural.peak&filter=circle%3A76.7030504%2C11.4126769%2C10000&bias=proximity%3A76.7030504%2C11.4126769&limit=5&apiKey=e8890f71d34d480bb43cd1b983b28af4'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+Geoapify place search failed for Trichy (attraction): Client error '400 Bad Request' for url 'https://api.geoapify.com/v2/places?categories=tourism.attraction%2Ctourism.attraction.viewpoint%2Cleisure.park%2Cnatural.wood%2Cnatural.water%2Cnatural.peak&filter=circle%3A78.69875%2C10.80289%2C10000&bias=proximity%3A78.69875%2C10.80289&limit=5&apiKey=e8890f71d34d480bb43cd1b983b28af4'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+Geoapify place search failed for Ooty (attraction): Client error '400 Bad Request' for url 'https://api.geoapify.com/v2/places?categories=tourism.attraction%2Creligion.place_of_worship%2Chistoric.memorial%2Ctourism.information&filter=circle%3A76.7030504%2C11.4126769%2C10000&bias=proximity%3A76.7030504%2C11.4126769&limit=5&apiKey=e8890f71d34d480bb43cd1b983b28af4'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+Timed out fetching details for 510d5f87b6032d534059b47969e5a3d22640f00102f901eecbb60100000000920318426c75652048696c6c7320496e7465726e6174696f6e616c in Ooty
+Timed out fetching details for 51c14e56b11d2d5340595357e31181d32640f00103f9011cf2a88d000000009203104d61727574686920436f747461676573 in Ooty
+Timed out fetching details for 51d80e46ec132d53405999f0f0434ad42640f00103f901d5d87a520100000092031148696c6c207669657720636f7474616765 in Ooty
+Timed out fetching details for 513a15ba5c0e2d5340592c6519e258d32640f00103f901b6578e7b01000000 in Ooty
+Timed out fetching details for 5151e6d5eff82c534059ae62f19bc2d22640f00103f901ac238621000000009203085368696e6b6f7773 in Ooty
+Timed out fetching details for 511b8b5c26f92c5340597823980fadd22640f00103f9019b2386210000000092030470616c73 in Ooty
+Timed out fetching details for 517d06d49b512d53405954cf38c3c3d22640f00103f901b0548e7b01000000 in Ooty
+Geoapify place search failed for Trichy (attraction): Client error '400 Bad Request' for url 'https://api.geoapify.com/v2/places?categories=tourism.attraction%2Creligion.place_of_worship%2Chistoric.memorial%2Ctourism.information&filter=circle%3A78.69875%2C10.80289%2C10000&bias=proximity%3A78.69875%2C10.80289&limit=5&apiKey=e8890f71d34d480bb43cd1b983b28af4'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+Timed out fetching details for 51c8ddd6cc90ac534059117008556a9e2540f00103f901c5daadb802000000 in Trichy
+Timed out fetching details for 51591fc5ef5cac5340597f2d54a3fc9d2540f00103f9010861cd0e010000009203104d6f68616d6164204275696c64696e67 in Trichy
+Timed out fetching details for 518a06fe912eac534059d852fcd2f69d2540f00102f901271d2e4900000000 in Trichy
+Timed out fetching details for 5139c42e4091ac534059e0e302869b9e2540f00103f901ea61cd0e01000000 in Trichy
+Timed out fetching details for 51336e6aa0f9ab53405902ac9f4841992540f00103f901e084438401000000920308446f6d696e6f2773 in Trichy
+Timed out fetching details for 51c7f31950efab534059689192c3cc9b2540f00103f901b76cbc2702000000920308416d6d696b6b616c in Trichy
+Timed out fetching details for 51f2ca9afd26ac534059613596b0369a2540f00103f901f3dd1683010000009203154d616861746d612047616e64686920537461747565 in Trichy
+Timed out fetching details for 510fd8309e9cab534059a82dbf1df2982540f00103f9016095eac0020000009203175468616e64686169205065726979617220537461747565 in Trichy
+Timed out fetching details for 5103942b6192ab5340592db87aa9339e2540f00103f90115ad03380100000092030a4d475220737461747565 in Trichy
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [744]
+WARNING:  WatchFiles detected changes in 'utils\places.py', 'agents\weather_agent.py', 'agents\route_agent.py', 'agents\recommendation_agent.py'. Reloading...
+INFO:     Started server process [20188]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [20188]
+INFO:     Started server process [10400]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'utils\places.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [10400]
+WARNING:  WatchFiles detected changes in 'agents\recommendation_agent.py'. Reloading...
+INFO:     Started server process [16788]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [16788]
+INFO:     Started server process [2108]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'agents\budget_agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for connections to close. (CTRL+C to force quit)
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2108]
+WARNING:  WatchFiles detected changes in 'agents\budget_agent.py'. Reloading...
+INFO:     Started server process [14228]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [14228]
+INFO:     Started server process [19920]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'agents\budget_agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [19920]
+WARNING:  WatchFiles detected changes in 'agents\budget_agent.py'. Reloading...
+INFO:     Started server process [20132]
+INFO:     Waiting for application startup.
+ERROR:    Traceback (most recent call last):
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 721, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\uvicorn\server.py", line 79, in serve
+    await self._serve(sockets)
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\uvicorn\server.py", line 94, in _serve
+    await self.startup(sockets=sockets)
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\uvicorn\server.py", line 105, in startup
+    await self.lifespan.startup()
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\uvicorn\lifespan\on.py", line 56, in startup
+    await self.startup_event.wait()
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\asyncio\locks.py", line 213, in wait
+    await fut
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 123, in run
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\starlette\routing.py", line 638, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+               ~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\fastapi\routing.py", line 216, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\fastapi\routing.py", line 216, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\fastapi\routing.py", line 216, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\fastapi\routing.py", line 216, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\fastapi\routing.py", line 216, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\fastapi\routing.py", line 216, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\fastapi\routing.py", line 216, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\main.py", line 26, in lifespan
+    await init_db()
+  File "D:\ROOT\Trip planner\backend\models\database.py", line 118, in init_db
+    async with engine.begin() as conn:
+               ~~~~~~~~~~~~^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\ext\asyncio\engine.py", line 1068, in begin
+    async with conn:
+               ^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\ext\asyncio\base.py", line 121, in __aenter__
+    return await self.start(is_ctxmanager=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\ext\asyncio\engine.py", line 275, in start
+    await greenlet_spawn(self.sync_engine.connect)
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 201, in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 3295, in connect
+    return self._connection_cls(self)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 144, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 3319, in raw_connection
+    return self.pool.connect()
+           ~~~~~~~~~~~~~~~~~^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\pool\base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\pool\base.py", line 1272, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\pool\base.py", line 712, in checkout
+    rec = pool._do_get()
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\pool\impl.py", line 178, in _do_get
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\pool\impl.py", line 176, in _do_get
+    return self._create_connection()
+           ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\pool\base.py", line 389, in _create_connection
+    return _ConnectionRecord(self)
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\pool\base.py", line 674, in __init__
+    self.__connect()
+    ~~~~~~~~~~~~~~^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\pool\base.py", line 900, in __connect
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\pool\base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\engine\create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\engine\default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py", line 422, in connect
+    await_only(connection),
+    ~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\aiosqlite\core.py", line 168, in _connect
+    self._connection = await future
+                       ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+INFO:     Started server process [12436]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'agents\budget_agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for connections to close. (CTRL+C to force quit)
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [12436]
+WARNING:  WatchFiles detected changes in 'agents\budget_agent.py'. Reloading...
+INFO:     Started server process [9356]
+INFO:     Waiting for application startup.
+ERROR:    Traceback (most recent call last):
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 721, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\uvicorn\server.py", line 79, in serve
+    await self._serve(sockets)
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\uvicorn\server.py", line 94, in _serve
+    await self.startup(sockets=sockets)
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\uvicorn\server.py", line 105, in startup
+    await self.lifespan.startup()
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\uvicorn\lifespan\on.py", line 56, in startup
+    await self.startup_event.wait()
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\asyncio\locks.py", line 213, in wait
+    await fut
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 123, in run
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\starlette\routing.py", line 638, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+               ~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\fastapi\routing.py", line 216, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\fastapi\routing.py", line 216, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\fastapi\routing.py", line 216, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\fastapi\routing.py", line 216, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\fastapi\routing.py", line 216, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\fastapi\routing.py", line 216, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\fastapi\routing.py", line 216, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\main.py", line 26, in lifespan
+    await init_db()
+  File "D:\ROOT\Trip planner\backend\models\database.py", line 118, in init_db
+    async with engine.begin() as conn:
+               ~~~~~~~~~~~~^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\ext\asyncio\engine.py", line 1068, in begin
+    async with conn:
+               ^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\ext\asyncio\base.py", line 121, in __aenter__
+    return await self.start(is_ctxmanager=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\ext\asyncio\engine.py", line 275, in start
+    await greenlet_spawn(self.sync_engine.connect)
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 201, in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 3295, in connect
+    return self._connection_cls(self)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 144, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 3319, in raw_connection
+    return self.pool.connect()
+           ~~~~~~~~~~~~~~~~~^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\pool\base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\pool\base.py", line 1272, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\pool\base.py", line 712, in checkout
+    rec = pool._do_get()
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\pool\impl.py", line 178, in _do_get
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\pool\impl.py", line 176, in _do_get
+    return self._create_connection()
+           ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\pool\base.py", line 389, in _create_connection
+    return _ConnectionRecord(self)
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\pool\base.py", line 674, in __init__
+    self.__connect()
+    ~~~~~~~~~~~~~~^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\pool\base.py", line 900, in __connect
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\pool\base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\engine\create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\engine\default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py", line 422, in connect
+    await_only(connection),
+    ~~~~~~~~~~^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\aiosqlite\core.py", line 168, in _connect
+    self._connection = await future
+                       ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+INFO:     Started server process [19212]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'agents\budget_agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for connections to close. (CTRL+C to force quit)
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [19212]
+INFO:     Started server process [5524]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'agents\budget_agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for connections to close. (CTRL+C to force quit)
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [5524]
+INFO:     Started server process [18696]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'agents\budget_agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [18696]
+WARNING:  WatchFiles detected changes in 'agents\budget_agent.py'. Reloading...
+INFO:     Started server process [23124]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'agents\budget_agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [23124]
+Process SpawnProcess-19:
+Traceback (most recent call last):
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\multiprocessing\process.py", line 313, in _bootstrap
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+    target(sockets=sockets)
+    ~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\uvicorn\server.py", line 75, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 721, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\uvicorn\server.py", line 79, in serve
+    await self._serve(sockets)
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\uvicorn\server.py", line 86, in _serve
+    config.load()
+    ~~~~~~~~~~~^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\uvicorn\config.py", line 481, in load
+    self.loaded_app = self.load_app()
+                      ~~~~~~~~~~~~~^^
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\uvicorn\config.py", line 415, in load_app
+    return import_from_string(self.app)
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\uvicorn\importer.py", line 22, in import_from_string
+    raise exc from None
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\uvicorn\importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1022, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "D:\ROOT\Trip planner\backend\main.py", line 19, in <module>
+    from routers.trip import router as trip_router
+  File "D:\ROOT\Trip planner\backend\routers\trip.py", line 11, in <module>
+    from agents.graph import trip_planner_graph
+  File "D:\ROOT\Trip planner\backend\agents\graph.py", line 7, in <module>
+    from agents.budget_agent import budget_agent
+ModuleNotFoundError: No module named 'agents.budget_agent'
+WARNING:  WatchFiles detected changes in 'agents\budget_agent.py'. Reloading...
+INFO:     Started server process [21304]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+(trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'

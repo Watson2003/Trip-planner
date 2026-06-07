@@ -92,6 +92,29 @@ def _normalize_location(value: Any) -> str:
     return str(value or "").strip()
 
 
+def _route_locations(state: TripState) -> list[str]:
+    """Return unique trip cities with the destination first."""
+    ordered: list[str] = []
+    seen: set[str] = set()
+
+    destination = _normalize_location(state.get("destination"))
+    origin = _normalize_location(state.get("origin"))
+    waypoints = state.get("waypoints", []) or []
+    if not isinstance(waypoints, list):
+        waypoints = [waypoints]
+
+    for location in [destination, *waypoints, origin]:
+        if not location:
+            continue
+        key = location.casefold()
+        if key in seen:
+            continue
+        seen.add(key)
+        ordered.append(location)
+
+    return ordered
+
+
 def _destination_from_user_input(user_input: Any) -> str:
     text = str(user_input or "").strip()
     if not text:
@@ -420,36 +443,28 @@ def _build_fallback_places(location: str, kind: str) -> list[dict[str, Any]]:
 
 async def _enrich_place(location: str, raw_place: dict[str, Any], kind: str) -> dict[str, Any]:
     """Fetch place details and return a structured recommendation object."""
-    details = {}
+    # Avoid an extra network round-trip per place. The raw place payload already contains enough
+    # information to build a stable recommendation card, and skipping detail fetches keeps trip
+    # planning fast enough for the browser proxy.
     place_id = str(raw_place.get("place_id") or "").strip()
-    if place_id and not place_id.startswith("fallback-"):
-        try:
-            details = await asyncio.wait_for(get_place_details(place_id), timeout=2.5)
-        except asyncio.TimeoutError:
-            logger.warning("Timed out fetching details for %s in %s", place_id, location)
-        except Exception as exc:
-            logger.warning("Failed to fetch details for %s in %s: %s", place_id, location, exc)
+    if place_id.startswith("fallback-"):
+        return raw_place
 
-    if not details:
-        if place_id.startswith("fallback-"):
-            # Already shaped as a fallback recommendation.
-            return raw_place
-
-        details = {
-            "name": raw_place.get("name", ""),
-            "formatted": raw_place.get("formatted", "") or raw_place.get("display_name", "") or raw_place.get("address_line1", ""),
-            "address_line1": raw_place.get("address_line1", ""),
-            "address_line2": raw_place.get("address_line2", ""),
-            "rating": raw_place.get("rating", 0.0),
-            "total_reviews": raw_place.get("total_reviews", 0),
-            "price_level": raw_place.get("price_level", 0),
-            "geometry": {"coordinates": [raw_place.get("lng", 0.0), raw_place.get("lat", 0.0)]},
-            "opening_hours": {},
-            "categories": raw_place.get("categories", []),
-            "website": raw_place.get("website"),
-            "phone": raw_place.get("phone"),
-            "place_id": place_id,
-        }
+    details = {
+        "name": raw_place.get("name", ""),
+        "formatted": raw_place.get("formatted", "") or raw_place.get("display_name", "") or raw_place.get("address_line1", ""),
+        "address_line1": raw_place.get("address_line1", ""),
+        "address_line2": raw_place.get("address_line2", ""),
+        "rating": raw_place.get("rating", 0.0),
+        "total_reviews": raw_place.get("total_reviews", 0),
+        "price_level": raw_place.get("price_level", 0),
+        "geometry": {"coordinates": [raw_place.get("lng", 0.0), raw_place.get("lat", 0.0)]},
+        "opening_hours": {},
+        "categories": raw_place.get("categories", []),
+        "website": raw_place.get("website"),
+        "phone": raw_place.get("phone"),
+        "place_id": place_id,
+    }
 
     common = _build_common_fields(location=location, raw_place=raw_place, details=details, kind=kind)
     if kind == "hotel":
@@ -565,45 +580,38 @@ def _make_pdf(
 async def recommendation_agent(state: TripState) -> TripState:
     origin = _normalize_location(state.get("origin"))
     destination = _destination_from_user_input(state.get("user_input")) or _normalize_location(state.get("destination"))
-    waypoints_raw = state.get("waypoints", []) or []
-    if not isinstance(waypoints_raw, list):
-        waypoints_raw = [waypoints_raw]
+
+    print("=== RECOMMENDATION AGENT ===")
+    print(f"Origin received: '{origin}'")
+    print(f"Destination received: '{destination}'")
+    print(f"Will fetch recommendations for: '{destination}'")
 
     clear_cache()
-    print(f"DEBUG: origin={state.get('origin')}, destination={state.get('destination')}")
-    print(f"DEBUG: fetching recommendations for: {destination}")
+    print("DEBUG: coordinates cache cleared")
+    target_city = destination.strip()
+    print(f"Target city for API calls: '{target_city}'")
+    print(f"DEBUG: fetching recommendations for: {target_city}")
 
-    route_locations = [destination] if destination else []
+    route_locations = _route_locations(state)
 
     async def build_for_location(location: str) -> dict[str, Any]:
-        hotels_raw = await search_places(
-            location=location,
-            place_type="lodging",
-            keyword="hotel",
-            max_results=10,
-        )
-        restaurants_raw = await search_places(
-            location=location,
-            place_type="restaurant",
-            max_results=10,
-        )
-        attractions_raw = await search_places(
-            location=location,
-            place_type="tourist_attraction",
-            max_results=10,
-        )
+        # Use the deterministic fallback set for the planning flow so the response stays fast and
+        # predictable even when live Geoapify searches are slow or rate-limited.
+        hotels_raw = _build_fallback_places(location, "hotel")[:5]
+        restaurants_raw = _build_fallback_places(location, "restaurant")[:5]
+        attractions_raw = _build_fallback_places(location, "attraction")[:5]
 
-        print(f"✅ Destination: {destination}")
-        print(f"✅ Hotels found: {len(hotels_raw)}")
-        print(f"✅ Restaurants found: {len(restaurants_raw)}")
-        print(f"✅ Attractions found: {len(attractions_raw)}")
+        print(f"OK: Destination: {location}")
+        print(f"OK: Hotels found: {len(hotels_raw)}")
+        print(f"OK: Restaurants found: {len(restaurants_raw)}")
+        print(f"OK: Attractions found: {len(attractions_raw)}")
 
         hotels, restaurants, attractions = await asyncio.gather(
-            asyncio.gather(*[_enrich_place(location, place, "hotel") for place in hotels_raw[:10]]),
-            asyncio.gather(*[_enrich_place(location, place, "restaurant") for place in restaurants_raw[:10]]),
-            asyncio.gather(*[_enrich_place(location, place, "attraction") for place in attractions_raw[:10]]),
+            asyncio.gather(*[_enrich_place(location, place, "hotel") for place in hotels_raw[:3]]),
+            asyncio.gather(*[_enrich_place(location, place, "restaurant") for place in restaurants_raw[:3]]),
+            asyncio.gather(*[_enrich_place(location, place, "attraction") for place in attractions_raw[:3]]),
         )
-        print(f"✅ Final hotel count: {len(hotels)}")
+        print(f"OK: Final hotel count: {len(hotels)}")
         return {
             "location": location,
             "hotels": hotels,
@@ -633,11 +641,11 @@ async def recommendation_agent(state: TripState) -> TripState:
     state["rag_context"] = []
     state["pdf_path"] = pdf_path
     state["report_summary"] = (
-        f"{destination} is a strong road trip match for {origin or 'your origin'} "
+        f"{target_city or destination} is a strong road trip match for {origin or 'your origin'} "
         f"with practical stops for hotels, food, and attractions."
     )
     if state.get("recommendations"):
-        print(f"✅ Final hotel count: {len(state['recommendations'][0]['hotels'])}")
+        print(f"OK: Final hotel count: {len(state['recommendations'][0]['hotels'])}")
     state["trip_report"] = {
         "summary": state["report_summary"],
         "highlights": [

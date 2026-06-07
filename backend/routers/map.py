@@ -17,7 +17,7 @@ ORS_BASE_URL = "https://api.openrouteservice.org"
 async def _geocode_place(client: httpx.AsyncClient, place: str, api_key: str) -> list[float]:
     response = await client.get(
         f"{ORS_BASE_URL}/geocode/search",
-        params={"text": place, "size": 1},
+        params={"api_key": api_key, "text": place, "boundary.country": "IN"},
         headers={"Authorization": api_key},
     )
     response.raise_for_status()
@@ -51,15 +51,15 @@ async def get_route(origin: str = Query(...), destination: str = Query(...)) -> 
 
     try:
         async with httpx.AsyncClient(timeout=30.0) as client:
-            coordinates = [
-                await asyncio.wait_for(_geocode_place(client, origin, settings.openrouteservice_api_key), timeout=4.0),
-                await asyncio.wait_for(_geocode_place(client, destination, settings.openrouteservice_api_key), timeout=4.0),
-            ]
+            origin_coords, destination_coords = await asyncio.gather(
+                asyncio.wait_for(_geocode_place(client, origin, settings.openrouteservice_api_key), timeout=4.0),
+                asyncio.wait_for(_geocode_place(client, destination, settings.openrouteservice_api_key), timeout=4.0),
+            )
             response = await asyncio.wait_for(
                 client.post(
                     f"{ORS_BASE_URL}/v2/directions/driving-car/geojson",
-                    json={"coordinates": coordinates},
-                    headers={"Authorization": settings.openrouteservice_api_key, "Content-Type": "application/json"},
+                    headers={"Authorization": settings.openrouteservice_api_key},
+                    json={"coordinates": [origin_coords, destination_coords]},
                 ),
                 timeout=8.0,
             )

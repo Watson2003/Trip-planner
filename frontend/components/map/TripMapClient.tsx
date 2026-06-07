@@ -91,8 +91,16 @@ export default function TripMapClient({ routeGeoJSON, markers, focusPoint }: Tri
     const feature = routeGeoJSON?.features?.find((item) => item.geometry.type === "LineString") as
       | GeoJSON.Feature<GeoJSON.LineString>
       | undefined;
-    return feature?.geometry.coordinates.map(([lng, lat]) => [lat, lng]) ?? [];
-  }, [routeGeoJSON]);
+    const routePositions =
+      feature?.geometry.coordinates.map(([lng, lat]) => [lat, lng] as [number, number]) ?? [];
+    if (routePositions.length > 1) {
+      return routePositions;
+    }
+    if (markers.length > 1) {
+      return markers.map((marker) => [marker.lat, marker.lng] as [number, number]);
+    }
+    return [];
+  }, [markers, routeGeoJSON]);
 
   const center = useMemo<[number, number]>(() => {
     if (focusPoint) return [focusPoint.lat, focusPoint.lng];

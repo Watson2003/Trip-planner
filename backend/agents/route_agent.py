@@ -13,51 +13,59 @@ from utils.config import settings
 ORS_BASE_URL = "https://api.openrouteservice.org"
 
 
-async def _fetch_route(origin: str, destination: str, waypoints: list[str]) -> dict[str, Any]:
-    api_key = settings.openrouteservice_api_key
-    if not api_key:
-        raise ValueError("OPENROUTESERVICE_API_KEY is not set in the environment.")
-
-    headers = {
-        "Authorization": api_key,
-        "Content-Type": "application/json",
-    }
-
-    coords = []
-    for place in [origin, *waypoints, destination]:
-        geocode = await _geocode_place(place, api_key)
-        coords.append(geocode)
-
-    body = {"coordinates": coords}
-    async with httpx.AsyncClient(timeout=4.0) as client:
-        response = await client.post(f"{ORS_BASE_URL}/v2/directions/driving-car/geojson", json=body, headers=headers)
-        response.raise_for_status()
-        payload = response.json()
-
-    feature = payload["features"][0]
-    properties = feature["properties"]["segments"][0]
-    geometry = feature["geometry"]["coordinates"]
-
-    return {
-        "distance_km": round(properties["distance"] / 1000.0, 2),
-        "duration_hours": round(properties["duration"] / 3600.0, 2),
-        "polyline": [[lat, lon] for lon, lat in geometry],
-        "toll_roads": bool(properties.get("tollways", False)),
-    }
-
-
-async def _geocode_place(place: str, api_key: str) -> list[float]:
-    headers = {"Authorization": api_key}
-    params = {"text": place, "size": 1}
-    async with httpx.AsyncClient(timeout=4.0) as client:
-        response = await client.get(f"{ORS_BASE_URL}/geocode/search", params=params, headers=headers)
-        response.raise_for_status()
-        payload = response.json()
+async def _geocode_place(client: httpx.AsyncClient, place: str, api_key: str) -> list[float]:
+    response = await client.get(
+        f"{ORS_BASE_URL}/geocode/search",
+        params={
+            "api_key": api_key,
+            "text": place,
+            "boundary.country": "IN",
+        },
+        headers={"Authorization": api_key},
+    )
+    response.raise_for_status()
+    payload = response.json()
     features = payload.get("features", [])
     if not features:
         raise ValueError(f"Could not geocode location: {place}")
     lon, lat = features[0]["geometry"]["coordinates"]
     return [lon, lat]
+
+
+async def _fetch_route(origin: str, destination: str) -> dict[str, Any]:
+    api_key = settings.openrouteservice_api_key
+    if not api_key:
+        raise ValueError("OPENROUTESERVICE_API_KEY is not set in the environment.")
+
+    async with httpx.AsyncClient(timeout=2.0) as client:
+        origin_coords, destination_coords = await asyncio.gather(
+            _geocode_place(client, origin, api_key),
+            _geocode_place(client, destination, api_key),
+        )
+        response = await client.post(
+            f"{ORS_BASE_URL}/v2/directions/driving-car/geojson",
+            headers={"Authorization": api_key},
+            json={
+                "coordinates": [origin_coords, destination_coords],
+            },
+        )
+        response.raise_for_status()
+        payload = response.json()
+
+    feature = payload["features"][0]
+    summary = feature["properties"]["summary"]
+    geometry = feature["geometry"]["coordinates"]
+    leaflet_coords = [[lat, lng] for lng, lat in geometry]
+
+    return {
+        "distance_km": round(summary["distance"] / 1000.0, 2),
+        "duration_hours": round(summary["duration"] / 3600.0, 2),
+        "coordinates": leaflet_coords,
+        "origin_coords": [origin_coords[1], origin_coords[0]],
+        "destination_coords": [destination_coords[1], destination_coords[0]],
+        "polyline": leaflet_coords,
+        "toll_roads": bool(feature.get("properties", {}).get("tollways", False)),
+    }
 
 
 async def route_agent(state: TripState) -> TripState:
@@ -70,7 +78,7 @@ async def route_agent(state: TripState) -> TripState:
         return state
 
     try:
-        route = await asyncio.wait_for(_fetch_route(origin, destination, waypoints), timeout=4.0)
+        route = await asyncio.wait_for(_fetch_route(origin, destination), timeout=2.5)
     except Exception:
         route = fallback_route(origin, destination, waypoints)
         if route is None:
@@ -84,6 +92,9 @@ async def route_agent(state: TripState) -> TripState:
     state["route"] = {
         "distance_km": route["distance_km"],
         "duration_hours": route["duration_hours"],
+        "coordinates": route.get("coordinates", route["polyline"]),
+        "origin_coords": route.get("origin_coords"),
+        "destination_coords": route.get("destination_coords"),
         "polyline": route["polyline"],
         "toll_roads": route["toll_roads"],
     }

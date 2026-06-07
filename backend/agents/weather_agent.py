@@ -275,7 +275,7 @@ async def weather_agent(state: TripState) -> TripState:
 
     # Keep the end-to-end trip plan responsive; weather should fail fast and fall back to an empty list
     # rather than holding the entire planning request open.
-    async with httpx.AsyncClient(timeout=4.0) as client:
+    async with httpx.AsyncClient(timeout=2.0) as client:
         tasks = [_fetch_location_weather(client, location, start_date, end_date) for location in locations]
         results = await asyncio.gather(*tasks)
 

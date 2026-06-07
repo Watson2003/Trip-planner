@@ -14,3 +14,55 @@
  GET / 200 in 67ms
  ○ Compiling /my-trips ...
  ✓ Compiled /my-trips in 3.3s (1730 modules)
+ ✓ Compiled in 712ms (868 modules)
+ ✓ Compiled in 1214ms (1730 modules)
+ ✓ Compiled in 859ms (1730 modules)
+ ✓ Compiled in 744ms (1730 modules)
+ ✓ Compiled in 1488ms (1746 modules)
+ ✓ Compiled in 666ms (1746 modules)
+ ✓ Compiled in 719ms (1746 modules)
+ ✓ Compiled in 504ms (876 modules)
+ ✓ Compiled in 809ms (1746 modules)
+ ✓ Compiled in 2.2s (1746 modules)
+ ✓ Compiled in 698ms (1746 modules)
+ ✓ Compiled in 527ms (876 modules)
+ ✓ Compiled in 709ms (1746 modules)
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 2.1s (565 modules)
+ GET / 404 in 186ms
+ ○ Compiling / ...
+ ✓ Compiled / in 2.7s (1735 modules)
+ ✓ Compiled in 1598ms (1747 modules)
+ ✓ Compiled in 786ms (1747 modules)
+ ✓ Compiled in 694ms (1747 modules)
+ GET / 200 in 427ms
+ ✓ Compiled in 1477ms (1747 modules)
+ GET / 200 in 998ms
+ ✓ Compiled in 621ms (1747 modules)
+ ✓ Compiled in 858ms (1747 modules)
+ ✓ Compiled in 1406ms (1747 modules)
+ GET / 200 in 113ms
+ ✓ Compiled in 1136ms (1747 modules)
+ ✓ Compiled in 2.2s (1747 modules)
+ ✓ Compiled in 1207ms (1747 modules)
+ GET / 200 in 692ms
+ GET / 200 in 74ms
+ GET / 200 in 67ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 2.1s (579 modules)
+ GET / 404 in 194ms
+ ○ Compiling / ...
+ ✓ Compiled / in 2.5s (593 modules)
+ ✓ Compiled in 741ms (591 modules)
+ GET / 200 in 333ms
+ ○ Compiling /trip-result ...
+ ✓ Compiled /trip-result in 6.3s (1755 modules)
+ ✓ Compiled in 1139ms (880 modules)
+ ✓ Compiled in 1140ms (1755 modules)
+ ✓ Compiled in 939ms (1755 modules)
+ ✓ Compiled in 778ms (1755 modules)
+ ✓ Compiled in 826ms (1755 modules)
+ ✓ Compiled in 1138ms (1755 modules)
+ GET /trip-result 200 in 707ms
+ GET / 200 in 125ms
+[?25h

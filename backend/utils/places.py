@@ -17,7 +17,8 @@ GEOAPIFY_GEOCODE_URL = "https://api.geoapify.com/v1/geocode/search"
 GEOAPIFY_PLACES_URL = "https://api.geoapify.com/v2/places"
 GEOAPIFY_PLACE_DETAILS_URL = "https://api.geoapify.com/v2/place-details"
 
-_coordinates_cache: dict[str, dict[str, float]] = {}
+_coords_cache: dict[str, dict[str, float]] = {}
+_coordinates_cache = _coords_cache
 _search_cache: dict[tuple[str, str, str, int], list[dict[str, Any]]] = {}
 
 COMMON_CITY_COORDINATES: dict[str, tuple[float, float]] = {
@@ -52,7 +53,7 @@ def _normalize_text(value: Any) -> str:
 
 
 def clear_cache() -> None:
-    _coordinates_cache.clear()
+    _coords_cache.clear()
     _search_cache.clear()
 
 
@@ -580,19 +581,20 @@ def _build_fallback_places(location: str, kind: str) -> list[dict[str, Any]]:
 
 async def get_coordinates(location: str) -> dict[str, float]:
     """Resolve a city name into latitude/longitude using Geoapify, with a local fallback."""
-    print(f"DEBUG get_coordinates: fetching for '{location}'")
-    location_key = _normalize_text(location).casefold()
-    if not location_key:
+    print(f"DEBUG get_coordinates called with: '{location}'")
+    cache_key = location.strip().lower()
+    if not cache_key:
         return {}
 
-    cached = _coordinates_cache.get(location_key)
+    cached = _coords_cache.get(cache_key)
     if cached:
+        print(f"DEBUG cache hit for: '{cache_key}' -> {cached}")
         return cached
 
     api_key = _geoapify_api_key()
     if api_key:
         try:
-            async with httpx.AsyncClient(timeout=6.0, headers=_geoapify_headers()) as client:
+            async with httpx.AsyncClient(timeout=3.0, headers=_geoapify_headers()) as client:
                 response = await client.get(
                     GEOAPIFY_GEOCODE_URL,
                     params={
@@ -615,7 +617,8 @@ async def get_coordinates(location: str) -> dict[str, float]:
             lon = first.get("lon")
             if lat is not None and lon is not None:
                 resolved = {"lat": float(lat), "lng": float(lon)}
-                _coordinates_cache[location_key] = resolved
+                print(f"DEBUG geocoded '{location}' -> {resolved}")
+                _coords_cache[cache_key] = resolved
                 return resolved
 
         features = payload.get("features") if isinstance(payload, dict) else None
@@ -625,12 +628,14 @@ async def get_coordinates(location: str) -> dict[str, float]:
             lon = props.get("lon")
             if lat is not None and lon is not None:
                 resolved = {"lat": float(lat), "lng": float(lon)}
-                _coordinates_cache[location_key] = resolved
+                print(f"DEBUG geocoded '{location}' -> {resolved}")
+                _coords_cache[cache_key] = resolved
                 return resolved
 
     lat, lng = _fallback_coordinates(location)
     resolved = {"lat": lat, "lng": lng}
-    _coordinates_cache[location_key] = resolved
+    print(f"DEBUG geocoded '{location}' -> {resolved}")
+    _coords_cache[cache_key] = resolved
     return resolved
 
 
@@ -641,6 +646,7 @@ async def search_places(
     max_results: int = 10,
 ) -> list[dict[str, Any]]:
     """Search nearby real places around a location using Geoapify Places."""
+    print(f"DEBUG search_places: location='{location}' type='{place_type}'")
     category = _place_type_for_search(place_type)
     keyword_key = _normalize_text(keyword).casefold()
     cache_key = (location.casefold(), category, keyword_key, int(max_results))
@@ -657,16 +663,18 @@ async def search_places(
 
     coordinates = await get_coordinates(location)
     if not coordinates:
+        print(f"DEBUG: No coordinates for '{location}'")
         return []
 
     lat = coordinates["lat"]
     lng = coordinates["lng"]
+    print(f"DEBUG search_places: using coords lat={lat}, lng={lng} for '{location}'")
     radius = 8000 if category == "hotel" else 5000 if category == "restaurant" else 10000
     limit = max(1, int(max_results or 10))
 
     async def _single_search(search_keyword: str = "") -> list[dict[str, Any]]:
         try:
-            async with httpx.AsyncClient(timeout=8.0, headers=_geoapify_headers()) as client:
+            async with httpx.AsyncClient(timeout=3.0, headers=_geoapify_headers()) as client:
                 response = await client.get(
                     GEOAPIFY_PLACES_URL,
                     params={
@@ -736,7 +744,7 @@ async def get_place_details(place_id: str) -> dict[str, Any]:
         return {}
 
     try:
-        async with httpx.AsyncClient(timeout=8.0, headers=_geoapify_headers()) as client:
+        async with httpx.AsyncClient(timeout=3.0, headers=_geoapify_headers()) as client:
             response = await client.get(
                 GEOAPIFY_PLACE_DETAILS_URL,
                 params={
