@@ -363,13 +363,11 @@ export default function BudgetBreakdown({
               <Row label="Distance" value={`${fuelDetails?.distance_km ?? 0} km`} />
               <Row label="Fuel needed" value={`${(fuelDetails?.fuel_required_litres ?? 0).toFixed(2)} litres`} />
               <Row label="Price per litre" value={formatInr(fuelDetails?.fuel_price_per_litre ?? 0)} />
-              <Row label="Refueling stops" value={`${fuelDetails?.refueling_stops ?? 0}`} />
             </div>
             <div className="space-y-2 text-sm text-gray-200">
               <Row label="Vehicle" value={fuelDetails?.vehicle_name ?? vehicle?.vehicle_name ?? "-"} />
               <Row label="Mileage" value={`${fuelDetails?.mileage_kmpl ?? vehicle?.mileage_kmpl ?? 0} km/l`} />
               <Row label="Travellers" value={`${numberOfPeople}`} />
-              <Row label="Per person" value={formatInr(grandTotal / Math.max(numberOfPeople, 1))} />
             </div>
           </div>
           <div className="mt-4 rounded-2xl border border-orange-400/30 bg-gray-950/80 px-4 py-3">

@@ -565,3 +565,130 @@ OK: Final hotel count: 3
 OK: Final hotel count: 3
 OK: Final hotel count: 3
 INFO:     127.0.0.1:59584 - "POST /api/trip/plan HTTP/1.1" 201 Created
+=== TRIP REQUEST RECEIVED ===
+origin: Trichy
+destination: Bangalore
+dates: 2026-06-08 to 2026-06-10
+trip_days: 3
+budget: 19500.0
+preferences: ['scenic']
+=== TRIPSTATE BEING BUILT ===
+trip_days going into state: 3
+TripState trip_days = 3
+[BUDGET] raw trip_days from state: 3
+[BUDGET] trip_days_input: 3
+[BUDGET] FINAL days=3 nights=2
+[BUDGET] Hotel: Rs3500/night x 2 nights = Rs7000
+[BUDGET] Food: Rs750.0/person/day x 3 people x 3 days = Rs6750.0
+[BUDGET] Cost per person: Rs16544.09 ÷ 3 = Rs5514.7
+[BUDGET] === FINAL SUMMARY ===
+  Fuel:   Rs1609.03
+  Hotel:  Rs7000 (2 nights)
+  Food:   Rs6750.0 (3 days)
+  Toll:   Rs210.06
+  Misc:   Rs975.0
+  TOTAL:  Rs16544.09
+=== RECOMMENDATION AGENT ===
+Origin received: 'Trichy'
+Destination received: 'Bangalore'
+Will fetch recommendations for: 'Bangalore'
+DEBUG: coordinates cache cleared
+Target city for API calls: 'Bangalore'
+DEBUG: fetching recommendations for: Bangalore
+OK: Destination: Bangalore
+OK: Hotels found: 5
+OK: Restaurants found: 5
+OK: Attractions found: 5
+OK: Destination: Trichy
+OK: Hotels found: 5
+OK: Restaurants found: 5
+OK: Attractions found: 5
+OK: Final hotel count: 3
+OK: Final hotel count: 3
+OK: Final hotel count: 3
+INFO:     127.0.0.1:49294 - "POST /api/trip/plan HTTP/1.1" 201 Created
+=== TRIP REQUEST RECEIVED ===
+origin: Trichy
+destination: Bengaluru
+dates: 2026-06-08 to 2026-06-10
+trip_days: 3
+budget: 22500.0
+preferences: ['scenic']
+=== TRIPSTATE BEING BUILT ===
+trip_days going into state: 3
+TripState trip_days = 3
+[BUDGET] raw trip_days from state: 3
+[BUDGET] trip_days_input: 3
+[BUDGET] FINAL days=3 nights=2
+[BUDGET] Hotel: Rs3500/night x 2 nights = Rs7000
+[BUDGET] Food: Rs750.0/person/day x 3 people x 3 days = Rs6750.0
+[BUDGET] Cost per person: Rs16694.09 ÷ 3 = Rs5564.7
+[BUDGET] === FINAL SUMMARY ===
+  Fuel:   Rs1609.03
+  Hotel:  Rs7000 (2 nights)
+  Food:   Rs6750.0 (3 days)
+  Toll:   Rs210.06
+  Misc:   Rs1125.0
+  TOTAL:  Rs16694.09
+=== RECOMMENDATION AGENT ===
+Origin received: 'Trichy'
+Destination received: 'Bengaluru'
+Will fetch recommendations for: 'Bengaluru'
+DEBUG: coordinates cache cleared
+Target city for API calls: 'Bengaluru'
+DEBUG: fetching recommendations for: Bengaluru
+OK: Destination: Bengaluru
+OK: Hotels found: 5
+OK: Restaurants found: 5
+OK: Attractions found: 5
+OK: Destination: Trichy
+OK: Hotels found: 5
+OK: Restaurants found: 5
+OK: Attractions found: 5
+OK: Final hotel count: 3
+OK: Final hotel count: 3
+OK: Final hotel count: 3
+INFO:     127.0.0.1:65457 - "POST /api/trip/plan HTTP/1.1" 201 Created
+=== TRIP REQUEST RECEIVED ===
+origin: Trichy
+destination: Ooty
+dates: 2026-06-08 to 2026-06-11
+trip_days: 4
+budget: 25000.0
+preferences: ['scenic']
+=== TRIPSTATE BEING BUILT ===
+trip_days going into state: 4
+TripState trip_days = 4
+[BUDGET] raw trip_days from state: 4
+[BUDGET] trip_days_input: 4
+[BUDGET] FINAL days=4 nights=3
+[BUDGET] Hotel: Rs1800/night x 3 nights = Rs5400
+[BUDGET] Food: Rs420.0/person/day x 3 people x 4 days = Rs5040.0
+[BUDGET] Cost per person: Rs13383.34 ÷ 3 = Rs4461.11
+[BUDGET] === FINAL SUMMARY ===
+  Fuel:   Rs1497.8
+  Hotel:  Rs5400 (3 nights)
+  Food:   Rs5040.0 (4 days)
+  Toll:   Rs195.54
+  Misc:   Rs1250.0
+  TOTAL:  Rs13383.34
+=== RECOMMENDATION AGENT ===
+Origin received: 'Trichy'
+Destination received: 'Ooty'
+Will fetch recommendations for: 'Ooty'
+DEBUG: coordinates cache cleared
+Target city for API calls: 'Ooty'
+DEBUG: fetching recommendations for: Ooty
+OK: Destination: Ooty
+OK: Hotels found: 5
+OK: Restaurants found: 5
+OK: Attractions found: 5
+OK: Destination: Trichy
+OK: Hotels found: 5
+OK: Restaurants found: 5
+OK: Attractions found: 5
+OK: Final hotel count: 3
+OK: Final hotel count: 3
+OK: Final hotel count: 3
+INFO:     127.0.0.1:65160 - "POST /api/trip/plan HTTP/1.1" 201 Created
+INFO:     127.0.0.1:55647 - "GET /health HTTP/1.1" 200 OK
