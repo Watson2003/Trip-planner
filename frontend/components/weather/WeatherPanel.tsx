@@ -12,6 +12,12 @@ interface WeatherPanelProps {
   message?: string;
 }
 
+const LOCATION_ALIASES: Record<string, string> = {
+  bangalore: "bengaluru",
+  bengaluru: "bengaluru",
+  kodaikanal: "kodaikanal",
+};
+
 function formatWeatherDate(dateString: string, dayName: string) {
   const parsed = new Date(`${dateString}T00:00:00`);
   const formatted = Number.isNaN(parsed.getTime())
@@ -24,10 +30,18 @@ function formatWeatherDate(dateString: string, dayName: string) {
   return formatted || dayName;
 }
 
+function normalizeLocation(value: string) {
+  const normalized = value.trim().toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  return LOCATION_ALIASES[normalized] ?? normalized;
+}
+
 function splitWeatherByLocation(weatherData: DailyWeather[], origin: string, destination: string) {
+  const normalizedOrigin = normalizeLocation(origin);
+  const normalizedDestination = normalizeLocation(destination);
+
   return {
-    originWeather: weatherData.filter((item) => item.location === origin),
-    destinationWeather: weatherData.filter((item) => item.location === destination),
+    originWeather: weatherData.filter((item) => normalizeLocation(item.location) === normalizedOrigin),
+    destinationWeather: weatherData.filter((item) => normalizeLocation(item.location) === normalizedDestination),
   };
 }
 

@@ -12,6 +12,9 @@ from utils.config import settings
 
 router = APIRouter(tags=["map"])
 ORS_BASE_URL = "https://api.openrouteservice.org"
+GEOCODE_TIMEOUT_SECONDS = 8.0
+ROUTE_REQUEST_TIMEOUT_SECONDS = 15.0
+NETWORK_TIMEOUT_SECONDS = 45.0
 
 
 async def _geocode_place(client: httpx.AsyncClient, place: str, api_key: str) -> list[float]:
@@ -50,10 +53,10 @@ async def get_route(origin: str = Query(...), destination: str = Query(...)) -> 
         }
 
     try:
-        async with httpx.AsyncClient(timeout=30.0) as client:
+        async with httpx.AsyncClient(timeout=NETWORK_TIMEOUT_SECONDS) as client:
             origin_coords, destination_coords = await asyncio.gather(
-                asyncio.wait_for(_geocode_place(client, origin, settings.openrouteservice_api_key), timeout=4.0),
-                asyncio.wait_for(_geocode_place(client, destination, settings.openrouteservice_api_key), timeout=4.0),
+                asyncio.wait_for(_geocode_place(client, origin, settings.openrouteservice_api_key), timeout=GEOCODE_TIMEOUT_SECONDS),
+                asyncio.wait_for(_geocode_place(client, destination, settings.openrouteservice_api_key), timeout=GEOCODE_TIMEOUT_SECONDS),
             )
             response = await asyncio.wait_for(
                 client.post(
@@ -61,28 +64,11 @@ async def get_route(origin: str = Query(...), destination: str = Query(...)) -> 
                     headers={"Authorization": settings.openrouteservice_api_key},
                     json={"coordinates": [origin_coords, destination_coords]},
                 ),
-                timeout=8.0,
+                timeout=ROUTE_REQUEST_TIMEOUT_SECONDS,
             )
             response.raise_for_status()
             payload = response.json()
-    except httpx.HTTPStatusError as exc:
-        route = fallback_route(origin, destination, [])
-        if route is not None:
-            return {
-                "type": "FeatureCollection",
-                "features": [
-                    {
-                        "type": "Feature",
-                        "properties": {},
-                        "geometry": {
-                            "type": "LineString",
-                            "coordinates": [[lng, lat] for lat, lng in route["polyline"]],
-                        },
-                    }
-                ],
-            }
-        raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail="Route provider request failed") from exc
-    except httpx.HTTPError as exc:
+    except (asyncio.TimeoutError, httpx.TransportError) as exc:
         route = fallback_route(origin, destination, [])
         if route is not None:
             return {
@@ -99,5 +85,7 @@ async def get_route(origin: str = Query(...), destination: str = Query(...)) -> 
                 ],
             }
         raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail="Route provider unavailable") from exc
+    except httpx.HTTPStatusError as exc:
+        raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail="Route provider request failed") from exc
 
     return payload

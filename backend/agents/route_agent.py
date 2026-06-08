@@ -11,6 +11,9 @@ from utils.config import settings
 
 
 ORS_BASE_URL = "https://api.openrouteservice.org"
+GEOCODE_TIMEOUT_SECONDS = 8.0
+ROUTE_REQUEST_TIMEOUT_SECONDS = 15.0
+NETWORK_TIMEOUT_SECONDS = 45.0
 
 
 async def _geocode_place(client: httpx.AsyncClient, place: str, api_key: str) -> list[float]:
@@ -37,17 +40,20 @@ async def _fetch_route(origin: str, destination: str) -> dict[str, Any]:
     if not api_key:
         raise ValueError("OPENROUTESERVICE_API_KEY is not set in the environment.")
 
-    async with httpx.AsyncClient(timeout=2.0) as client:
+    async with httpx.AsyncClient(timeout=NETWORK_TIMEOUT_SECONDS) as client:
         origin_coords, destination_coords = await asyncio.gather(
-            _geocode_place(client, origin, api_key),
-            _geocode_place(client, destination, api_key),
+            asyncio.wait_for(_geocode_place(client, origin, api_key), timeout=GEOCODE_TIMEOUT_SECONDS),
+            asyncio.wait_for(_geocode_place(client, destination, api_key), timeout=GEOCODE_TIMEOUT_SECONDS),
         )
-        response = await client.post(
-            f"{ORS_BASE_URL}/v2/directions/driving-car/geojson",
-            headers={"Authorization": api_key},
-            json={
-                "coordinates": [origin_coords, destination_coords],
-            },
+        response = await asyncio.wait_for(
+            client.post(
+                f"{ORS_BASE_URL}/v2/directions/driving-car/geojson",
+                headers={"Authorization": api_key},
+                json={
+                    "coordinates": [origin_coords, destination_coords],
+                },
+            ),
+            timeout=ROUTE_REQUEST_TIMEOUT_SECONDS,
         )
         response.raise_for_status()
         payload = response.json()
@@ -78,8 +84,8 @@ async def route_agent(state: TripState) -> TripState:
         return state
 
     try:
-        route = await asyncio.wait_for(_fetch_route(origin, destination), timeout=2.5)
-    except Exception:
+        route = await _fetch_route(origin, destination)
+    except (asyncio.TimeoutError, httpx.TransportError, ValueError):
         route = fallback_route(origin, destination, waypoints)
         if route is None:
             state.setdefault("errors", []).append(f"Could not build a route for {origin} to {destination}.")

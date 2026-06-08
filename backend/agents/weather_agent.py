@@ -22,6 +22,12 @@ TRAVEL_DATES_PATTERN = re.compile(
     re.IGNORECASE,
 )
 
+LOCATION_QUERY_ALIASES: dict[str, list[str]] = {
+    "bangalore": ["Bengaluru", "Bangalore, Karnataka, IN"],
+    "bengaluru": ["Bangalore", "Bengaluru, Karnataka, IN"],
+    "kodaikanal": ["Kodaikanal, Tamil Nadu, IN"],
+}
+
 
 def _normalize_locations(state: TripState) -> list[str]:
     """Collect unique trip locations in the order they should be forecasted."""
@@ -42,6 +48,19 @@ def _normalize_locations(state: TripState) -> list[str]:
         locations.append(normalized)
 
     return locations
+
+
+def _normalize_location_key(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", " ", str(value).strip().lower()).strip()
+
+
+def _location_queries(location: str) -> list[str]:
+    queries = [str(location).strip()]
+    normalized = _normalize_location_key(location)
+    for alias in LOCATION_QUERY_ALIASES.get(normalized, []):
+        if alias not in queries:
+            queries.append(alias)
+    return queries
 
 
 def _parse_iso_date(value: str) -> date:
@@ -174,18 +193,23 @@ async def _fetch_location_weather(
         logger.error("OPENWEATHERMAP_API_KEY is not set in the environment.")
         return []
 
-    try:
-        response = await client.get(
-            OPENWEATHER_URL,
-            params={"q": location, "appid": settings.openweathermap_api_key, "units": "metric"},
-        )
-        response.raise_for_status()
-        payload = response.json()
-    except (httpx.HTTPError, ValueError) as exc:
-        logger.exception("Failed to fetch weather forecast for %s: %s", location, exc)
-        return []
+    last_error: Exception | None = None
+    for query in _location_queries(location):
+        try:
+            response = await client.get(
+                OPENWEATHER_URL,
+                params={"q": query, "appid": settings.openweathermap_api_key, "units": "metric"},
+            )
+            response.raise_for_status()
+            payload = response.json()
+            return filter_openweather_forecast_by_date_range(payload, location, start_date, end_date)
+        except (httpx.HTTPError, ValueError) as exc:
+            last_error = exc
+            logger.warning("Weather lookup failed for %s using query %s: %s", location, query, exc)
 
-    return filter_openweather_forecast_by_date_range(payload, location, start_date, end_date)
+    if last_error is not None:
+        logger.exception("Failed to fetch weather forecast for %s after trying aliases", location, exc_info=last_error)
+    return []
 
 
 def filter_openweather_forecast_by_date_range(

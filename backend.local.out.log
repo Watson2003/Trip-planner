@@ -1,31 +1,44 @@
-           INFO:     127.0.0.1:52467 - "GET /health HTTP/1.1" 200 OK
-DEBUG: origin=Trichy, destination=Ooty
+INFO:     127.0.0.1:54955 - "GET /health HTTP/1.1" 200 OK
+=== TRIP REQUEST RECEIVED ===
+origin: Trichy
+destination: Ooty
+dates: 2026-06-09 to 2026-06-11
+trip_days: 3
+budget: 20000.0
+preferences: ['scenic']
+=== TRIPSTATE BEING BUILT ===
+trip_days going into state: 3
+TripState trip_days = 3
+[BUDGET] raw trip_days from state: 3
+[BUDGET] trip_days_input: 3
+[BUDGET] FINAL days=3 nights=2
+[BUDGET] Hotel: Rs1800/night x 2 nights = Rs3600
+[BUDGET] Food: Rs420.0/person/day x 4 people x 3 days = Rs5040.0
+[BUDGET] Cost per person: Rs11555.62 ÷ 4 = Rs2888.91
+[BUDGET] === FINAL SUMMARY ===
+  Fuel:   Rs1720.08
+  Hotel:  Rs3600 (2 nights)
+  Food:   Rs5040.0 (3 days)
+  Toll:   Rs195.54
+  Misc:   Rs1000.0
+  TOTAL:  Rs11555.62
+=== RECOMMENDATION AGENT ===
+Origin received: 'Trichy'
+Destination received: 'Ooty'
+Will fetch recommendations for: 'Ooty'
+DEBUG: coordinates cache cleared
+Target city for API calls: 'Ooty'
 DEBUG: fetching recommendations for: Ooty
-DEBUG get_coordinates: fetching for 'Ooty'
-DEBUG get_coordinates: fetching for 'Ooty'
-DEBUG get_coordinates: fetching for 'Ooty'
-INFO:     127.0.0.1:65389 - "POST /api/trip/plan HTTP/1.1" 500 Internal Server Error
-DEBUG: origin=Trichy, destination=Ooty
-DEBUG: fetching recommendations for: Ooty
-DEBUG get_coordinates: fetching for 'Ooty'
-DEBUG get_coordinates: fetching for 'Ooty'
-DEBUG get_coordinates: fetching for 'Ooty'
-INFO:     127.0.0.1:50036 - "POST /api/trip/plan HTTP/1.1" 500 Internal Server Error
-DEBUG: origin=chennai, destination=ooty
-DEBUG: fetching recommendations for: ooty
-DEBUG get_coordinates: fetching for 'ooty'
-DEBUG get_coordinates: fetching for 'ooty'
-DEBUG get_coordinates: fetching for 'ooty'
-INFO:     127.0.0.1:59500 - "POST /api/trip/plan HTTP/1.1" 500 Internal Server Error
-INFO:     127.0.0.1:57814 - "GET /health HTTP/1.1" 200 OK
-DEBUG: origin=Chennai, destination=Ooty
-DEBUG: fetching recommendations for: Ooty
-DEBUG get_coordinates: fetching for 'Ooty'
-DEBUG get_coordinates: fetching for 'Ooty'
-DEBUG get_coordinates: fetching for 'Ooty'
-INFO:     127.0.0.1:61934 - "POST /api/trip/plan HTTP/1.1" 500 Internal Server Error
-INFO:     127.0.0.1:53539 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53539 - "GET /favicon.ico HTTP/1.1" 404 Not Found
-i/trip/57/pdf HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58398 - "POST /api/trip/plan HTTP/1.1" 201 Created
-INFO:     127.0.0.1:51459 - "POST /api/trip/plan HTTP/1.1" 201 Created
+OK: Destination: Ooty
+OK: Hotels found: 5
+OK: Restaurants found: 5
+OK: Attractions found: 5
+OK: Destination: Trichy
+OK: Hotels found: 5
+OK: Restaurants found: 5
+OK: Attractions found: 5
+OK: Final hotel count: 3
+OK: Final hotel count: 3
+OK: Final hotel count: 3
+INFO:     127.0.0.1:54431 - "POST /api/trip/plan HTTP/1.1" 201 Created
+INFO:     127.0.0.1:50788 - "GET /api/trip/104/pdf HTTP/1.1" 200 OK

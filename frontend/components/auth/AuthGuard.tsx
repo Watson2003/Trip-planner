@@ -13,11 +13,15 @@ type AuthGuardProps = {
 export default function AuthGuard({ children }: AuthGuardProps) {
   const router = useRouter();
   const [checking, setChecking] = useState(true);
+  const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
-    if (!isLoggedIn()) {
-      router.replace("/login");
+    const loggedIn = isLoggedIn();
+    setAuthenticated(loggedIn);
+
+    if (!loggedIn) {
       setChecking(false);
+      router.replace("/login");
       return;
     }
 
@@ -35,8 +39,15 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     );
   }
 
-  if (!isLoggedIn()) {
-    return null;
+  if (!authenticated) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-slate-950 text-white">
+        <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-5 py-4 shadow-2xl shadow-black/30 backdrop-blur">
+          <Loader2 className="h-5 w-5 animate-spin text-orange-400" />
+          <span className="text-sm font-medium text-slate-200">Redirecting to login...</span>
+        </div>
+      </main>
+    );
   }
 
   return <>{children}</>;
