@@ -346,123 +346,123 @@ export default function BudgetBreakdown({
   ];
 
   return (
-    <section className="w-full overflow-hidden rounded-[2rem] border border-gray-700 bg-gray-900 text-white shadow-2xl">
-      <div className="border-b border-gray-700 px-5 pt-5 pb-3">
-        <p className="text-xs uppercase tracking-[0.24em] text-gray-400">Budget</p>
+    <section className="w-full overflow-hidden rounded-[2rem] border border-[#1a1a1a] bg-[#0a0a0a] text-white shadow-2xl">
+      <div className="border-b border-[#1a1a1a] px-5 pt-5 pb-3">
+        <p className="text-xs uppercase tracking-[0.24em] text-[#888888]">Budget</p>
         <h2 className="text-xl font-bold text-white">Your Trip Cost Breakdown</h2>
-        <p className="mt-1 text-sm text-gray-400">
+        <p className="mt-1 text-sm text-[#888888]">
           {vehicle?.vehicle_name ?? "Vehicle"} · {vehicle?.vehicle_type ?? "car"} · {vehicle?.fuel_type ?? "petrol"}
         </p>
       </div>
 
       <div className="space-y-6 p-5">
-        <div className="rounded-2xl border border-orange-500/30 bg-orange-500/10 p-4">
-          <div className="mb-4 text-sm font-bold text-orange-200">Fuel Details</div>
+        <div className="rounded-2xl border border-[#1a1a1a] bg-[#111111] p-4">
+          <div className="mb-4 text-sm font-bold text-white">Fuel Details</div>
           <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-2 text-sm text-gray-200">
+            <div className="space-y-2 text-sm text-[#a0a0a0]">
               <Row label="Distance" value={`${fuelDetails?.distance_km ?? 0} km`} />
               <Row label="Fuel needed" value={`${(fuelDetails?.fuel_required_litres ?? 0).toFixed(2)} litres`} />
               <Row label="Price per litre" value={formatInr(fuelDetails?.fuel_price_per_litre ?? 0)} />
             </div>
-            <div className="space-y-2 text-sm text-gray-200">
+            <div className="space-y-2 text-sm text-[#a0a0a0]">
               <Row label="Vehicle" value={fuelDetails?.vehicle_name ?? vehicle?.vehicle_name ?? "-"} />
               <Row label="Mileage" value={`${fuelDetails?.mileage_kmpl ?? vehicle?.mileage_kmpl ?? 0} km/l`} />
               <Row label="Travellers" value={`${numberOfPeople}`} />
             </div>
           </div>
-          <div className="mt-4 rounded-2xl border border-orange-400/30 bg-gray-950/80 px-4 py-3">
-            <div className="text-sm font-semibold text-gray-300">Total Fuel Cost</div>
-            <div className="mt-1 text-2xl font-black text-orange-300">{formatInr(fuelCost)}</div>
+          <div className="mt-4 rounded-2xl border border-[#2a2a2a] bg-[#0a0a0a] px-4 py-3">
+            <div className="text-sm font-semibold text-[#888888]">Total Fuel Cost</div>
+            <div className="mt-1 text-2xl font-black text-white">{formatInr(fuelCost)}</div>
           </div>
         </div>
 
-        <div className="overflow-x-auto rounded-2xl border border-gray-700 bg-gray-950/70">
+        <div className="overflow-x-auto rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a]">
           <table className="min-w-[520px] w-full border-collapse">
             <thead>
-              <tr className="bg-gray-800 text-left text-sm text-gray-300">
+              <tr className="bg-[#111111] text-left text-sm text-[#888888]">
                 <th className="px-4 py-3 font-semibold">Category</th>
                 <th className="px-4 py-3 font-semibold text-right">Amount (INR)</th>
               </tr>
             </thead>
             <tbody>
-              <tr className="bg-gray-900">
-                <td className="border-t border-gray-800 px-4 py-3">⛽ Fuel</td>
-                <td className="border-t border-gray-800 px-4 py-3 text-right">₹{Math.round(fuelCost).toLocaleString("en-IN")}</td>
+              <tr className="bg-[#0a0a0a]">
+                <td className="border-t border-[#1a1a1a] px-4 py-3">⛽ Fuel</td>
+                <td className="border-t border-[#1a1a1a] px-4 py-3 text-right">₹{Math.round(fuelCost).toLocaleString("en-IN")}</td>
               </tr>
 
-              <tr className="border-b border-gray-700/50">
+              <tr className="border-b border-[#1a1a1a]">
                 <td className="py-3 px-4">
                   <div className="flex items-center gap-2">
                     <span>🏨</span>
                     <span className="text-white">Hotels</span>
                   </div>
-                  <div className="text-xs text-gray-400 mt-1">{hotelExplanation}</div>
+                  <div className="mt-1 text-xs text-[#888888]">{hotelExplanation}</div>
                 </td>
                 <td className="py-3 px-4 text-right text-white">₹{Math.round(hotelTotal).toLocaleString("en-IN")}</td>
               </tr>
 
-              <tr className="border-b border-gray-700/50">
+              <tr className="border-b border-[#1a1a1a]">
                 <td className="py-3 px-4">
                   <div className="flex items-center gap-2">
                     <span>🍽️</span>
                     <span className="text-white">Food</span>
                   </div>
-                  <div className="text-xs text-gray-400 mt-1">{budgetData.food_explanation}</div>
+                  <div className="mt-1 text-xs text-[#888888]">{budgetData.food_explanation}</div>
                 </td>
                 <td className="py-3 px-4 text-right text-white">₹{Math.round(foodTotal).toLocaleString("en-IN")}</td>
               </tr>
 
-              <tr className="bg-gray-950">
-                <td className="border-t border-gray-800 px-4 py-3">🛣️ Tolls</td>
-                <td className="border-t border-gray-800 px-4 py-3 text-right">₹{Math.round(tollCost).toLocaleString("en-IN")}</td>
+              <tr className="bg-[#0d0d0d]">
+                <td className="border-t border-[#1a1a1a] px-4 py-3">🛣️ Tolls</td>
+                <td className="border-t border-[#1a1a1a] px-4 py-3 text-right">₹{Math.round(tollCost).toLocaleString("en-IN")}</td>
               </tr>
 
-              <tr className="bg-gray-900">
-                <td className="border-t border-gray-800 px-4 py-3">🎯 Misc</td>
-                <td className="border-t border-gray-800 px-4 py-3 text-right">₹{Math.round(miscCost).toLocaleString("en-IN")}</td>
+              <tr className="bg-[#0a0a0a]">
+                <td className="border-t border-[#1a1a1a] px-4 py-3">🎯 Misc</td>
+                <td className="border-t border-[#1a1a1a] px-4 py-3 text-right">₹{Math.round(miscCost).toLocaleString("en-IN")}</td>
               </tr>
 
-              <tr className="bg-orange-500/10 font-bold">
+              <tr className="bg-white/10 font-bold">
                 <td className="py-3 px-4 text-white">Total</td>
-                <td className="py-3 px-4 text-right text-orange-400">₹{Math.round(grandTotal).toLocaleString("en-IN")}</td>
+                <td className="py-3 px-4 text-right text-white">₹{Math.round(grandTotal).toLocaleString("en-IN")}</td>
               </tr>
             </tbody>
           </table>
         </div>
 
         {numberOfPeople > 1 && (
-          <div className="mt-4 p-4 rounded-xl bg-orange-500/10 border border-orange-500/20">
+          <div className="mt-4 rounded-xl border border-[#1a1a1a] bg-[#111111] p-4">
             <div className="flex items-center justify-between mb-1">
               <div className="flex items-center gap-2">
                 <span className="text-xl">👥</span>
                 <span className="text-white font-semibold">Cost per person</span>
               </div>
-              <span className="text-orange-400 text-xl font-bold">
+              <span className="text-xl font-bold text-white">
                 ₹{Math.round(grandTotal / Math.max(numberOfPeople, 1)).toLocaleString("en-IN")}
               </span>
             </div>
 
-            <div className="text-xs text-gray-400 mb-3">
+            <div className="mb-3 text-xs text-[#888888]">
               ₹{Math.round(grandTotal).toLocaleString("en-IN")}
               {" total ÷ "}
               {numberOfPeople}
               {" travellers = "}
-              <span className="text-orange-400 font-medium">
+              <span className="font-medium text-white">
                 ₹{Math.round(grandTotal / Math.max(numberOfPeople, 1)).toLocaleString("en-IN")}
                 {" per person"}
               </span>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
               {perPersonItems.map((item) => (
-                <div key={item.label} className="bg-gray-800/60 rounded-lg p-3 text-center">
-                  <div className="text-xs text-gray-400 mb-1">
+                <div key={item.label} className="rounded-lg border border-[#1a1a1a] bg-[#111111] p-3 text-center">
+                  <div className="mb-1 text-xs text-[#888888]">
                     {item.icon} {item.label}
                   </div>
                   <div className="text-sm text-white font-medium">
                     ₹{item.perPerson.toLocaleString("en-IN")}
                   </div>
-                  <div className="text-xs text-gray-500 mt-1">
+                  <div className="mt-1 text-xs text-[#555555]">
                     of ₹{Math.round(item.total).toLocaleString("en-IN")}
                   </div>
                 </div>
@@ -472,8 +472,8 @@ export default function BudgetBreakdown({
         )}
 
         <div className="grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">
-          <div className="rounded-2xl border border-gray-700 bg-gray-950/70 p-4">
-            <p className="text-xs uppercase tracking-[0.24em] text-gray-400">Budget Pie Chart</p>
+          <div className="rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a] p-4">
+            <p className="text-xs uppercase tracking-[0.24em] text-[#888888]">Budget Pie Chart</p>
             <div className="mt-3">
               <ResponsiveContainer width="100%" height={280}>
                 <PieChart>
@@ -501,7 +501,7 @@ export default function BudgetBreakdown({
               {chartData.map((entry) => (
                 <div
                   key={entry.name}
-                  className="inline-flex items-center gap-2 rounded-full border border-gray-700 bg-gray-900 px-3 py-1.5 text-xs text-gray-300"
+                  className="inline-flex items-center gap-2 rounded-full border border-[#1a1a1a] bg-[#111111] px-3 py-1.5 text-xs text-[#a0a0a0]"
                 >
                   <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: entry.color }} />
                   {entry.name}
@@ -510,18 +510,18 @@ export default function BudgetBreakdown({
             </div>
           </div>
 
-          <div className="rounded-2xl border border-gray-700 bg-gray-950/70 p-4">
-            <p className="text-xs uppercase tracking-[0.24em] text-gray-400">Budget vs Actual</p>
+          <div className="rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a] p-4">
+            <p className="text-xs uppercase tracking-[0.24em] text-[#888888]">Budget vs Actual</p>
             <div className="mt-4 space-y-3">
-              <div className="flex items-center justify-between text-sm text-gray-300">
+              <div className="flex items-center justify-between text-sm text-[#a0a0a0]">
                 <span>Your budget</span>
                 <span>{formatInr(userBudget)}</span>
               </div>
-              <div className="flex items-center justify-between text-sm text-gray-300">
+              <div className="flex items-center justify-between text-sm text-[#a0a0a0]">
                 <span>Estimated cost</span>
                 <span>{formatInr(grandTotal)}</span>
               </div>
-              <div className="h-3 overflow-hidden rounded-full bg-gray-800">
+              <div className="h-3 overflow-hidden rounded-full bg-[#111111]">
                 <div
                   className={`h-full rounded-full transition-all ${overBudget ? "bg-rose-500" : "bg-emerald-500"}`}
                   style={{ width: `${Math.min(100, budgetProgress)}%` }}
@@ -540,8 +540,8 @@ export default function BudgetBreakdown({
 
 function Row({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-center justify-between gap-4 rounded-xl border border-white/10 bg-gray-950/60 px-3 py-2">
-      <span className="text-gray-300">{label}</span>
+    <div className="flex items-center justify-between gap-4 rounded-xl border border-[#1a1a1a] bg-[#0a0a0a]/60 px-3 py-2">
+      <span className="text-[#a0a0a0]">{label}</span>
       <span className="font-semibold text-white">{value}</span>
     </div>
   );

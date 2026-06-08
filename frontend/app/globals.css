@@ -9,7 +9,19 @@ body {
 }
 
 :root {
-  color-scheme: light;
+  --bg-primary: #000000;
+  --bg-card: #0a0a0a;
+  --bg-input: #111111;
+  --bg-hover: #1a1a1a;
+  --border-primary: #1a1a1a;
+  --border-input: #2a2a2a;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --text-muted: #555555;
+  --accent: #ffffff;
+  --accent-text: #000000;
+  --accent-hover: #e0e0e0;
+  color-scheme: dark;
 }
 
 * {
@@ -22,22 +34,20 @@ html.dark {
 
 html {
   scroll-behavior: smooth;
-  background: #020617;
+  background: var(--bg-primary);
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  background: #020617;
-  color: #0f172a;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   font-family: Arial, Helvetica, sans-serif;
 }
 
 html.dark body {
-  background:
-    radial-gradient(circle at top left, rgba(30, 41, 59, 0.75), transparent 25%),
-    linear-gradient(180deg, #020617 0%, #0f172a 48%, #111827 100%);
-  color: #e2e8f0;
+  background: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 a {

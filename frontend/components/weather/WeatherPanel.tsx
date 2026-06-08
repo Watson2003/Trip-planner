@@ -47,11 +47,11 @@ function splitWeatherByLocation(weatherData: DailyWeather[], origin: string, des
 
 function WeatherDayCard({ item }: { item: DailyWeather }) {
   return (
-    <article className="min-w-[130px] rounded-xl bg-gray-800 p-3 text-center text-white">
-      <div className="text-xs text-gray-400">{formatWeatherDate(item.date, item.day_name)}</div>
+    <article className="min-w-[130px] rounded-xl border border-[#1a1a1a] bg-[#111111] p-3 text-center text-white">
+      <div className="text-xs text-[#888888]">{formatWeatherDate(item.date, item.day_name)}</div>
       <div className="my-2 text-3xl">{item.weather_icon}</div>
-      <div className="mb-2 text-xs text-gray-300">{item.condition}</div>
-      <div className="space-y-1 text-left text-xs text-gray-300">
+      <div className="mb-2 text-xs text-[#a0a0a0]">{item.condition}</div>
+      <div className="space-y-1 text-left text-xs text-[#a0a0a0]">
         <div className="flex items-center gap-1">🌡️ {Math.round(item.temp_min_celsius)}° ~ {Math.round(item.temp_max_celsius)}°C</div>
         <div className="flex items-center gap-1">🤔 Feels {Math.round(item.temp_feels_like)}°C</div>
         <div className="flex items-center gap-1">💧 {item.humidity_percent}%</div>
@@ -67,8 +67,8 @@ function WeatherDayCard({ item }: { item: DailyWeather }) {
 
 function WeatherLocationSection({ title, weather }: { title: string; weather: DailyWeather[] }) {
   return (
-    <section className="rounded-2xl border border-gray-700 bg-gray-900 overflow-hidden">
-      <div className="border-b border-gray-700 px-4 py-3">
+    <section className="overflow-hidden rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a]">
+      <div className="border-b border-[#1a1a1a] px-4 py-3">
         <h3 className="text-sm font-semibold text-white">{title}</h3>
       </div>
       <div className="p-4">
@@ -79,7 +79,7 @@ function WeatherLocationSection({ title, weather }: { title: string; weather: Da
             ))}
           </div>
         ) : (
-          <div className="rounded-xl border border-dashed border-gray-700 px-4 py-8 text-center text-sm text-gray-400">
+          <div className="rounded-xl border border-dashed border-[#2a2a2a] px-4 py-8 text-center text-sm text-[#888888]">
             No weather data available for selected dates.
           </div>
         )}
@@ -99,20 +99,20 @@ export default function WeatherPanel({
 }: WeatherPanelProps) {
   if (status === "unavailable") {
     return (
-      <section className="w-full rounded-2xl border border-gray-700 bg-gray-900 p-6 text-center text-white">
+      <section className="w-full rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a] p-6 text-center text-white">
         <div className="text-5xl">📅</div>
         <h2 className="mt-4 text-2xl font-bold">Forecast Unavailable</h2>
-        <p className="mt-3 text-sm text-gray-300">{message ?? "Forecast not available yet. Check back closer to your travel date."}</p>
+        <p className="mt-3 text-sm text-[#a0a0a0]">{message ?? "Forecast not available yet. Check back closer to your travel date."}</p>
       </section>
     );
   }
 
   if (status === "past_dates") {
     return (
-      <section className="w-full rounded-2xl border border-gray-700 bg-gray-900 p-6 text-center text-white">
+      <section className="w-full rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a] p-6 text-center text-white">
         <div className="text-5xl">⚠️</div>
         <h2 className="mt-4 text-2xl font-bold">Past Travel Dates</h2>
-        <p className="mt-3 text-sm text-gray-300">These travel dates have already passed. No forecast available.</p>
+        <p className="mt-3 text-sm text-[#a0a0a0]">These travel dates have already passed. No forecast available.</p>
       </section>
     );
   }
@@ -121,13 +121,13 @@ export default function WeatherPanel({
   const hasWeather = weatherData.length > 0;
 
   return (
-    <section className="w-full overflow-hidden rounded-2xl border border-gray-700 bg-gray-900 text-white">
-      <div className="flex items-center justify-between gap-3 border-b border-gray-700 px-4 pt-4 pb-2">
+    <section className="w-full overflow-hidden rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a] text-white">
+      <div className="flex items-center justify-between gap-3 border-b border-[#1a1a1a] px-4 pt-4 pb-2">
         <div>
-          <p className="text-xs uppercase tracking-[0.24em] text-gray-400">Weather</p>
+          <p className="text-xs uppercase tracking-[0.24em] text-[#888888]">Weather</p>
           <h2 className="text-lg font-bold">Forecast for exact travel dates</h2>
         </div>
-        <div className="text-sm text-gray-400">
+        <div className="text-sm text-[#888888]">
           {startDate} to {endDate}
         </div>
       </div>
@@ -139,7 +139,7 @@ export default function WeatherPanel({
             <WeatherLocationSection title={`📍 Destination Weather — ${destination}`} weather={destinationWeather} />
           </>
         ) : (
-          <div className="rounded-xl border border-dashed border-gray-700 px-4 py-8 text-center text-sm text-gray-400 md:col-span-2">
+          <div className="rounded-xl border border-dashed border-[#2a2a2a] px-4 py-8 text-center text-sm text-[#888888] md:col-span-2">
             No weather data available for selected dates.
           </div>
         )}

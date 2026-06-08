@@ -47,11 +47,11 @@ function formatDate(value?: string | null) {
 
 function LoadingCard() {
   return (
-    <div className="rounded-[1.75rem] border border-white/10 bg-slate-900/80 p-5 shadow-2xl shadow-black/30 backdrop-blur-xl">
+    <div className="rounded-[1.75rem] border border-[#1a1a1a] bg-[#0a0a0a] p-5 shadow-2xl shadow-black/30 backdrop-blur-xl">
       <div className="animate-pulse space-y-4">
         <div className="flex items-center justify-between">
           <div className="h-5 w-36 rounded bg-white/10" />
-          <Loader2 className="h-5 w-5 animate-spin text-orange-400" />
+          <Loader2 className="h-5 w-5 animate-spin text-white" />
         </div>
         <div className="h-8 w-3/4 rounded bg-white/10" />
         <div className="grid gap-3 sm:grid-cols-2">
@@ -92,7 +92,7 @@ function RecommendationPreview({
 
   if (!recommendations.length) {
     return (
-      <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-400">
+      <div className="rounded-2xl border border-[#1a1a1a] bg-[#111111] px-4 py-3 text-sm text-[#888888]">
         No recommendation details available for this trip yet.
       </div>
     );
@@ -101,18 +101,18 @@ function RecommendationPreview({
   return (
     <div className="grid gap-3 md:grid-cols-2">
       {recommendations.map((locationItem) => (
-        <div key={locationItem.location} className="rounded-2xl border border-white/10 bg-white/5 p-4">
+        <div key={locationItem.location} className="rounded-2xl border border-[#1a1a1a] bg-[#111111] p-4">
           <div className="text-sm font-bold text-white">{locationItem.location}</div>
-          <div className="mt-3 space-y-3 text-sm text-slate-300">
+          <div className="mt-3 space-y-3 text-sm text-[#a0a0a0]">
             <div>
-              <div className="text-[11px] uppercase tracking-[0.18em] text-orange-300">Hotel</div>
-              <div className="mt-1 font-semibold text-slate-100">
+              <div className="text-[11px] uppercase tracking-[0.18em] text-white">Hotel</div>
+              <div className="mt-1 font-semibold text-white">
                 {locationItem.hotels[0]?.name ?? "No hotel suggestion"}
               </div>
             </div>
             <div>
-              <div className="text-[11px] uppercase tracking-[0.18em] text-cyan-300">Restaurant</div>
-              <div className="mt-1 font-semibold text-slate-100">
+              <div className="text-[11px] uppercase tracking-[0.18em] text-[#a0a0a0]">Restaurant</div>
+              <div className="mt-1 font-semibold text-white">
                 {locationItem.restaurants[0]?.name ?? "No restaurant suggestion"}
               </div>
             </div>
@@ -234,18 +234,18 @@ export default function MyTripsPage() {
 
   return (
     <AuthGuard>
-      <div className="min-h-screen bg-slate-950 text-white">
+      <div className="min-h-screen bg-black text-white">
         <Navbar />
 
         <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-          <section className="mb-8 overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top_left,_rgba(249,115,22,0.22),_transparent_30%),linear-gradient(180deg,rgba(15,23,42,0.95),rgba(2,6,23,0.98))] p-6 shadow-2xl shadow-black/30 sm:p-8">
+          <section className="mb-8 overflow-hidden rounded-[2rem] border border-[#1a1a1a] bg-[#0a0a0a] p-6 shadow-2xl shadow-black/30 sm:p-8">
             <div className="max-w-3xl space-y-4">
-              <div className="inline-flex items-center gap-2 rounded-full border border-orange-400/20 bg-orange-500/10 px-4 py-2 text-sm font-semibold text-orange-300">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm font-semibold text-white">
                 <Route className="h-4 w-4" />
                 My Trips
               </div>
               <h1 className="text-3xl font-black tracking-tight sm:text-4xl">Your saved road trip plans</h1>
-              <p className="max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
+              <p className="max-w-2xl text-sm leading-6 text-[#a0a0a0] sm:text-base">
                 Browse every trip you&apos;ve planned, review when each one was created, and download the PDF
                 whenever you need the report again.
               </p>
@@ -262,17 +262,17 @@ export default function MyTripsPage() {
               {error}
             </div>
           ) : trips.length === 0 ? (
-            <section className="flex min-h-[40vh] w-full flex-col items-center justify-center rounded-[2rem] border border-white/10 bg-white/5 px-6 py-20 text-center">
-              <div className="mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-orange-500/10 text-orange-300 ring-1 ring-orange-400/20">
+            <section className="flex min-h-[40vh] w-full flex-col items-center justify-center rounded-[2rem] border border-[#1a1a1a] bg-[#0a0a0a] px-6 py-20 text-center">
+              <div className="mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-white/10 text-white ring-1 ring-white/20">
                 <Route className="h-10 w-10" />
               </div>
               <h2 className="text-2xl font-black tracking-tight">No trips yet</h2>
-              <p className="mt-3 max-w-md text-sm leading-6 text-slate-400">
+              <p className="mt-3 max-w-md text-sm leading-6 text-[#888888]">
                 Plan your first route and it will appear here with the download link and trip details.
               </p>
               <Link
                 href="/"
-                className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-orange-500 px-5 py-3 text-sm font-bold text-white transition hover:bg-orange-600"
+                className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-white px-5 py-3 text-sm font-bold text-black transition hover:bg-[#e0e0e0]"
               >
                 Plan Your First Trip
               </Link>
@@ -282,49 +282,49 @@ export default function MyTripsPage() {
               {trips.map((trip) => (
                 <article
                   key={trip.id}
-                  className="w-full overflow-hidden rounded-[1.75rem] border border-white/10 bg-slate-900/80 p-5 shadow-2xl shadow-black/20 backdrop-blur-xl"
+                  className="w-full overflow-hidden rounded-[1.75rem] border border-[#1a1a1a] bg-[#0a0a0a] p-5 shadow-2xl shadow-black/20 backdrop-blur-xl"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <div className="text-xs uppercase tracking-[0.24em] text-slate-400">Trip #{trip.id}</div>
+                      <div className="text-xs uppercase tracking-[0.24em] text-[#888888]">Trip #{trip.id}</div>
                       <h2 className="mt-2 flex flex-wrap items-center gap-2 text-2xl font-black tracking-tight">
                         <span>{trip.origin}</span>
-                        <ArrowRight className="h-5 w-5 text-orange-400" />
+                        <ArrowRight className="h-5 w-5 text-white" />
                         <span>{trip.destination}</span>
                       </h2>
                     </div>
 
-                    <div className="rounded-full border border-orange-400/20 bg-orange-500/10 px-3 py-2 text-xs font-semibold text-orange-200">
+                    <div className="rounded-full border border-white/20 bg-white/10 px-3 py-2 text-xs font-semibold text-white">
                       Saved
                     </div>
                   </div>
 
                   <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                    <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                      <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-slate-400">
+                    <div className="rounded-2xl border border-[#1a1a1a] bg-[#111111] p-4">
+                      <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-[#888888]">
                         <CalendarDays className="h-3.5 w-3.5" />
                         Travel Dates
                       </div>
-                      <div className="mt-2 text-sm font-semibold text-slate-100">
+                      <div className="mt-2 text-sm font-semibold text-white">
                         {formatDate(trip.dates?.start)} - {formatDate(trip.dates?.end)}
                       </div>
                     </div>
 
-                    <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                      <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-slate-400">
+                    <div className="rounded-2xl border border-[#1a1a1a] bg-[#111111] p-4">
+                      <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-[#888888]">
                         <IndianRupee className="h-3.5 w-3.5" />
                         Total Budget
                       </div>
-                      <div className="mt-2 text-sm font-semibold text-slate-100">
+                      <div className="mt-2 text-sm font-semibold text-white">
                         {"\u20b9"}
                         {Math.round(trip.budget ?? 0).toLocaleString("en-IN")}
                       </div>
                     </div>
                   </div>
 
-                  <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-4">
-                    <div className="text-xs uppercase tracking-[0.2em] text-slate-400">Created</div>
-                    <div className="mt-2 text-sm font-semibold text-slate-100">{formatDate(trip.created_at)}</div>
+                  <div className="mt-4 rounded-2xl border border-[#1a1a1a] bg-[#111111] p-4">
+                    <div className="text-xs uppercase tracking-[0.2em] text-[#888888]">Created</div>
+                    <div className="mt-2 text-sm font-semibold text-white">{formatDate(trip.created_at)}</div>
                   </div>
 
                   <div className="mt-5 flex flex-col gap-2 sm:flex-row">
@@ -335,7 +335,7 @@ export default function MyTripsPage() {
                           setError(downloadError instanceof Error ? downloadError.message : "Unable to download PDF");
                         });
                       }}
-                      className="inline-flex w-full flex-1 items-center justify-center gap-2 rounded-2xl bg-orange-500 px-5 py-3 text-sm font-bold text-white transition hover:bg-orange-600"
+                      className="inline-flex w-full flex-1 items-center justify-center gap-2 rounded-2xl bg-white px-5 py-3 text-sm font-bold text-black transition hover:bg-[#e0e0e0]"
                     >
                       <FileDown className="h-4 w-4" />
                       Download PDF
@@ -344,7 +344,7 @@ export default function MyTripsPage() {
                     <button
                       type="button"
                       onClick={() => toggleRecommendations(trip.id)}
-                      className="inline-flex w-full flex-1 items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:bg-white/10"
+                      className="inline-flex w-full flex-1 items-center justify-center gap-2 rounded-2xl border border-[#2a2a2a] bg-transparent px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1a1a1a]"
                     >
                       View Recommendations
                       {expandedTrips.includes(trip.id) ? (
@@ -356,7 +356,7 @@ export default function MyTripsPage() {
                   </div>
 
                   {expandedTrips.includes(trip.id) ? (
-                    <div className="mt-4 space-y-4 rounded-3xl border border-white/10 bg-white/5 p-4">
+                    <div className="mt-4 space-y-4 rounded-3xl border border-[#1a1a1a] bg-[#111111] p-4">
                       <RecommendationPreview
                         recommendations={recommendationsByTripId[trip.id] ?? []}
                         loading={Boolean(loadingRecommendations[trip.id])}
@@ -364,7 +364,7 @@ export default function MyTripsPage() {
                       />
                       <button
                         type="button"
-                        className="inline-flex w-full items-center justify-center rounded-2xl bg-orange-500 px-5 py-3 text-sm font-bold text-white transition hover:bg-orange-600"
+                        className="inline-flex w-full items-center justify-center rounded-2xl bg-white px-5 py-3 text-sm font-bold text-black transition hover:bg-[#e0e0e0]"
                       >
                         See Full Trip
                       </button>

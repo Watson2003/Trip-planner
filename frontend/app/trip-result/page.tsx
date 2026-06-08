@@ -148,8 +148,8 @@ function normalizeTripData(raw: unknown): TripResultStorage | null {
 
 function StatItem({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-gray-700 bg-gray-950/70 p-4">
-      <div className="text-[11px] uppercase tracking-[0.2em] text-slate-400">{label}</div>
+    <div className="rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a] p-4">
+      <div className="text-[11px] uppercase tracking-[0.2em] text-[#888888]">{label}</div>
       <div className="mt-2 text-lg font-semibold text-white">{value}</div>
     </div>
   );
@@ -180,7 +180,7 @@ function TripResultContent({ tripData }: { tripData: TripResultStorage }) {
 
   return (
     <div className="space-y-6 py-6 md:py-10">
-      <div className="grid gap-3 rounded-[2rem] border border-gray-700 bg-gray-900/90 p-4 shadow-2xl backdrop-blur sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-3 rounded-[2rem] border border-[#1a1a1a] bg-[#0a0a0a] p-4 shadow-2xl backdrop-blur sm:grid-cols-2 xl:grid-cols-4">
         <StatItem label="Origin" value={tripData.origin} />
         <StatItem label="Destination" value={tripData.destination} />
         <StatItem label="Distance" value={`${tripData.distance_km} km`} />
@@ -188,10 +188,10 @@ function TripResultContent({ tripData }: { tripData: TripResultStorage }) {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
-        <section className="rounded-[2rem] border border-gray-700 bg-gray-900 p-4 shadow-2xl">
+        <section className="rounded-[2rem] border border-[#1a1a1a] bg-[#0a0a0a] p-4 shadow-2xl">
           <div className="mb-4 flex items-center justify-between gap-3">
             <div>
-              <p className="text-xs uppercase tracking-[0.24em] text-gray-400">Route</p>
+              <p className="text-xs uppercase tracking-[0.24em] text-[#888888]">Route</p>
               <h2 className="text-xl font-bold text-white">Map and trip path</h2>
             </div>
           </div>
@@ -217,7 +217,7 @@ function TripResultContent({ tripData }: { tripData: TripResultStorage }) {
         routeDistanceKm={tripData.distance_km}
       />
 
-      <section className="rounded-[2rem] border border-gray-700 bg-gray-900 p-5 shadow-2xl">
+      <section className="rounded-[2rem] border border-[#1a1a1a] bg-[#0a0a0a] p-5 shadow-2xl">
         <div className="flex flex-wrap items-center gap-3">
           <button
             type="button"
@@ -226,12 +226,12 @@ function TripResultContent({ tripData }: { tripData: TripResultStorage }) {
                 console.error(error);
               });
             }}
-            className="inline-flex items-center gap-2 rounded-2xl bg-orange-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center gap-2 rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-[#e0e0e0] disabled:cursor-not-allowed disabled:opacity-60"
           >
             <ArrowDownToLine className="h-4 w-4" />
             Download PDF Report
           </button>
-          <div className="min-w-0 flex-1 text-sm leading-6 text-slate-300">
+          <div className="min-w-0 flex-1 text-sm leading-6 text-[#a0a0a0]">
             {tripData.report_summary || "Your trip report will appear here after planning."}
           </div>
         </div>
@@ -242,7 +242,7 @@ function TripResultContent({ tripData }: { tripData: TripResultStorage }) {
           <div className="flex items-center gap-2">
             <span className="text-lg">📍</span>
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.24em] text-orange-300">RECOMMENDATIONS</p>
+              <p className="text-xs font-bold uppercase tracking-[0.24em] text-white">RECOMMENDATIONS</p>
               <h2 className="text-xl font-black text-white">Places Along Your Route</h2>
             </div>
           </div>
@@ -291,28 +291,28 @@ export default function TripResultPage() {
   return (
     <>
       <Navbar theme={theme} onToggleTheme={() => setTheme((current) => (current === "dark" ? "light" : "dark"))} />
-      <main className="min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_top,rgba(249,115,22,0.12),transparent_35%),linear-gradient(180deg,#040816_0%,#0b1220_55%,#0f172a_100%)] text-slate-100 transition-colors">
+      <main className="min-h-screen overflow-x-hidden bg-black text-white transition-colors">
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
           {loaded && tripData ? (
             <TripResultContent tripData={tripData} />
           ) : !loaded ? (
             <section className="flex min-h-[60vh] items-center justify-center">
-              <div className="max-w-md rounded-[2rem] border border-white/10 bg-slate-950/80 p-8 text-center shadow-2xl">
+              <div className="max-w-md rounded-[2rem] border border-[#1a1a1a] bg-[#0a0a0a] p-8 text-center shadow-2xl">
                 <h1 className="text-2xl font-black text-white">Loading trip result...</h1>
-                <p className="mt-3 text-sm leading-6 text-slate-300">
+                <p className="mt-3 text-sm leading-6 text-[#a0a0a0]">
                   We&apos;re restoring your saved trip data.
                 </p>
               </div>
             </section>
           ) : (
             <section className="flex min-h-[60vh] items-center justify-center">
-              <div className="max-w-md rounded-[2rem] border border-white/10 bg-slate-950/80 p-8 text-center shadow-2xl">
+              <div className="max-w-md rounded-[2rem] border border-[#1a1a1a] bg-[#0a0a0a] p-8 text-center shadow-2xl">
                 <h1 className="text-2xl font-black text-white">No trip data found.</h1>
-                <p className="mt-3 text-sm leading-6 text-slate-300">Please plan a trip first.</p>
+                <p className="mt-3 text-sm leading-6 text-[#a0a0a0]">Please plan a trip first.</p>
                 <button
                   type="button"
                   onClick={() => router.push("/")}
-                  className="mt-6 inline-flex items-center justify-center rounded-2xl bg-orange-500 px-5 py-3 text-sm font-bold text-white transition hover:bg-orange-600"
+                  className="mt-6 inline-flex items-center justify-center rounded-2xl bg-white px-5 py-3 text-sm font-bold text-black transition hover:bg-[#e0e0e0]"
                 >
                   Plan a Trip →
                 </button>

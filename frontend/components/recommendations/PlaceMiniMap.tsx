@@ -13,7 +13,7 @@ function createMarkerIcon() {
         width: 22px;
         height: 22px;
         border-radius: 9999px;
-        background: #f97316;
+        background: #ffffff;
         border: 3px solid rgba(255,255,255,0.95);
         box-shadow: 0 10px 22px rgba(15, 23, 42, 0.35);
       "></div>
@@ -27,7 +27,7 @@ export default function PlaceMiniMap({ lat, lng }: { lat: number; lng: number })
   const center = useMemo<[number, number]>(() => [lat, lng], [lat, lng]);
 
   return (
-    <div className="h-[200px] w-full overflow-hidden rounded-2xl border border-white/10 sm:h-[250px]">
+    <div className="h-[200px] w-full overflow-hidden rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a] sm:h-[250px]">
       <MapContainer
         center={center}
         zoom={15}

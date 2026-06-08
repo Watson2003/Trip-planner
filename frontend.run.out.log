@@ -1,0 +1,41 @@
+
+> ai-road-trip-planner@1.0.0 dev
+> next dev
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
+  - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 7.1s
+ ○ Compiling / ...
+ ✓ Compiled / in 13.4s (601 modules)
+ GET / 200 in 14257ms
+ ○ Compiling /login ...
+ ✓ Compiled /login in 8.8s (596 modules)
+ ○ Compiling /trip-result ...
+ ✓ Compiled /trip-result in 8.1s (1732 modules)
+ ✓ Compiled in 1794ms (892 modules)
+ ✓ Compiled in 1686ms (1746 modules)
+ ✓ Compiled in 1516ms (1746 modules)
+ ✓ Compiled in 1267ms (1746 modules)
+ ✓ Compiled in 1585ms (1746 modules)
+ ✓ Compiled in 3.2s (1746 modules)
+ GET /trip-result 200 in 623ms
+ ✓ Compiled in 637ms (875 modules)
+ ✓ Compiled in 2.8s (1746 modules)
+ ✓ Compiled in 1528ms (1746 modules)
+ ✓ Compiled in 1598ms (1746 modules)
+ ✓ Compiled in 3.2s (1746 modules)
+ ✓ Compiled in 1019ms (875 modules)
+ ✓ Compiled in 730ms (875 modules)
+ ✓ Compiled in 1927ms (1746 modules)
+ ✓ Compiled in 1803ms (1746 modules)
+ ✓ Compiled in 2000ms (1746 modules)
+ ✓ Compiled in 1307ms (1746 modules)
+ ✓ Compiled in 1368ms (1746 modules)
+ ✓ Compiled in 2.5s (1746 modules)
+ ✓ Compiled in 1268ms (1746 modules)
+ ✓ Compiled in 4.1s (1746 modules)
+ ○ Compiling /my-trips ...
+ ✓ Compiled /my-trips in 2.3s (1752 modules)

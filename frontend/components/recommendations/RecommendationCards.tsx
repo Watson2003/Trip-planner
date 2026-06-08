@@ -27,7 +27,7 @@ const CATEGORY_META: Record<CategoryKey, { label: string; icon: string; tone: st
 
 const PlaceMiniMap = dynamic(() => import("./PlaceMiniMap"), {
   ssr: false,
-  loading: () => <div className="h-[200px] w-full rounded-2xl border border-white/10 bg-slate-800/70 sm:h-[250px]" />,
+  loading: () => <div className="h-[200px] w-full rounded-2xl border border-[#1a1a1a] bg-[#111111] sm:h-[250px]" />,
 });
 
 function buildStarDisplay(rating: number) {
@@ -43,26 +43,26 @@ function StarRating({ rating, totalReviews }: { rating: number; totalReviews: nu
 
   return (
     <div className="flex flex-wrap items-center gap-2 text-sm">
-      <div className="flex items-center gap-0.5 text-amber-400">
+      <div className="flex items-center gap-0.5 text-yellow-400">
         {Array.from({ length: fullStars }).map((_, index) => (
           <span key={`full-${index}`}>★</span>
         ))}
         {half ? (
-          <span className="relative inline-block text-slate-500">
+          <span className="relative inline-block text-[#555555]">
             <span>★</span>
-            <span className="absolute inset-y-0 left-0 overflow-hidden text-amber-400" style={{ width: "50%" }}>
+            <span className="absolute inset-y-0 left-0 overflow-hidden text-yellow-400" style={{ width: "50%" }}>
               ★
             </span>
           </span>
         ) : null}
         {Array.from({ length: emptyStars }).map((_, index) => (
-          <span key={`empty-${index}`} className="text-slate-500">
+          <span key={`empty-${index}`} className="text-[#555555]">
             ☆
           </span>
         ))}
       </div>
-      <span className="font-semibold text-slate-200">
-        {display} <span className="text-slate-400">({totalReviews} reviews)</span>
+      <span className="font-semibold text-white">
+        {display} <span className="text-[#888888]">({totalReviews} reviews)</span>
       </span>
     </div>
   );
@@ -99,15 +99,15 @@ function PlaceCard({
   const badge = openNowLabel(place.open_now);
   const titleTone =
     category === "hotels"
-      ? "border-orange-500/30 bg-orange-500/10 text-orange-200"
+      ? "border-[#2a2a2a] bg-[#1a1a1a] text-white"
       : category === "restaurants"
-        ? "border-cyan-500/30 bg-cyan-500/10 text-cyan-200"
-        : "border-violet-500/30 bg-violet-500/10 text-violet-200";
+        ? "border-[#2a2a2a] bg-[#1a1a1a] text-[#a0a0a0]"
+        : "border-[#2a2a2a] bg-[#1a1a1a] text-[#888888]";
 
   const fallbackIcon = category === "hotels" ? "🏨" : category === "restaurants" ? "🍽️" : "🎯";
 
   return (
-    <article className="group overflow-hidden rounded-3xl border border-white/10 bg-slate-900/90 shadow-xl shadow-black/20 transition hover:-translate-y-0.5 hover:border-orange-400/30">
+    <article className="group overflow-hidden rounded-3xl border border-[#1a1a1a] bg-[#0a0a0a] shadow-xl shadow-black/20 transition hover:-translate-y-0.5 hover:border-white">
       <div className="relative">
         {place.photo_url ? (
           <>
@@ -121,12 +121,12 @@ function PlaceCard({
                 event.currentTarget.nextElementSibling?.classList.remove("hidden");
               }}
             />
-            <div className="hidden w-full h-48 rounded-t-xl bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
+            <div className="hidden flex h-48 w-full items-center justify-center rounded-t-xl bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a]">
               <span className="text-4xl">{fallbackIcon}</span>
             </div>
           </>
         ) : (
-          <div className="w-full h-48 rounded-t-xl bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
+          <div className="flex h-48 w-full items-center justify-center rounded-t-xl bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a]">
             <span className="text-4xl">{fallbackIcon}</span>
           </div>
         )}
@@ -142,7 +142,7 @@ function PlaceCard({
 
       <div className="space-y-4 p-5">
         <div className="space-y-2">
-          <p className="text-xs font-bold uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">
+          <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#888888]">
             {CATEGORY_META[category].label.slice(0, -1).toUpperCase()}
           </p>
           <h3 className="text-xl font-black leading-tight text-white">{place.name}</h3>
@@ -159,7 +159,7 @@ function PlaceCard({
               <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${titleTone}`}>
                 {(place as RestaurantRecommendation).cuisine}
               </span>
-              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-slate-200">
+              <span className="rounded-full border border-[#2a2a2a] bg-[#111111] px-3 py-1 text-xs font-semibold text-[#a0a0a0]">
                 {(place as RestaurantRecommendation).price_range}
               </span>
             </>
@@ -169,22 +169,22 @@ function PlaceCard({
               <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${titleTone}`}>
                 {(place as AttractionRecommendation).type}
               </span>
-              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-slate-200">
+              <span className="rounded-full border border-[#2a2a2a] bg-[#111111] px-3 py-1 text-xs font-semibold text-[#a0a0a0]">
                 {(place as AttractionRecommendation).entry_fee}
               </span>
             </>
           ) : null}
         </div>
 
-        <p className="line-clamp-2 min-h-[3rem] text-sm leading-6 text-slate-300">{place.description}</p>
+        <p className="line-clamp-2 min-h-[3rem] text-sm leading-6 text-[#a0a0a0]">{place.description}</p>
 
         <div className="space-y-2">
-          <p className="truncate text-sm text-slate-400">
+          <p className="truncate text-sm text-[#888888]">
             <span className="mr-1">📍</span>
             {place.address || location}
           </p>
           <StarRating rating={place.rating} totalReviews={place.total_reviews} />
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-[#888888]">
             {category === "attractions" ? `Entry: ${priceLabel(place)}` : priceLabel(place)}
           </p>
         </div>
@@ -193,14 +193,14 @@ function PlaceCard({
           <button
             type="button"
             onClick={() => onViewDetails(place)}
-            className="inline-flex flex-1 items-center justify-center rounded-2xl bg-orange-500 px-4 py-3 text-sm font-bold text-white transition hover:bg-orange-600"
+            className="inline-flex flex-1 items-center justify-center rounded-2xl bg-white px-4 py-3 text-sm font-bold text-black transition hover:bg-[#e0e0e0]"
           >
             View Details
           </button>
           <button
             type="button"
             onClick={() => onDirections(place.maps_url)}
-            className="inline-flex flex-1 items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-sm font-semibold text-slate-100 transition hover:bg-white/10"
+            className="inline-flex flex-1 items-center justify-center rounded-2xl border border-[#2a2a2a] bg-transparent px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#1a1a1a]"
           >
             📍 Directions
           </button>
@@ -245,11 +245,11 @@ export default function RecommendationCards({ recommendations, destination }: Re
 
   if (!recommendations.length) {
     return (
-      <section className="rounded-[2rem] border border-white/10 bg-slate-950/90 p-8 text-center shadow-2xl">
+      <section className="rounded-[2rem] border border-[#1a1a1a] bg-[#0a0a0a] p-8 text-center shadow-2xl">
         <div className="mx-auto flex max-w-md flex-col items-center gap-3">
           <div className="text-4xl">🗺️</div>
           <h2 className="text-xl font-black text-white">Plan a trip to see recommendations in {destination}</h2>
-          <p className="text-sm leading-6 text-slate-400">
+          <p className="text-sm leading-6 text-[#a0a0a0]">
             Once your route is planned, real hotels, restaurants, and attractions for the destination will appear here.
           </p>
         </div>
@@ -259,9 +259,9 @@ export default function RecommendationCards({ recommendations, destination }: Re
 
   return (
     <>
-      <section className="rounded-[2rem] border border-white/10 bg-slate-950/90 p-5 shadow-2xl shadow-black/20">
+      <section className="rounded-[2rem] border border-[#1a1a1a] bg-[#0a0a0a] p-5 shadow-2xl shadow-black/20">
         <div className="mb-5 space-y-2">
-          <p className="text-xs font-bold uppercase tracking-[0.28em] text-orange-300">RECOMMENDATIONS</p>
+          <p className="text-xs font-bold uppercase tracking-[0.28em] text-white">RECOMMENDATIONS</p>
           <h2 className="text-2xl font-black tracking-tight text-white">Recommendations in {destination}</h2>
         </div>
 
@@ -276,7 +276,7 @@ export default function RecommendationCards({ recommendations, destination }: Re
                 type="button"
                 onClick={() => setActiveCategory(category)}
                 className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition ${
-                  active ? "bg-slate-100 text-slate-950" : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                  active ? "bg-white text-black" : "border border-[#2a2a2a] bg-transparent text-[#888888] hover:border-white hover:text-white"
                 }`}
               >
                 <span>{meta.icon}</span>
@@ -290,7 +290,7 @@ export default function RecommendationCards({ recommendations, destination }: Re
 
         <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
           {currentPlaces.length === 0 ? (
-            <div className="rounded-3xl border border-dashed border-white/10 bg-white/5 px-5 py-10 text-center text-sm text-slate-400 md:col-span-2">
+            <div className="rounded-3xl border border-dashed border-[#2a2a2a] bg-[#111111] px-5 py-10 text-center text-sm text-[#888888] md:col-span-2">
               No {activeCategory} found for {destination}.
             </div>
           ) : (
@@ -318,15 +318,15 @@ export default function RecommendationCards({ recommendations, destination }: Re
           role="presentation"
         >
           <div
-            className="w-full max-w-2xl overflow-hidden rounded-t-2xl bg-gray-900 shadow-2xl shadow-black/40 max-h-[90vh] overflow-y-auto sm:mx-auto sm:rounded-2xl"
+            className="max-h-[90vh] w-full max-w-2xl overflow-hidden overflow-y-auto rounded-t-2xl border border-[#1a1a1a] bg-[#0a0a0a] shadow-2xl shadow-black/40 sm:mx-auto sm:rounded-2xl"
             onClick={(event) => event.stopPropagation()}
             role="dialog"
             aria-modal="true"
             aria-labelledby="place-detail-title"
           >
-            <div className="flex items-start justify-between gap-4 border-b border-white/10 p-5">
+            <div className="flex items-start justify-between gap-4 border-b border-[#1a1a1a] p-5">
               <div className="space-y-2">
-                <p className="text-xs font-bold uppercase tracking-[0.24em] text-orange-300">
+                <p className="text-xs font-bold uppercase tracking-[0.24em] text-white">
                   {CATEGORY_META[activeCategory].label.slice(0, -1).toUpperCase()}
                 </p>
                 <h3 id="place-detail-title" className="text-2xl font-black text-white">
@@ -341,7 +341,7 @@ export default function RecommendationCards({ recommendations, destination }: Re
               <button
                 type="button"
                 onClick={closeModal}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:bg-white/10"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#2a2a2a] bg-[#111111] text-white transition hover:bg-[#1a1a1a]"
                 aria-label="Close modal"
               >
                 ✕
@@ -356,7 +356,7 @@ export default function RecommendationCards({ recommendations, destination }: Re
                 loading="lazy"
               />
             ) : (
-              <div className="flex h-[300px] w-full items-center justify-center bg-gradient-to-br from-slate-700 via-slate-800 to-slate-950">
+              <div className="flex h-[300px] w-full items-center justify-center bg-gradient-to-br from-[#1a1a1a] via-[#111111] to-[#0a0a0a]">
                 <span className="text-7xl font-black text-white/80">{placeInitial(selectedPlace)}</span>
               </div>
             )}
@@ -364,8 +364,8 @@ export default function RecommendationCards({ recommendations, destination }: Re
             <div className="grid gap-5 p-5 md:grid-cols-2">
               <div className="space-y-4">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.22em] text-slate-400">Place Info</p>
-                  <div className="mt-3 space-y-3 text-sm text-slate-200">
+                  <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#888888]">Place Info</p>
+                  <div className="mt-3 space-y-3 text-sm text-[#a0a0a0]">
                     <p className="truncate">📍 {selectedPlace.address || "Address not available"}</p>
                     <p>
                       ⭐ Rating: {selectedPlace.rating.toFixed(1)} ({selectedPlace.total_reviews} reviews)
@@ -379,7 +379,7 @@ export default function RecommendationCards({ recommendations, destination }: Re
                           href={selectedPlace.website}
                           target="_blank"
                           rel="noreferrer noopener"
-                          className="text-orange-300 underline-offset-4 hover:underline"
+                          className="text-white underline-offset-4 hover:underline"
                         >
                           Visit website
                         </a>
@@ -401,7 +401,7 @@ export default function RecommendationCards({ recommendations, destination }: Re
 
               <div className="space-y-4">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.22em] text-slate-400">Mini Map</p>
+                  <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#888888]">Mini Map</p>
                   <div className="mt-3">
                     <PlaceMiniMap lat={selectedPlace.lat} lng={selectedPlace.lng} />
                   </div>
@@ -409,11 +409,11 @@ export default function RecommendationCards({ recommendations, destination }: Re
               </div>
             </div>
 
-            <div className="flex flex-col gap-3 border-t border-white/10 p-5 sm:flex-row">
+            <div className="flex flex-col gap-3 border-t border-[#1a1a1a] p-5 sm:flex-row">
               <button
                 type="button"
                 onClick={() => window.open(selectedPlace.maps_url, "_blank", "noopener,noreferrer")}
-                className="inline-flex flex-1 items-center justify-center rounded-2xl bg-orange-500 px-4 py-3 text-sm font-bold text-white transition hover:bg-orange-600"
+                className="inline-flex flex-1 items-center justify-center rounded-2xl bg-white px-4 py-3 text-sm font-bold text-black transition hover:bg-[#e0e0e0]"
               >
                 📍 Get Directions
               </button>
@@ -421,7 +421,7 @@ export default function RecommendationCards({ recommendations, destination }: Re
                 <button
                   type="button"
                   onClick={() => window.open(selectedPlace.website || "", "_blank", "noopener,noreferrer")}
-                  className="inline-flex flex-1 items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-sm font-semibold text-slate-100 transition hover:bg-white/10"
+                  className="inline-flex flex-1 items-center justify-center rounded-2xl border border-[#2a2a2a] bg-transparent px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#1a1a1a]"
                 >
                   🌐 Visit Website
                 </button>
@@ -429,7 +429,7 @@ export default function RecommendationCards({ recommendations, destination }: Re
               <button
                 type="button"
                 onClick={closeModal}
-                className="inline-flex flex-1 items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-sm font-semibold text-slate-100 transition hover:bg-white/10"
+                className="inline-flex flex-1 items-center justify-center rounded-2xl border border-[#2a2a2a] bg-transparent px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#1a1a1a]"
               >
                 ✕ Close
               </button>

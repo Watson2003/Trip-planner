@@ -9,9 +9,9 @@ import type { TripMapProps } from "@/components/map/TripMap";
 import type { TripMarker } from "@/types";
 
 const COLORS: Record<TripMarker["type"], string> = {
-  origin: "#16a34a",
-  destination: "#dc2626",
-  waypoint: "#2563eb",
+  origin: "#ffffff",
+  destination: "#e0e0e0",
+  waypoint: "#a0a0a0",
 };
 
 function createMarkerIcon(type: TripMarker["type"], label: string) {
@@ -110,13 +110,13 @@ export default function TripMapClient({ routeGeoJSON, markers, focusPoint }: Tri
   }, [focusPoint, markers, positions]);
 
   return (
-    <section className="overflow-hidden rounded-3xl border border-white/70 bg-slate-950 shadow-glow">
-      <div className="flex items-center justify-between gap-3 border-b border-white/10 px-5 py-4 text-white">
+    <section className="overflow-hidden rounded-3xl border border-[#1a1a1a] bg-black shadow-glow">
+      <div className="flex items-center justify-between gap-3 border-b border-[#1a1a1a] px-5 py-4 text-white">
         <div>
-          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Route</p>
+          <p className="text-xs uppercase tracking-[0.24em] text-[#888888]">Route</p>
           <h2 className="text-lg font-semibold">Interactive Trip Map</h2>
         </div>
-        <p className="text-sm text-slate-300">Drag, zoom, and inspect every stop.</p>
+        <p className="text-sm text-[#a0a0a0]">Drag, zoom, and inspect every stop.</p>
       </div>
       <div className="h-64 w-full sm:h-80 md:h-96 lg:h-[500px]">
         <MapContainer center={center} zoom={6} scrollWheelZoom className="h-full w-full">
@@ -143,10 +143,10 @@ export default function TripMapClient({ routeGeoJSON, markers, focusPoint }: Tri
               icon={createMarkerIcon(marker.type, marker.label)}
             >
               <Popup>
-                <div className="space-y-1 text-slate-900">
+                <div className="space-y-1 text-black">
                   <div className="text-sm font-semibold">{marker.label}</div>
-                  <div className="text-xs uppercase tracking-[0.18em] text-slate-500">{marker.type}</div>
-                  <div className="text-sm text-slate-700">{marker.eta ?? "ETA unavailable"}</div>
+                  <div className="text-xs uppercase tracking-[0.18em] text-[#888888]">{marker.type}</div>
+                  <div className="text-sm text-[#555555]">{marker.eta ?? "ETA unavailable"}</div>
                 </div>
               </Popup>
             </Marker>

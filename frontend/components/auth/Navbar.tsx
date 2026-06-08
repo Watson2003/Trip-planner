@@ -47,10 +47,10 @@ export default function Navbar({ theme, onToggleTheme }: NavbarProps) {
   }, [mobileMenuOpen]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-700/50 bg-gray-900/95 text-white backdrop-blur-sm">
+    <header className="sticky top-0 z-50 border-b border-[#1a1a1a] bg-black/95 text-white backdrop-blur-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2 font-bold text-lg text-white">
-          <Route className="h-5 w-5 text-orange-400" />
+          <Route className="h-5 w-5 text-white" />
           <span>RoadMind AI</span>
         </Link>
 
@@ -61,28 +61,28 @@ export default function Navbar({ theme, onToggleTheme }: NavbarProps) {
                 <button
                   type="button"
                   onClick={onToggleTheme}
-                  className="inline-flex items-center gap-2 rounded-xl border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm text-gray-300 transition hover:text-white"
+                  className="inline-flex items-center gap-2 rounded-xl border border-[#2a2a2a] bg-[#111111] px-3 py-1.5 text-sm text-[#a0a0a0] transition hover:bg-[#1a1a1a] hover:text-white"
                   aria-label="Toggle theme"
                 >
                   {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
                 </button>
               ) : null}
 
-              <Link href="/my-trips" className="text-sm text-gray-400 transition hover:text-white">
+              <Link href="/my-trips" className="text-sm text-[#a0a0a0] transition hover:text-white">
                 My Trips
               </Link>
 
-              <div className="flex items-center gap-2 rounded-full bg-gray-800 px-3 py-1.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-500 text-sm font-bold text-white">
+              <div className="flex items-center gap-2 rounded-full border border-[#2a2a2a] bg-[#111111] px-3 py-1.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-sm font-bold text-black">
                   {initial}
                 </div>
-                <span className="max-w-[160px] truncate text-sm text-gray-200">Hello, {fullName}</span>
+                <span className="max-w-[160px] truncate text-sm text-white">Hello, {fullName}</span>
               </div>
 
               <button
                 type="button"
                 onClick={handleLogout}
-                className="inline-flex items-center gap-1 rounded-lg bg-orange-500 px-3 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-orange-600"
+                className="inline-flex items-center gap-1 rounded-lg border border-[#2a2a2a] bg-[#1a1a1a] px-3 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-[#2a2a2a]"
               >
                 <LogOut className="h-4 w-4" />
                 Logout
@@ -93,7 +93,7 @@ export default function Navbar({ theme, onToggleTheme }: NavbarProps) {
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen((current) => !current)}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-gray-700 bg-gray-800 text-white transition hover:bg-gray-700"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#2a2a2a] bg-[#111111] text-white transition hover:bg-[#1a1a1a]"
                 aria-label="Open navigation menu"
                 aria-expanded={mobileMenuOpen}
               >
@@ -101,22 +101,22 @@ export default function Navbar({ theme, onToggleTheme }: NavbarProps) {
               </button>
 
               {mobileMenuOpen ? (
-                <div className="absolute left-0 right-0 top-16 border-b border-gray-700 bg-gray-900 px-4 py-4">
+                <div className="absolute left-0 right-0 top-16 border-b border-[#1a1a1a] bg-black px-4 py-4">
                   <div className="flex flex-col gap-3">
-                    <div className="flex items-center gap-3 rounded-2xl bg-gray-800 px-3 py-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-500 text-sm font-bold text-white">
+                    <div className="flex items-center gap-3 rounded-2xl border border-[#2a2a2a] bg-[#111111] px-3 py-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-sm font-bold text-black">
                         {initial}
                       </div>
                       <div className="min-w-0">
                         <p className="truncate text-sm font-semibold text-white">Hello, {fullName}</p>
-                        <p className="truncate text-xs text-gray-400">{user.email}</p>
+                        <p className="truncate text-xs text-[#888888]">{user.email}</p>
                       </div>
                     </div>
 
                     <Link
                       href="/my-trips"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="rounded-xl bg-gray-800 px-3 py-3 text-sm font-semibold text-gray-200 transition hover:bg-gray-700"
+                      className="rounded-xl border border-[#2a2a2a] bg-[#111111] px-3 py-3 text-sm font-semibold text-white transition hover:bg-[#1a1a1a]"
                     >
                       My Trips
                     </Link>
@@ -127,7 +127,7 @@ export default function Navbar({ theme, onToggleTheme }: NavbarProps) {
                         setMobileMenuOpen(false);
                         handleLogout();
                       }}
-                      className="inline-flex items-center justify-center gap-2 rounded-xl bg-orange-500 px-3 py-3 text-sm font-semibold text-white transition hover:bg-orange-600"
+                      className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#2a2a2a] bg-[#1a1a1a] px-3 py-3 text-sm font-semibold text-white transition hover:bg-[#2a2a2a]"
                     >
                       <LogOut className="h-4 w-4" />
                       Logout

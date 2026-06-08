@@ -11,11 +11,18 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: "#0f172a",
-        sand: "#f8f2e8",
-        sky: "#dbeafe",
-        moss: "#d9f99d",
-        ember: "#fde68a",
+        brand: {
+          black: "#000000",
+          nearBlack: "#0a0a0a",
+          dark: "#111111",
+          darkGray: "#1a1a1a",
+          gray: "#2a2a2a",
+          midGray: "#555555",
+          lightGray: "#888888",
+          silver: "#a0a0a0",
+          light: "#e0e0e0",
+          white: "#ffffff",
+        },
       },
       boxShadow: {
         glow: "0 20px 60px rgba(15, 23, 42, 0.18)",

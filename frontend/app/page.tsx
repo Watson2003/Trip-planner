@@ -214,9 +214,9 @@ function buildBudget(plan: PlannedTripResponse): BudgetBreakdownType {
 
 function FeaturePill({ title, text }: { title: string; text: string }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 shadow-lg shadow-black/10">
+    <div className="rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a] p-4 shadow-lg shadow-black/10">
       <div className="text-sm font-semibold text-white">{title}</div>
-      <div className="mt-1 text-sm text-slate-300">{text}</div>
+      <div className="mt-1 text-sm text-[#a0a0a0]">{text}</div>
     </div>
   );
 }
@@ -234,12 +234,12 @@ function TextField({
 }) {
   return (
     <label className="grid gap-2">
-      <span className="text-sm font-medium text-slate-200">{label}</span>
+      <span className="text-sm font-medium text-[#a0a0a0]">{label}</span>
       <input
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none ring-0 placeholder:text-slate-500 focus:border-orange-400"
+        className="rounded-2xl border border-[#2a2a2a] bg-[#111111] px-4 py-3 text-white outline-none ring-0 placeholder:text-[#444444] focus:border-white"
       />
     </label>
   );
@@ -258,12 +258,12 @@ function DateField({
 }) {
   return (
     <label className={`grid gap-2 ${className}`}>
-      <span className="text-sm font-medium text-slate-200">{label}</span>
+      <span className="text-sm font-medium text-[#a0a0a0]">{label}</span>
       <input
         type="date"
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-orange-400"
+        className="w-full rounded-2xl border border-[#2a2a2a] bg-[#111111] px-4 py-3 text-white outline-none focus:border-white"
       />
     </label>
   );
@@ -279,13 +279,13 @@ function PreferenceCheck({
   onChange: (checked: boolean) => void;
 }) {
   return (
-    <label className="flex min-w-[180px] flex-1 items-center justify-between gap-3 rounded-2xl border border-white/10 bg-slate-900 px-4 py-3">
-      <span className="text-sm text-slate-200">{label}</span>
+    <label className="flex min-w-[180px] flex-1 items-center justify-between gap-3 rounded-2xl border border-[#1a1a1a] bg-[#111111] px-4 py-3">
+      <span className="text-sm text-[#a0a0a0]">{label}</span>
       <input
         type="checkbox"
         checked={checked}
         onChange={(event) => onChange(event.target.checked)}
-        className="h-4 w-4 rounded border-slate-500 bg-slate-800 text-orange-500 accent-orange-500"
+        className="h-4 w-4 rounded border-[#2a2a2a] bg-[#111111] text-white accent-white"
       />
     </label>
   );
@@ -466,11 +466,11 @@ export default function HomePage() {
   return (
     <AuthGuard>
       <Navbar theme={theme} onToggleTheme={() => setTheme((current) => (current === "dark" ? "light" : "dark"))} />
-      <main className="min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_top,rgba(249,115,22,0.12),transparent_35%),linear-gradient(180deg,#040816_0%,#0b1220_55%,#0f172a_100%)] text-slate-100 transition-colors">
+      <main className="min-h-screen overflow-x-hidden bg-black text-white transition-colors">
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-          <section className="grid gap-8 rounded-[2rem] border border-white/10 bg-slate-950/70 p-5 shadow-2xl backdrop-blur-xl lg:grid-cols-[1.08fr_0.92fr] lg:p-8">
+          <section className="grid gap-8 rounded-[2rem] border border-[#1a1a1a] bg-[#0a0a0a] p-5 shadow-2xl backdrop-blur-xl lg:grid-cols-[1.08fr_0.92fr] lg:p-8">
             <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 rounded-full border border-orange-500/20 bg-orange-500/10 px-4 py-2 text-sm font-semibold text-orange-200">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm font-semibold text-white">
                 <Sparkles className="h-4 w-4" />
                 AI Road Trip Planner
               </div>
@@ -479,7 +479,7 @@ export default function HomePage() {
                 <h1 className="max-w-3xl text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
                   Plan the route, tune the budget, and keep every stop in view.
                 </h1>
-                <p className="max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
+                <p className="max-w-2xl text-base leading-7 text-[#a0a0a0] sm:text-lg">
                   Enter your trip details, generate an AI-planned road trip, and review the route map, weather
                   outlook, recommendations, and detailed budget breakdown in one responsive dashboard.
                 </p>
@@ -494,10 +494,10 @@ export default function HomePage() {
 
             <form
               onSubmit={handleSubmit}
-              className="sticky top-20 mx-auto w-full max-w-2xl rounded-[1.75rem] border border-gray-700 bg-gray-950 p-5 text-white shadow-2xl"
+              className="sticky top-20 mx-auto w-full max-w-2xl rounded-[1.75rem] border border-[#1a1a1a] bg-[#0a0a0a] p-5 text-white shadow-2xl"
             >
-              <div className="flex items-center gap-2 text-sm text-slate-300">
-                <Compass className="h-4 w-4 text-orange-400" />
+              <div className="flex items-center gap-2 text-sm text-[#a0a0a0]">
+                <Compass className="h-4 w-4 text-white" />
                 Trip details
               </div>
 
@@ -544,7 +544,7 @@ export default function HomePage() {
                       </div>
                     ) : null}
                     {dateWarning ? (
-                      <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm font-medium text-amber-200">
+                      <div className="rounded-2xl border border-yellow-500/30 bg-yellow-500/10 px-4 py-3 text-sm font-medium text-yellow-200">
                         {dateWarning}
                       </div>
                     ) : null}
@@ -552,12 +552,12 @@ export default function HomePage() {
                 )}
 
                 <div className="mt-3">
-                  <label className="mb-1 block text-sm text-gray-400">Number of Days</label>
-                  <div className="flex items-center gap-3 rounded-xl border border-gray-700 bg-gray-800 px-4 py-3">
+                  <label className="mb-1 block text-sm text-[#888888]">Number of Days</label>
+                  <div className="flex items-center gap-3 rounded-xl border border-[#2a2a2a] bg-[#111111] px-4 py-3">
                     <button
                       type="button"
                       onClick={() => setTripDays((prev) => Math.max(1, prev - 1))}
-                      className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-700 text-lg font-bold text-white transition-colors hover:bg-gray-600"
+                      className="flex h-8 w-8 items-center justify-center rounded-full bg-[#1a1a1a] text-lg font-bold text-white transition-colors hover:bg-[#2a2a2a]"
                     >
                       -
                     </button>
@@ -579,30 +579,30 @@ export default function HomePage() {
                     <button
                       type="button"
                       onClick={() => setTripDays((prev) => Math.min(30, prev + 1))}
-                      className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-700 text-lg font-bold text-white transition-colors hover:bg-gray-600"
+                      className="flex h-8 w-8 items-center justify-center rounded-full bg-[#1a1a1a] text-lg font-bold text-white transition-colors hover:bg-[#2a2a2a]"
                     >
                       +
                     </button>
 
-                    <span className="ml-1 text-sm text-gray-400">
+                    <span className="ml-1 text-sm text-[#888888]">
                       {tripDays === 1 ? "day" : "days"}
                       {tripDays > 1 && (
-                        <span className="ml-2 text-gray-500">
+                        <span className="ml-2 text-[#555555]">
                           ({tripDays - 1} night{tripDays - 1 > 1 ? "s" : ""})
                         </span>
                       )}
                     </span>
                   </div>
 
-                  <p className="mt-1 text-xs text-gray-500">
+                  <p className="mt-1 text-xs text-[#555555]">
                     Hotel cost = ₹price/night × {tripDays - 1 || 1} night{tripDays - 1 > 1 ? "s" : ""}
                   </p>
                 </div>
 
-                <div className="space-y-3 rounded-2xl border border-white/10 bg-white/5 p-4">
+                <div className="space-y-3 rounded-2xl border border-[#1a1a1a] bg-[#111111] p-4">
                   <div className="flex flex-wrap items-center justify-between gap-3">
-                    <label className="text-sm font-medium text-slate-200">Budget</label>
-                    <span className="rounded-full bg-white px-3 py-1 text-sm font-bold text-slate-900">
+                    <label className="text-sm font-medium text-[#a0a0a0]">Budget</label>
+                    <span className="rounded-full bg-white px-3 py-1 text-sm font-bold text-black">
                       {"\u20b9"}
                       {form.budget.toLocaleString("en-IN")}
                     </span>
@@ -614,15 +614,15 @@ export default function HomePage() {
                     step={500}
                     value={form.budget}
                     onChange={(event) => setForm((current) => ({ ...current, budget: Number(event.target.value) }))}
-                    className="h-2 w-full cursor-pointer appearance-none rounded-full bg-slate-800 accent-orange-500"
+                    className="h-2 w-full cursor-pointer appearance-none rounded-full bg-[#111111] accent-white"
                   />
-                  <div className="flex justify-between text-xs text-slate-400">
+                  <div className="flex justify-between text-xs text-[#888888]">
                     <span>{"\u20b95,000"}</span>
                     <span>{"\u20b9100,000"}</span>
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-2 rounded-2xl border border-white/10 bg-white/5 p-4">
+                <div className="flex flex-wrap gap-2 rounded-2xl border border-[#1a1a1a] bg-[#111111] p-4">
                   <PreferenceCheck
                     label="Scenic route"
                     checked={form.scenicRoute}
@@ -642,7 +642,7 @@ export default function HomePage() {
 
                 <div className="flex items-center gap-3 pt-1">
                   <div className="h-px flex-1 bg-white/10" />
-                  <span className="text-xs font-bold uppercase tracking-[0.24em] text-orange-300">
+                  <span className="text-xs font-bold uppercase tracking-[0.24em] text-white">
                     Your Vehicle
                   </span>
                   <div className="h-px flex-1 bg-white/10" />
@@ -659,7 +659,7 @@ export default function HomePage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-orange-500 px-5 py-3 text-sm font-bold text-white transition hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-70"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-white px-5 py-3 text-sm font-bold text-black transition hover:bg-[#e0e0e0] disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
                   {loading ? "Planning trip..." : "Plan trip"}
