@@ -24,11 +24,11 @@ export default function BudgetOverview({ budget }: { budget: BudgetBreakdown }) 
       <div className="flex items-center justify-between gap-3">
         <div>
           <h2 className="text-xl font-bold">Budget</h2>
-          <p className="text-sm text-slate-500">Estimated trip spend in USD</p>
+          <p className="text-sm text-slate-500">Estimated trip spend in INR</p>
         </div>
         <div className="text-right">
           <div className="text-xs uppercase tracking-[0.18em] text-slate-500">Total</div>
-          <div className="text-2xl font-black">${budget.total.toLocaleString()}</div>
+          <div className="text-2xl font-black">₹{budget.total.toLocaleString("en-IN")}</div>
         </div>
       </div>
 
@@ -53,7 +53,7 @@ export default function BudgetOverview({ budget }: { budget: BudgetBreakdown }) 
                   <span className="h-3 w-3 rounded-full" style={{ backgroundColor: COLORS[index] }} />
                   {item.name}
                 </span>
-                <span>${item.value.toLocaleString()}</span>
+                <span>₹{item.value.toLocaleString("en-IN")}</span>
               </div>
             </div>
           ))}

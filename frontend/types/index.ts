@@ -150,6 +150,7 @@ export interface BudgetBreakdown {
     people: number;
   }>;
   food_explanation?: string;
+  trip_days?: number;
   breakdown?: {
     fuel: { inr: number; usd: number };
     tolls: { inr: number; usd: number };

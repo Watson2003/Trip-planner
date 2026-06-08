@@ -14,6 +14,7 @@ from agents.weather_agent import weather_agent
 
 class TripState(BaseTripState):
     # The workflow state now explicitly carries the selected vehicle and route metadata.
+    trip_days: int
     vehicle: dict[str, Any]
     route: dict[str, Any]
     pass

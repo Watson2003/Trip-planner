@@ -200,6 +200,7 @@ function buildBudget(plan: PlannedTripResponse): BudgetBreakdownType {
     food_is_vegetarian: plan.food_is_vegetarian ?? undefined,
     food_daily_breakdown: plan.food_daily_breakdown ?? undefined,
     food_explanation: plan.food_explanation ?? undefined,
+    trip_days: plan.trip_days ?? undefined,
     breakdown: {
       fuel: { inr: fuel, usd: fuel / INR_PER_USD },
       tolls: { inr: tolls, usd: tolls / INR_PER_USD },
@@ -295,6 +296,7 @@ export default function HomePage() {
   const [form, setForm] = useState<FormState>(DEFAULT_FORM);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [tripDays, setTripDays] = useState<number>(1);
   const [dateError, setDateError] = useState<string | null>(null);
   const [dateWarning, setDateWarning] = useState<string | null>(null);
   const [vehicle, setVehicle] = useState<VehicleDetails>({
@@ -321,6 +323,22 @@ export default function HomePage() {
     root.classList.toggle("dark", theme === "dark");
     window.localStorage.setItem("roadmind-theme", theme);
   }, [theme]);
+
+  useEffect(() => {
+    if (startDate && endDate) {
+      try {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        const diffMs = end.getTime() - start.getTime();
+        const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24)) + 1;
+        if (diffDays >= 1) {
+          setTripDays(diffDays);
+        }
+      } catch {
+        // Keep the manually entered tripDays value if parsing fails.
+      }
+    }
+  }, [startDate, endDate]);
 
   const selectedPreferences = useMemo(() => {
     const preferences: string[] = [];
@@ -358,6 +376,10 @@ export default function HomePage() {
       setDateError("End date must be after start date");
       return;
     }
+    if (tripDays < 1) {
+      setError("Please enter at least 1 day");
+      return;
+    }
     const todayIso = getTodayIsoDate();
     if (trimmedStartDate < todayIso) {
       setDateWarning("Start date is in the past. Weather forecast may not be available.");
@@ -381,11 +403,16 @@ export default function HomePage() {
         origin: form.origin,
         destination: form.destination,
         dates: `${formatDateForAPI(trimmedStartDate)} to ${formatDateForAPI(trimmedEndDate)}`,
+        trip_days: tripDays,
         budget: form.budget,
         preferences: selectedPreferences,
         vehicle,
       };
+      console.log("=== SENDING TO API ===");
+      console.log("trip_days:", tripDays);
+      console.log("Full request body:", JSON.stringify(requestBody));
       console.log("Sending dates:", requestBody.dates);
+      console.log("Trip days being sent:", tripDays);
 
       const planResponse = await fetch("/api/trip/plan", {
         method: "POST",
@@ -523,6 +550,54 @@ export default function HomePage() {
                     ) : null}
                   </div>
                 )}
+
+                <div className="mt-3">
+                  <label className="mb-1 block text-sm text-gray-400">Number of Days</label>
+                  <div className="flex items-center gap-3 rounded-xl border border-gray-700 bg-gray-800 px-4 py-3">
+                    <button
+                      type="button"
+                      onClick={() => setTripDays((prev) => Math.max(1, prev - 1))}
+                      className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-700 text-lg font-bold text-white transition-colors hover:bg-gray-600"
+                    >
+                      -
+                    </button>
+
+                    <input
+                      type="number"
+                      min={1}
+                      max={30}
+                      value={tripDays}
+                      onChange={(event) => {
+                        const val = parseInt(event.target.value, 10);
+                        if (!Number.isNaN(val) && val >= 1 && val <= 30) {
+                          setTripDays(val);
+                        }
+                      }}
+                      className="w-16 border-none bg-transparent text-center text-lg font-semibold text-white outline-none"
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() => setTripDays((prev) => Math.min(30, prev + 1))}
+                      className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-700 text-lg font-bold text-white transition-colors hover:bg-gray-600"
+                    >
+                      +
+                    </button>
+
+                    <span className="ml-1 text-sm text-gray-400">
+                      {tripDays === 1 ? "day" : "days"}
+                      {tripDays > 1 && (
+                        <span className="ml-2 text-gray-500">
+                          ({tripDays - 1} night{tripDays - 1 > 1 ? "s" : ""})
+                        </span>
+                      )}
+                    </span>
+                  </div>
+
+                  <p className="mt-1 text-xs text-gray-500">
+                    Hotel cost = ₹price/night × {tripDays - 1 || 1} night{tripDays - 1 > 1 ? "s" : ""}
+                  </p>
+                </div>
 
                 <div className="space-y-3 rounded-2xl border border-white/10 bg-white/5 p-4">
                   <div className="flex flex-wrap items-center justify-between gap-3">

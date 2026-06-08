@@ -154,7 +154,8 @@ def _normalize_dates_string(dates_value: Any) -> str:
     return str(dates_value or "").strip()
 
 
-def get_trip_duration(dates_string: str) -> dict:
+def get_trip_duration(dates_value: Any) -> dict:
+    dates_string = _normalize_dates_string(dates_value)
     print(f"DEBUG duration input: '{dates_string}'")
 
     if not dates_string or " to " not in dates_string:
@@ -361,35 +362,66 @@ def calculate_toll_cost(distance_km: float, vehicle_type: str) -> float:
     return round(toll, 2)
 
 
-async def budget_agent(state: TripState) -> TripState:
-    vehicle = _extract_vehicle(state)
+def parse_dates(dates_string: str) -> dict[str, int]:
+    default = {"days": 1, "nights": 1}
+    try:
+        if " to " not in dates_string:
+            return default
+
+        start_raw, end_raw = [part.strip() for part in dates_string.split(" to ", 1)]
+        for fmt in ("%Y-%m-%d", "%d-%m-%Y", "%d/%m/%Y", "%Y/%m/%d"):
+            try:
+                start_date = datetime.strptime(start_raw, fmt).date()
+                end_date = datetime.strptime(end_raw, fmt).date()
+                delta = (end_date - start_date).days
+                return {
+                    "days": max(delta + 1, 1),
+                    "nights": max(delta, 1),
+                }
+            except ValueError:
+                continue
+        return default
+    except Exception:
+        return default
+
+
+def run_budget_agent(state: TripState) -> TripState:
+    destination = str(state.get("destination") or "Unknown")
     origin = str(state.get("origin") or "")
-    destination = str(state.get("destination") or "")
     total_budget = float(state.get("budget", 15000) or 15000)
     preferences = [str(pref).lower().strip() for pref in state.get("preferences", []) if str(pref).strip()]
-    dates_string = _normalize_dates_string(state.get("dates", ""))
-    distance_km = _route_distance_km(state)
+    vehicle = _extract_vehicle(state)
     number_of_people = vehicle["number_of_people"]
-    vehicle_type = str(vehicle.get("vehicle_type") or "car").lower()
+    distance_km = _route_distance_km(state)
+    vehicle_type = vehicle["vehicle_type"]
+    dates_value = state.get("dates") or state.get("travel_dates") or ""
+    dates_string = _normalize_dates_string(dates_value)
 
-    duration = get_trip_duration(state.get("dates", ""))
-    number_of_days = duration["days"]
-    number_of_nights = duration["nights"]
+    raw_trip_days = state.get("trip_days", 0)
+    try:
+        trip_days_input = int(raw_trip_days)
+    except (TypeError, ValueError):
+        trip_days_input = 0
 
-    if number_of_nights == 1:
-        print(f"WARNING: nights=1, dates string was: '{state.get('dates', '')}'")
-        print("WARNING: check date format from frontend")
+    print(f"[BUDGET] raw trip_days from state: {raw_trip_days}")
+    print(f"[BUDGET] trip_days_input: {trip_days_input}")
 
-    print(f"DEBUG BUDGET: dates='{state.get('dates', '')}'")
-    print(f"DEBUG BUDGET: days={number_of_days} nights={number_of_nights}")
+    if trip_days_input >= 1:
+        number_of_days = trip_days_input
+        number_of_nights = max(trip_days_input - 1, 1)
+    else:
+        parsed = parse_dates(dates_string)
+        number_of_days = parsed["days"]
+        number_of_nights = parsed["nights"]
 
-    print("=== BUDGET AGENT ===")
-    print(f"Destination: {destination}")
-    print(f"Tier: {_get_destination_tier(destination)}")
-    print(f"Budget: Rs{total_budget}")
-    print(f"Days: {number_of_days}, Nights: {number_of_nights}")
-    print(f"People: {number_of_people}")
-    print(f"Preferences: {preferences}")
+    if number_of_nights == 0:
+        print("[BUDGET] WARNING: nights=0, forcing to 1")
+        number_of_nights = 1
+    if number_of_days == 0:
+        print("[BUDGET] WARNING: days=0, forcing to 1")
+        number_of_days = 1
+
+    print(f"[BUDGET] FINAL days={number_of_days} nights={number_of_nights}")
 
     fuel_calculation = calculate_fuel_cost(
         distance_km=distance_km,
@@ -401,89 +433,92 @@ async def budget_agent(state: TripState) -> TripState:
         vehicle_name=vehicle["vehicle_name"],
         vehicle_type=vehicle_type,
     )
+    fuel_cost_inr = round(fuel_calculation.total_fuel_cost_inr, 2)
 
-    fuel_total = fuel_calculation.total_fuel_cost_inr
-    hotel_info = get_hotel_price_per_night(destination=destination, total_budget=total_budget, preferences=preferences)
-    food_info = get_food_price_per_day(destination=destination, preferences=preferences, total_budget=total_budget)
-
-    total_hotel_cost = hotel_info["price_per_night"] * number_of_nights
-    print(f"FINAL hotel calculation: Rs{hotel_info['price_per_night']} x {number_of_nights} nights = Rs{total_hotel_cost}")
-
-    total_food_cost = (
-        food_info["price_per_day_per_person"] *
-        number_of_people *
-        number_of_days
+    hotel_info = get_hotel_price_per_night(
+        destination=destination,
+        total_budget=total_budget,
+        preferences=preferences,
     )
-    print(
-        f"FINAL food calculation: Rs{food_info['price_per_day_per_person']} x "
-        f"{number_of_people} people x {number_of_days} days = Rs{total_food_cost}"
-    )
-
-    toll_cost = calculate_toll_cost(distance_km=distance_km, vehicle_type=vehicle_type)
-    misc_cost = round(total_budget * 0.05, 2)
+    price_per_night = hotel_info["price_per_night"]
+    hotel_cost_inr = round(price_per_night * number_of_nights, 2)
+    print(f"[BUDGET] Hotel: Rs{price_per_night}/night x {number_of_nights} nights = Rs{hotel_cost_inr}")
 
     hotel_daily_breakdown = build_hotel_daily_breakdown(
-        price_per_night=hotel_info["price_per_night"],
+        price_per_night=price_per_night,
         number_of_nights=number_of_nights,
         dates_string=dates_string,
     )
-    print(f"DEBUG: hotel breakdown has {len(hotel_daily_breakdown)} entries")
+    hotel_explanation = (
+        f"Rs{price_per_night:,}/night x "
+        f"{number_of_nights} night{'s' if number_of_nights > 1 else ''} "
+        f"({hotel_info['category'].title()} hotel in {destination})"
+    )
+
+    food_info = get_food_price_per_day(
+        destination=destination,
+        preferences=preferences,
+        total_budget=total_budget,
+    )
+    price_per_day_per_person = food_info["price_per_day_per_person"]
+    food_cost_inr = round(price_per_day_per_person * number_of_people * number_of_days, 2)
+    print(
+        f"[BUDGET] Food: Rs{price_per_day_per_person}/person/day x "
+        f"{number_of_people} people x {number_of_days} days = Rs{food_cost_inr}"
+    )
 
     food_daily_breakdown = build_food_daily_breakdown(
-        price_per_day_per_person=food_info["price_per_day_per_person"],
+        price_per_day_per_person=price_per_day_per_person,
         number_of_days=number_of_days,
         number_of_people=number_of_people,
         dates_string=dates_string,
     )
-    print(f"DEBUG: food breakdown has {len(food_daily_breakdown)} entries")
-
-    hotel_explanation = (
-        f"Rs{hotel_info['price_per_night']:,}/night x "
-        f"{number_of_nights} night"
-        f"{'s' if number_of_nights > 1 else ''} "
-        f"({hotel_info['category'].title()} hotel in {destination})"
-    )
     food_explanation = (
-        f"Rs{food_info['price_per_day_per_person']:,}"
-        f"/person/day x "
-        f"{number_of_people} "
-        f"person{'s' if number_of_people > 1 else ''} x "
-        f"{number_of_days} day"
-        f"{'s' if number_of_days > 1 else ''} "
-        f"({'Vegetarian' if food_info['is_vegetarian'] else 'Non-Vegetarian'}"
-        f" - {food_info['food_type']})"
+        f"Rs{price_per_day_per_person:,}/person/day x "
+        f"{number_of_people} person{'s' if number_of_people > 1 else ''} x "
+        f"{number_of_days} day{'s' if number_of_days > 1 else ''} "
+        f"({'Veg' if food_info['is_vegetarian'] else 'Non-Veg'} - {food_info['food_type']})"
     )
 
-    total_all = fuel_total + total_hotel_cost + total_food_cost + toll_cost + misc_cost
+    toll_cost_inr = calculate_toll_cost(distance_km=distance_km, vehicle_type=vehicle_type)
+    misc_cost_inr = round(total_budget * 0.05, 2)
+    grand_total = round(
+        fuel_cost_inr + hotel_cost_inr + food_cost_inr + toll_cost_inr + misc_cost_inr,
+        2,
+    )
+    people = max(number_of_people, 1)
+    cost_per_person = round(grand_total / people, 2)
+    print(f"[BUDGET] Cost per person: Rs{grand_total} ÷ {people} = Rs{cost_per_person}")
 
-    print("DEBUG BUDGET TOTAL:")
-    print(f"  Fuel:   Rs{fuel_total}")
-    print(f"  Hotel:  Rs{total_hotel_cost}")
-    print(f"  Food:   Rs{total_food_cost}")
-    print(f"  Tolls:  Rs{toll_cost}")
-    print(f"  Misc:   Rs{misc_cost}")
-    print(f"  TOTAL:  Rs{total_all}")
+    print("[BUDGET] === FINAL SUMMARY ===")
+    print(f"  Fuel:   Rs{fuel_cost_inr}")
+    print(f"  Hotel:  Rs{hotel_cost_inr} ({number_of_nights} nights)")
+    print(f"  Food:   Rs{food_cost_inr} ({number_of_days} days)")
+    print(f"  Toll:   Rs{toll_cost_inr}")
+    print(f"  Misc:   Rs{misc_cost_inr}")
+    print(f"  TOTAL:  Rs{grand_total}")
 
     budget_breakdown = {
-        "fuel_cost_inr": fuel_total,
-        "hotel_cost_inr": total_hotel_cost,
-        "hotel_price_per_night": hotel_info["price_per_night"],
+        "fuel_cost_inr": fuel_cost_inr,
+        "hotel_cost_inr": hotel_cost_inr,
+        "hotel_price_per_night": price_per_night,
         "hotel_category": hotel_info["category"],
         "hotel_nights": number_of_nights,
         "hotel_daily_breakdown": hotel_daily_breakdown,
         "hotel_explanation": hotel_explanation,
-        "food_cost_inr": total_food_cost,
-        "food_price_per_day_per_person": food_info["price_per_day_per_person"],
+        "food_cost_inr": food_cost_inr,
+        "food_price_per_day_per_person": price_per_day_per_person,
         "food_type": food_info["food_type"],
         "food_days": number_of_days,
         "food_is_vegetarian": food_info["is_vegetarian"],
         "food_daily_breakdown": food_daily_breakdown,
         "food_explanation": food_explanation,
-        "toll_cost_inr": toll_cost,
-        "misc_cost_inr": misc_cost,
-        "total_cost_inr": total_all,
-        "total_cost_usd": round(total_all / USD_TO_INR, 2),
-        "cost_per_person_inr": round(total_all / number_of_people, 2),
+        "toll_cost_inr": toll_cost_inr,
+        "misc_cost_inr": misc_cost_inr,
+        "total_cost_inr": grand_total,
+        "total_cost_usd": round(grand_total / USD_TO_INR, 2),
+        "cost_per_person_inr": cost_per_person,
+        "cost_per_person_usd": round(cost_per_person / USD_TO_INR, 2),
         "number_of_people": number_of_people,
         "trip_days": number_of_days,
         "trip_nights": number_of_nights,
@@ -495,27 +530,31 @@ async def budget_agent(state: TripState) -> TripState:
         "number_of_people": number_of_people,
     }
     state["fuel_calculation"] = fuel_calculation.model_dump()
-    state["fuel_cost_inr"] = fuel_total
-    state["toll_cost_inr"] = round(toll_cost, 2)
-    state["hotel_cost_inr"] = round(total_hotel_cost, 2)
-    state["food_cost_inr"] = round(total_food_cost, 2)
-    state["misc_cost_inr"] = round(misc_cost, 2)
-    state["miscellaneous_cost_inr"] = round(misc_cost, 2)
+    state["fuel_cost_inr"] = fuel_cost_inr
+    state["toll_cost_inr"] = round(toll_cost_inr, 2)
+    state["hotel_cost_inr"] = hotel_cost_inr
+    state["food_cost_inr"] = food_cost_inr
+    state["misc_cost_inr"] = round(misc_cost_inr, 2)
+    state["miscellaneous_cost_inr"] = round(misc_cost_inr, 2)
     state["number_of_people"] = number_of_people
     state["trip_days"] = number_of_days
-    state["cost_per_person_inr"] = round(total_all / number_of_people, 2)
-    state["total_inr"] = round(total_all, 2)
-    state["total_usd"] = round(total_all / USD_TO_INR, 2)
+    state["cost_per_person_inr"] = cost_per_person
+    state["total_inr"] = grand_total
+    state["total_usd"] = round(grand_total / USD_TO_INR, 2)
     state["budget_breakdown"] = budget_breakdown
-    state["hotel_price_per_night"] = hotel_info["price_per_night"]
+    state["hotel_price_per_night"] = price_per_night
     state["hotel_category"] = hotel_info["category"]
     state["hotel_nights"] = number_of_nights
     state["hotel_daily_breakdown"] = hotel_daily_breakdown
     state["hotel_explanation"] = hotel_explanation
-    state["food_price_per_day_per_person"] = food_info["price_per_day_per_person"]
+    state["food_price_per_day_per_person"] = price_per_day_per_person
     state["food_type"] = food_info["food_type"]
     state["food_days"] = number_of_days
     state["food_is_vegetarian"] = food_info["is_vegetarian"]
     state["food_daily_breakdown"] = food_daily_breakdown
     state["food_explanation"] = food_explanation
     return state
+
+
+async def budget_agent(state: TripState) -> TripState:
+    return run_budget_agent(state)

@@ -16,7 +16,8 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 
   useEffect(() => {
     if (!isLoggedIn()) {
-      router.push("/login");
+      router.replace("/login");
+      setChecking(false);
       return;
     }
 
@@ -32,6 +33,10 @@ export default function AuthGuard({ children }: AuthGuardProps) {
         </div>
       </main>
     );
+  }
+
+  if (!isLoggedIn()) {
+    return null;
   }
 
   return <>{children}</>;

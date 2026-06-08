@@ -1,0 +1,75 @@
+INFO:     Will watch for changes in these directories: ['D:\\ROOT\\Trip planner\\backend']
+python-dotenv could not parse statement starting at line 7
+python-dotenv could not parse statement starting at line 8
+INFO:     Uvicorn running on http://0.0.0.0:8100 (Press CTRL+C to quit)
+INFO:     Started reloader process [11136] using WatchFiles
+python-dotenv could not parse statement starting at line 7
+python-dotenv could not parse statement starting at line 8
+INFO:     Started server process [5576]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'models\schemas.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [5576]
+WARNING:  WatchFiles detected changes in 'routers\trip.py'. Reloading...
+python-dotenv could not parse statement starting at line 7
+python-dotenv could not parse statement starting at line 8
+INFO:     Started server process [15080]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [15080]
+python-dotenv could not parse statement starting at line 7
+python-dotenv could not parse statement starting at line 8
+INFO:     Started server process [11140]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'models\schemas.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for connections to close. (CTRL+C to force quit)
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [11140]
+WARNING:  WatchFiles detected changes in 'routers\trip.py'. Reloading...
+python-dotenv could not parse statement starting at line 7
+python-dotenv could not parse statement starting at line 8
+INFO:     Started server process [768]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'models\schemas.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [768]
+WARNING:  WatchFiles detected changes in 'routers\trip.py', 'agents\budget_agent.py'. Reloading...
+python-dotenv could not parse statement starting at line 7
+python-dotenv could not parse statement starting at line 8
+INFO:     Started server process [9076]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'agents\budget_agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for connections to close. (CTRL+C to force quit)
+INFO:     Waiting for background tasks to complete. (CTRL+C to force quit)
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [9076]
+python-dotenv could not parse statement starting at line 7
+python-dotenv could not parse statement starting at line 8
+INFO:     Started server process [14012]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'agents\budget_agent.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [14012]
+python-dotenv could not parse statement starting at line 7
+python-dotenv could not parse statement starting at line 8
+INFO:     Started server process [2480]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.

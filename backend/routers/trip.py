@@ -133,7 +133,18 @@ def _normalize_plan_state(state: dict) -> dict:
         "fuel_cost_inr": state.get("fuel_cost_inr"),
         "toll_cost_inr": state.get("toll_cost_inr"),
         "hotel_cost_inr": state.get("hotel_cost_inr"),
+        "hotel_price_per_night": state.get("hotel_price_per_night"),
+        "hotel_category": state.get("hotel_category"),
+        "hotel_nights": state.get("hotel_nights"),
+        "hotel_daily_breakdown": state.get("hotel_daily_breakdown", []),
+        "hotel_explanation": state.get("hotel_explanation"),
         "food_cost_inr": state.get("food_cost_inr"),
+        "food_price_per_day_per_person": state.get("food_price_per_day_per_person"),
+        "food_type": state.get("food_type"),
+        "food_days": state.get("food_days"),
+        "food_is_vegetarian": state.get("food_is_vegetarian"),
+        "food_daily_breakdown": state.get("food_daily_breakdown", []),
+        "food_explanation": state.get("food_explanation"),
         "misc_cost_inr": state.get("misc_cost_inr"),
         "number_of_people": state.get("number_of_people"),
         "trip_days": state.get("trip_days"),
@@ -163,24 +174,36 @@ def _trip_summary(trip: Trip) -> TripSummaryResponse:
 
 @router.post("/trip/plan", response_model=TripPlanResponse, status_code=status.HTTP_201_CREATED)
 async def plan_trip(
-    payload: TripRequest,
+    request: TripRequest,
     session: AsyncSession = Depends(get_session),
     current_user: UserResponse = Depends(get_current_user),
 ) -> TripPlanResponse:
+    print("=== TRIP REQUEST RECEIVED ===")
+    print(f"origin: {request.origin}")
+    print(f"destination: {request.destination}")
+    print(f"dates: {request.dates}")
+    print(f"trip_days: {request.trip_days}")
+    print(f"budget: {request.budget}")
+    print(f"preferences: {request.preferences}")
+
     try:
-        initial_state = {
-            "user_input": _build_user_input(payload),
-            "origin": payload.origin,
-            "destination": payload.destination,
-            "travel_dates": payload.dates or (payload.travel_dates.model_dump() if payload.travel_dates else {}),
-            "dates": payload.dates or "",
-            "budget": payload.budget,
-            "preferences": payload.preferences,
-            "waypoints": payload.waypoints,
+        state = {
+            "user_input": _build_user_input(request),
+            "origin": request.origin,
+            "destination": request.destination,
+            "travel_dates": request.dates or (request.travel_dates.model_dump() if request.travel_dates else {}),
+            "dates": request.dates or "",
+            "trip_days": int(request.trip_days),
+            "budget": request.budget,
+            "preferences": request.preferences,
+            "waypoints": request.waypoints,
             "user_id": current_user.username,
-            "vehicle": payload.vehicle.model_dump(),
+            "vehicle": request.vehicle.model_dump(),
         }
-        result_state = await trip_planner_graph.ainvoke(initial_state)
+        print("=== TRIPSTATE BEING BUILT ===")
+        print(f"trip_days going into state: {request.trip_days}")
+        print(f"TripState trip_days = {state['trip_days']}")
+        result_state = await trip_planner_graph.ainvoke(state)
     except ValueError as exc:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(exc)) from exc
     except HTTPException:
@@ -194,12 +217,12 @@ async def plan_trip(
 
     trip = Trip(
         user_id=current_user.id,
-        origin=result_state.get("origin", payload.origin),
-        destination=result_state.get("destination", payload.destination),
-        travel_start_date=payload.travel_dates.start,
-        travel_end_date=payload.travel_dates.end,
-        budget=payload.budget,
-        waypoints=result_state.get("waypoints", payload.waypoints),
+        origin=result_state.get("origin", request.origin),
+        destination=result_state.get("destination", request.destination),
+        travel_start_date=request.travel_dates.start if request.travel_dates else request.dates.split(" to ")[0],
+        travel_end_date=request.travel_dates.end if request.travel_dates else request.dates.split(" to ")[1],
+        budget=request.budget,
+        waypoints=result_state.get("waypoints", request.waypoints),
     )
     session.add(trip)
     await session.commit()
@@ -208,9 +231,9 @@ async def plan_trip(
     pdf_path = result_state.get("pdf_path")
     recommendation_blocks = _parse_recommendation_blocks(result_state.get("recommendations"))
     expected_locations = _route_locations(
-        origin=result_state.get("origin", payload.origin),
-        waypoints=result_state.get("waypoints", payload.waypoints) or [],
-        destination=result_state.get("destination", payload.destination),
+        origin=result_state.get("origin", request.origin),
+        waypoints=result_state.get("waypoints", request.waypoints) or [],
+        destination=result_state.get("destination", request.destination),
     )
     recommendation_locations = _validate_recommendation_locations(recommendation_blocks, expected_locations)
     trip.recommendations_json = json.dumps([block.model_dump() for block in recommendation_blocks], ensure_ascii=False)

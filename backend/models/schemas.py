@@ -112,6 +112,7 @@ class TripRequest(BaseModel):
     destination: str
     dates: str | None = None
     travel_dates: TravelDates | None = None
+    trip_days: int = 1
     budget: float
     preferences: list[str] = Field(default_factory=list)
     user_id: str = "guest"
@@ -132,6 +133,8 @@ class TripRequest(BaseModel):
             raise ValueError("Origin and destination must be different.")
         if not self.dates and not self.travel_dates:
             raise ValueError("Travel dates are required.")
+        if self.trip_days < 1:
+            raise ValueError("trip_days must be at least 1.")
         if self.dates and not self.travel_dates:
             try:
                 start, end = [part.strip() for part in self.dates.split("to", maxsplit=1)]
@@ -244,7 +247,18 @@ class TripPlanResponse(BaseModel):
     fuel_cost_inr: float | None = None
     toll_cost_inr: float | None = None
     hotel_cost_inr: float | None = None
+    hotel_price_per_night: float | None = None
+    hotel_category: str | None = None
+    hotel_nights: int | None = None
+    hotel_daily_breakdown: list[dict[str, Any]] = Field(default_factory=list)
+    hotel_explanation: str | None = None
     food_cost_inr: float | None = None
+    food_price_per_day_per_person: float | None = None
+    food_type: str | None = None
+    food_days: int | None = None
+    food_is_vegetarian: bool | None = None
+    food_daily_breakdown: list[dict[str, Any]] = Field(default_factory=list)
+    food_explanation: str | None = None
     misc_cost_inr: float | None = None
     number_of_people: int | None = None
     trip_days: int | None = None
