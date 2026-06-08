@@ -99,16 +99,12 @@ function normalizeBudget(
   const totalInr = budget.breakdown?.total?.inr ?? budget.total ?? fuelInr + tollsInr + hotelsInr + foodInr + miscInr;
 
   return {
-    rows: [
-      { label: "Fuel", inr: fuelInr },
-      { label: "Hotels", inr: hotelsInr },
-      { label: "Food", inr: foodInr },
-      { label: "Tolls", inr: tollsInr },
-      { label: "Misc", inr: miscInr },
-      { label: "Total", inr: totalInr },
-    ],
-    totalInr,
     fuelInr,
+    tollsInr,
+    hotelsInr,
+    foodInr,
+    miscInr,
+    totalInr,
   };
 }
 
@@ -131,10 +127,10 @@ function PieLabel({
 }) {
   if (!cx || !cy || !midAngle || !innerRadius || !outerRadius || !percent || percent < 0.05 || !value) return null;
 
-  const RADIAN = Math.PI / 180;
+  const radian = Math.PI / 180;
   const radius = innerRadius + (outerRadius - innerRadius) * 0.65;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+  const x = cx + radius * Math.cos(-midAngle * radian);
+  const y = cy + radius * Math.sin(-midAngle * radian);
 
   return (
     <text
@@ -157,100 +153,196 @@ export default function BudgetBreakdown({
   userBudget,
   routeDistanceKm,
 }: BudgetBreakdownProps) {
-  const budgetDetails = budget as BudgetBreakdownData & {
-    hotel_cost_inr?: number;
-    food_cost_inr?: number;
+  const budgetData = budget as BudgetBreakdownData & {
     fuel_cost_inr?: number;
+    fuel_cost?: number;
+    fuelCost?: number;
+    hotel_cost_inr?: number;
+    hotel_cost?: number;
+    hotelCost?: number;
+    hotel?: number;
+    food_cost_inr?: number;
+    food_cost?: number;
+    foodCost?: number;
     toll_cost_inr?: number;
+    toll_cost?: number;
+    tollCost?: number;
+    toll?: number;
     misc_cost_inr?: number;
+    misc_cost?: number;
+    miscCost?: number;
+    misc?: number;
     number_of_people?: number;
+    numberOfPeople?: number;
+    people?: number;
+    hotelPricePerNight?: number;
+    price_per_night?: number;
+    hotelNights?: number;
+    nights?: number;
+    trip_nights?: number;
+    foodPricePerDayPerPerson?: number;
+    food_per_day?: number;
+    foodDays?: number;
+    days?: number;
     destination?: string;
   };
-  const data = normalizeBudget(budget, fuelCalculation, vehicle, routeDistanceKm);
+
+  console.log("=== BUDGET OBJECT KEYS ===", Object.keys(budgetData));
+  console.log("=== BUDGET VALUES ===", budgetData);
+  console.log("fuel_cost_inr:", budgetData.fuel_cost_inr);
+  console.log("toll_cost_inr:", budgetData.toll_cost_inr);
+  console.log("misc_cost_inr:", budgetData.misc_cost_inr);
+  console.log("hotel_cost_inr:", budgetData.hotel_cost_inr);
+  console.log("food_cost_inr:", budgetData.food_cost_inr);
+
+  const normalized = normalizeBudget(budget, fuelCalculation, vehicle, routeDistanceKm);
   const fuelDetails =
     fuelCalculation && fuelCalculation.distance_km > 0
       ? fuelCalculation
-      : buildFallbackFuelCalculation(vehicle, routeDistanceKm, vehicle?.number_of_people ?? 1, data.fuelInr);
-  const travellers = budgetDetails.number_of_people ?? vehicle?.number_of_people ?? 1;
-  const hotelTotal =
-    budget.hotel_price_per_night
-      ? budget.hotel_price_per_night * (budget.hotel_nights || 1)
-      : budgetDetails.hotel_cost_inr ?? budget.hotels ?? budget.lodging ?? data.rows[1]?.inr ?? 0;
-  const hotelExplanation = budget.hotel_price_per_night
-    ? `₹${budget.hotel_price_per_night.toLocaleString("en-IN")}/night × ${budget.hotel_nights || 1} night${
-        (budget.hotel_nights || 1) > 1 ? "s" : ""
-      } (${budget.hotel_category || "Mid"} hotel in ${budgetDetails.destination || ""})`
-    : budget.hotel_explanation || "";
-  const foodTotal =
-    budget.food_price_per_day_per_person
-      ? budget.food_price_per_day_per_person * (budgetDetails.number_of_people || 1) * (budget.food_days || 1)
-      : budgetDetails.food_cost_inr ?? budget.food ?? data.rows[2]?.inr ?? 0;
-  const grandTotal =
-    (budgetDetails.fuel_cost_inr || fuelDetails?.total_fuel_cost_inr || 0) +
-    hotelTotal +
-    foodTotal +
-    (budgetDetails.toll_cost_inr || budget.tolls || 0) +
-    (budgetDetails.misc_cost_inr || budget.miscellaneous || 0);
-  const resolvedFuelTotal = budgetDetails.fuel_cost_inr || fuelDetails?.total_fuel_cost_inr || 0;
-  const resolvedTollTotal = budgetDetails.toll_cost_inr || budget.tolls || 0;
-  const resolvedMiscTotal = budgetDetails.misc_cost_inr || budget.miscellaneous || 0;
+      : buildFallbackFuelCalculation(vehicle, routeDistanceKm, vehicle?.number_of_people ?? 1, normalized.fuelInr);
+
+  const fuelCost =
+    budgetData.fuel_cost_inr ||
+    budgetData.fuel_cost ||
+    budgetData.fuelCost ||
+    budgetData.fuel ||
+    fuelDetails?.total_fuel_cost_inr ||
+    normalized.fuelInr ||
+    0;
+
+  const hotelCostRaw =
+    budgetData.hotel_cost_inr ||
+    budgetData.hotel_cost ||
+    budgetData.hotelCost ||
+    budgetData.hotel ||
+    budgetData.hotels ||
+    budgetData.lodging ||
+    normalized.hotelsInr ||
+    0;
+
+  const foodCostRaw =
+    budgetData.food_cost_inr ||
+    budgetData.food_cost ||
+    budgetData.foodCost ||
+    budgetData.food ||
+    normalized.foodInr ||
+    0;
+
+  const tollCost =
+    budgetData.toll_cost_inr ||
+    budgetData.toll_cost ||
+    budgetData.tollCost ||
+    budgetData.tolls ||
+    budgetData.toll ||
+    normalized.tollsInr ||
+    0;
+
+  const miscCost =
+    budgetData.misc_cost_inr ||
+    budgetData.misc_cost ||
+    budgetData.miscCost ||
+    budgetData.miscellaneous ||
+    budgetData.activities ||
+    budgetData.misc ||
+    normalized.miscInr ||
+    0;
+
+  const numberOfPeople =
+    budgetData.number_of_people ||
+    budgetData.numberOfPeople ||
+    budgetData.people ||
+    vehicle?.number_of_people ||
+    1;
+
+  const pricePerNight =
+    budgetData.hotel_price_per_night ||
+    budgetData.hotelPricePerNight ||
+    budgetData.price_per_night ||
+    0;
+
+  const numberOfNights =
+    budgetData.hotel_nights ||
+    budgetData.hotelNights ||
+    budgetData.nights ||
+    budgetData.trip_nights ||
+    1;
+
+  const pricePerDayPerPerson =
+    budgetData.food_price_per_day_per_person ||
+    budgetData.foodPricePerDayPerPerson ||
+    budgetData.food_per_day ||
+    0;
+
+  const numberOfDays =
+    budgetData.food_days ||
+    budgetData.foodDays ||
+    budgetData.trip_days ||
+    budgetData.days ||
+    1;
+
+  const hotelTotal = pricePerNight > 0 ? pricePerNight * numberOfNights : hotelCostRaw;
+  const foodTotal = pricePerDayPerPerson > 0 ? pricePerDayPerPerson * numberOfPeople * numberOfDays : foodCostRaw;
+  const grandTotal = fuelCost + hotelTotal + foodTotal + tollCost + miscCost;
+
+  console.log("=== EXTRACTED VALUES ===");
+  console.log("fuelCost:", fuelCost);
+  console.log("hotelTotal:", hotelTotal);
+  console.log("foodTotal:", foodTotal);
+  console.log("tollCost:", tollCost);
+  console.log("miscCost:", miscCost);
+  console.log("numberOfPeople:", numberOfPeople);
+  console.log("grandTotal:", grandTotal);
+
   const difference = userBudget - grandTotal;
   const overBudget = difference < 0;
   const differenceAbs = Math.abs(difference);
   const budgetProgress = Math.min(100, (grandTotal / Math.max(userBudget, 1)) * 100);
-  const chartData = [
-    { name: "Fuel", value: resolvedFuelTotal, color: COLORS.Fuel },
-    { name: "Hotels", value: hotelTotal, color: COLORS.Hotels },
-    { name: "Food", value: foodTotal, color: COLORS.Food },
-    { name: "Tolls", value: resolvedTollTotal, color: COLORS.Tolls },
-    { name: "Misc", value: resolvedMiscTotal, color: COLORS.Misc },
-  ];
+
+  const hotelExplanation = pricePerNight
+    ? `₹${pricePerNight.toLocaleString("en-IN")}/night × ${numberOfNights} night${
+        numberOfNights > 1 ? "s" : ""
+      } (${budgetData.hotel_category || "Mid"} hotel in ${budgetData.destination || ""})`
+    : budgetData.hotel_explanation || "";
+
   const perPersonItems = [
     {
       label: "Fuel",
       icon: "⛽",
-      total: resolvedFuelTotal,
-      perPerson: Math.round(
-        resolvedFuelTotal /
-          Math.max(travellers || 1, 1),
-      ),
+      total: fuelCost,
+      perPerson: Math.round(fuelCost / Math.max(numberOfPeople, 1)),
     },
     {
       label: "Hotel",
       icon: "🏨",
       total: hotelTotal,
-      perPerson: Math.round(
-        hotelTotal /
-          Math.max(travellers || 1, 1),
-      ),
+      perPerson: Math.round(hotelTotal / Math.max(numberOfPeople, 1)),
     },
     {
       label: "Food",
       icon: "🍽️",
       total: foodTotal,
-      perPerson: Math.round(
-        foodTotal /
-          Math.max(travellers || 1, 1),
-      ),
+      perPerson: Math.round(foodTotal / Math.max(numberOfPeople, 1)),
     },
     {
       label: "Tolls",
       icon: "🛣️",
-      total: resolvedTollTotal,
-      perPerson: Math.round(
-        resolvedTollTotal /
-          Math.max(travellers || 1, 1),
-      ),
+      total: tollCost,
+      perPerson: Math.round(tollCost / Math.max(numberOfPeople, 1)),
     },
     {
       label: "Misc",
       icon: "🎯",
-      total: resolvedMiscTotal,
-      perPerson: Math.round(
-        resolvedMiscTotal /
-          Math.max(travellers || 1, 1),
-      ),
+      total: miscCost,
+      perPerson: Math.round(miscCost / Math.max(numberOfPeople, 1)),
     },
+  ];
+
+  const chartData = [
+    { name: "Fuel", value: fuelCost, color: COLORS.Fuel },
+    { name: "Hotels", value: hotelTotal, color: COLORS.Hotels },
+    { name: "Food", value: foodTotal, color: COLORS.Food },
+    { name: "Tolls", value: tollCost, color: COLORS.Tolls },
+    { name: "Misc", value: miscCost, color: COLORS.Misc },
   ];
 
   return (
@@ -276,119 +368,104 @@ export default function BudgetBreakdown({
             <div className="space-y-2 text-sm text-gray-200">
               <Row label="Vehicle" value={fuelDetails?.vehicle_name ?? vehicle?.vehicle_name ?? "-"} />
               <Row label="Mileage" value={`${fuelDetails?.mileage_kmpl ?? vehicle?.mileage_kmpl ?? 0} km/l`} />
-              <Row label="Travellers" value={`${travellers}`} />
-              <Row label="Per person" value={formatInr(fuelDetails?.cost_per_person_inr ?? 0)} />
+              <Row label="Travellers" value={`${numberOfPeople}`} />
+              <Row label="Per person" value={formatInr(grandTotal / Math.max(numberOfPeople, 1))} />
             </div>
           </div>
           <div className="mt-4 rounded-2xl border border-orange-400/30 bg-gray-950/80 px-4 py-3">
             <div className="text-sm font-semibold text-gray-300">Total Fuel Cost</div>
-            <div className="mt-1 text-2xl font-black text-orange-300">{formatInr(fuelDetails?.total_fuel_cost_inr ?? data.fuelInr)}</div>
+            <div className="mt-1 text-2xl font-black text-orange-300">{formatInr(fuelCost)}</div>
           </div>
         </div>
 
         <div className="overflow-x-auto rounded-2xl border border-gray-700 bg-gray-950/70">
-          <table className="min-w-[720px] w-full border-collapse">
+          <table className="min-w-[520px] w-full border-collapse">
             <thead>
               <tr className="bg-gray-800 text-left text-sm text-gray-300">
                 <th className="px-4 py-3 font-semibold">Category</th>
                 <th className="px-4 py-3 font-semibold text-right">Amount (INR)</th>
-                <th className="px-4 py-3 font-semibold text-right">Amount (USD)</th>
               </tr>
             </thead>
             <tbody>
-              {data.rows.map((row, index) => {
-                if (row.label === "Hotels") {
-                  return (
-                    <tr key={row.label} className="border-b border-gray-700/50">
-                      <td className="py-3 px-4">
-                        <div className="flex items-center gap-2">
-                          <span>🏨</span>
-                          <span className="text-white">Hotels</span>
-                        </div>
-                        <div className="text-xs text-gray-400 mt-1">{hotelExplanation}</div>
-                      </td>
-                      <td className="py-3 px-4 text-right text-white">₹{hotelTotal.toLocaleString("en-IN")}</td>
-                      <td className="py-3 px-4 text-right text-gray-400">${(hotelTotal / 83.5).toFixed(2)}</td>
-                    </tr>
-                  );
-                }
+              <tr className="bg-gray-900">
+                <td className="border-t border-gray-800 px-4 py-3">⛽ Fuel</td>
+                <td className="border-t border-gray-800 px-4 py-3 text-right">₹{Math.round(fuelCost).toLocaleString("en-IN")}</td>
+              </tr>
 
-                if (row.label === "Food") {
-                  return (
-                    <tr key={row.label} className="border-b border-gray-700/50">
-                      <td className="py-3 px-4">
-                        <div className="flex items-center gap-2">
-                          <span>🍽️</span>
-                          <span className="text-white">Food</span>
-                        </div>
-                        <div className="text-xs text-gray-400 mt-1">{budget.food_explanation}</div>
-                      </td>
-                      <td className="py-3 px-4 text-right text-white">₹{foodTotal.toLocaleString("en-IN")}</td>
-                      <td className="py-3 px-4 text-right text-gray-400">${(foodTotal / 83.5).toFixed(2)}</td>
-                    </tr>
-                  );
-                }
+              <tr className="border-b border-gray-700/50">
+                <td className="py-3 px-4">
+                  <div className="flex items-center gap-2">
+                    <span>🏨</span>
+                    <span className="text-white">Hotels</span>
+                  </div>
+                  <div className="text-xs text-gray-400 mt-1">{hotelExplanation}</div>
+                </td>
+                <td className="py-3 px-4 text-right text-white">₹{Math.round(hotelTotal).toLocaleString("en-IN")}</td>
+              </tr>
 
-                if (row.label === "Total") {
-                  return (
-                    <tr key={row.label} className="bg-orange-500/10 font-bold">
-                      <td className="py-3 px-4 text-white">Total</td>
-                      <td className="py-3 px-4 text-right text-orange-400">₹{grandTotal.toLocaleString("en-IN")}</td>
-                      <td className="py-3 px-4 text-right text-orange-300">${(grandTotal / 83.5).toFixed(2)}</td>
-                    </tr>
-                  );
-                }
+              <tr className="border-b border-gray-700/50">
+                <td className="py-3 px-4">
+                  <div className="flex items-center gap-2">
+                    <span>🍽️</span>
+                    <span className="text-white">Food</span>
+                  </div>
+                  <div className="text-xs text-gray-400 mt-1">{budgetData.food_explanation}</div>
+                </td>
+                <td className="py-3 px-4 text-right text-white">₹{Math.round(foodTotal).toLocaleString("en-IN")}</td>
+              </tr>
 
-                return (
-                  <tr
-                    key={row.label}
-                    className={index % 2 === 0 ? "bg-gray-900" : "bg-gray-950"}
-                  >
-                    <td className="border-t border-gray-800 px-4 py-3">
-                      {iconForRow(row.label)} {row.label}
-                    </td>
-                    <td className="border-t border-gray-800 px-4 py-3 text-right">{formatInr(row.inr)}</td>
-                    <td className="border-t border-gray-800 px-4 py-3 text-right text-gray-400">${(row.inr / INR_PER_USD).toFixed(2)}</td>
-                  </tr>
-                );
-              })}
+              <tr className="bg-gray-950">
+                <td className="border-t border-gray-800 px-4 py-3">🛣️ Tolls</td>
+                <td className="border-t border-gray-800 px-4 py-3 text-right">₹{Math.round(tollCost).toLocaleString("en-IN")}</td>
+              </tr>
+
+              <tr className="bg-gray-900">
+                <td className="border-t border-gray-800 px-4 py-3">🎯 Misc</td>
+                <td className="border-t border-gray-800 px-4 py-3 text-right">₹{Math.round(miscCost).toLocaleString("en-IN")}</td>
+              </tr>
+
+              <tr className="bg-orange-500/10 font-bold">
+                <td className="py-3 px-4 text-white">Total</td>
+                <td className="py-3 px-4 text-right text-orange-400">₹{Math.round(grandTotal).toLocaleString("en-IN")}</td>
+              </tr>
             </tbody>
           </table>
         </div>
 
-        {travellers > 1 && (
-          <div className="mt-4 rounded-xl border border-orange-500/20 bg-orange-500/10 p-4">
-            <div className="mb-2 flex items-center justify-between">
+        {numberOfPeople > 1 && (
+          <div className="mt-4 p-4 rounded-xl bg-orange-500/10 border border-orange-500/20">
+            <div className="flex items-center justify-between mb-1">
               <div className="flex items-center gap-2">
                 <span className="text-xl">👥</span>
-                <span className="font-semibold text-white">Cost per person</span>
+                <span className="text-white font-semibold">Cost per person</span>
               </div>
-              <span className="text-xl font-bold text-orange-400">
-                ₹{Math.round(grandTotal / travellers).toLocaleString("en-IN")}
+              <span className="text-orange-400 text-xl font-bold">
+                ₹{Math.round(grandTotal / Math.max(numberOfPeople, 1)).toLocaleString("en-IN")}
               </span>
             </div>
 
-            <div className="mt-1 text-xs text-gray-400">
-              <span className="text-gray-300">₹{grandTotal.toLocaleString("en-IN")}</span>
-              {" "}total ÷{" "}
-              <span className="text-gray-300">{travellers} travellers</span>
-              {" = "}
-              <span className="font-medium text-orange-400">
-                ₹{Math.round(grandTotal / travellers).toLocaleString("en-IN")} per person
+            <div className="text-xs text-gray-400 mb-3">
+              ₹{Math.round(grandTotal).toLocaleString("en-IN")}
+              {" total ÷ "}
+              {numberOfPeople}
+              {" travellers = "}
+              <span className="text-orange-400 font-medium">
+                ₹{Math.round(grandTotal / Math.max(numberOfPeople, 1)).toLocaleString("en-IN")}
+                {" per person"}
               </span>
             </div>
 
-            <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {perPersonItems.map((item) => (
-                <div key={item.label} className="rounded-lg bg-gray-800/60 p-2 text-center">
-                  <div className="mb-1 text-xs text-gray-400">
+                <div key={item.label} className="bg-gray-800/60 rounded-lg p-3 text-center">
+                  <div className="text-xs text-gray-400 mb-1">
                     {item.icon} {item.label}
                   </div>
-                  <div className="text-sm font-medium text-white">
+                  <div className="text-sm text-white font-medium">
                     ₹{item.perPerson.toLocaleString("en-IN")}
                   </div>
-                  <div className="mt-0.5 text-xs text-gray-500">
-                    of ₹{item.total.toLocaleString("en-IN")} total
+                  <div className="text-xs text-gray-500 mt-1">
+                    of ₹{Math.round(item.total).toLocaleString("en-IN")}
                   </div>
                 </div>
               ))}
@@ -470,21 +547,4 @@ function Row({ label, value }: { label: string; value: string }) {
       <span className="font-semibold text-white">{value}</span>
     </div>
   );
-}
-
-function iconForRow(label: string) {
-  switch (label) {
-    case "Fuel":
-      return "⛽";
-    case "Hotels":
-      return "🏨";
-    case "Food":
-      return "🍽️";
-    case "Tolls":
-      return "🛣️";
-    case "Misc":
-      return "🎯";
-    default:
-      return "";
-  }
 }
