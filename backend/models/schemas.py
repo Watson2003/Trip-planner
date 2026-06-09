@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Any, Literal, Optional
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, ValidationInfo, field_validator, model_validator
 
 
 class TripCreate(BaseModel):
@@ -48,7 +48,7 @@ class TripSummaryResponse(BaseModel):
 
 
 class VehicleDetails(BaseModel):
-    vehicle_type: Literal["bike", "car", "suv", "truck"] = "car"
+    vehicle_type: Literal["bike", "car", "suv", "bus"] = "car"
     vehicle_name: str = "Unknown Vehicle"
     fuel_type: Literal["petrol", "diesel", "electric", "cng"] = "petrol"
     mileage_kmpl: float = 15.0
@@ -61,7 +61,8 @@ class VehicleDetails(BaseModel):
         value = str(value).strip()
         if not value:
             raise ValueError("This field cannot be empty.")
-        return value.lower()
+        normalized = value.lower()
+        return "bus" if normalized == "truck" else normalized
 
     @field_validator("vehicle_name")
     @classmethod
@@ -87,9 +88,13 @@ class VehicleDetails(BaseModel):
 
     @field_validator("number_of_people")
     @classmethod
-    def _validate_people_count(cls, value: int) -> int:
+    def _validate_people_count(cls, value: int, info: ValidationInfo) -> int:
         if value <= 0:
             raise ValueError("number_of_people must be at least 1.")
+        vehicle_type = str(info.data.get("vehicle_type") or "car").lower()
+        max_people = 50 if vehicle_type == "bus" else 10
+        if value > max_people:
+            raise ValueError(f"number_of_people must be at most {max_people} for {vehicle_type}.")
         return value
 
 

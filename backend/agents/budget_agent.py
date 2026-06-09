@@ -112,7 +112,7 @@ TOLL_COST_PER_100KM: dict[str, int] = {
     "bike": 0,
     "car": 65,
     "suv": 85,
-    "truck": 130,
+    "bus": 130,
 }
 
 
@@ -132,8 +132,12 @@ def _extract_vehicle(state: TripState) -> dict[str, Any]:
     if not isinstance(vehicle, dict):
         vehicle = {}
 
+    vehicle_type = _normalize_text(vehicle.get("vehicle_type")) or "car"
+    if vehicle_type == "truck":
+        vehicle_type = "bus"
+
     return {
-        "vehicle_type": _normalize_text(vehicle.get("vehicle_type")) or "car",
+        "vehicle_type": vehicle_type,
         "vehicle_name": str(vehicle.get("vehicle_name") or "Unknown Vehicle").strip() or "Unknown Vehicle",
         "fuel_type": _normalize_text(vehicle.get("fuel_type")) or "petrol",
         "mileage_kmpl": float(vehicle.get("mileage_kmpl") or 15.0),

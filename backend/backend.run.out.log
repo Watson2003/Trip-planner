@@ -129,3 +129,4 @@ OK: Final hotel count: 3
 OK: Final hotel count: 1
 INFO:     127.0.0.1:62563 - "POST /api/trip/plan HTTP/1.1" 201 Created
 INFO:     127.0.0.1:58529 - "GET /api/trip/108/pdf HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54631 - "POST /api/trip/plan HTTP/1.1" 422 Unprocessable Content

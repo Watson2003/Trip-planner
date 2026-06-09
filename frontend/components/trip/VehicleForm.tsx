@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Bike, CarFront, Fuel, Minus, Plus, Truck, Zap } from "lucide-react";
+import { Bike, Bus, CarFront, Fuel, Minus, Plus, Zap } from "lucide-react";
 
 import type { VehicleDetails } from "@/types";
 
@@ -16,7 +16,7 @@ const VEHICLE_PRESETS: Record<VehicleDetails["vehicle_type"], { mileage: number[
   bike: { mileage: [35, 45, 55, 65], tank: 13, label: "Bike" },
   car: { mileage: [12, 15, 18, 22], tank: 40, label: "Car" },
   suv: { mileage: [8, 10, 12, 15], tank: 60, label: "SUV" },
-  truck: { mileage: [6, 8, 10, 12], tank: 90, label: "Truck" },
+  bus: { mileage: [6, 8, 10, 12], tank: 90, label: "Bus" },
 };
 
 const FUEL_PRESETS: Array<{ value: VehicleDetails["fuel_type"]; label: string; icon: string }> = [
@@ -43,10 +43,15 @@ const DEFAULT_VALUES: VehicleDetails = {
 };
 
 function normalizeInitialValues(initialValues?: Partial<VehicleDetails>): VehicleDetails {
+  const rawVehicleType = initialValues?.vehicle_type as string | undefined;
+  const vehicleType: VehicleDetails["vehicle_type"] =
+    rawVehicleType === "truck"
+      ? "bus"
+      : ((rawVehicleType as VehicleDetails["vehicle_type"] | undefined) ?? DEFAULT_VALUES.vehicle_type);
   return {
     ...DEFAULT_VALUES,
     ...initialValues,
-    vehicle_type: initialValues?.vehicle_type ?? DEFAULT_VALUES.vehicle_type,
+    vehicle_type: vehicleType ?? DEFAULT_VALUES.vehicle_type,
     vehicle_name: initialValues?.vehicle_name ?? DEFAULT_VALUES.vehicle_name,
     fuel_type: initialValues?.fuel_type ?? DEFAULT_VALUES.fuel_type,
     mileage_kmpl: initialValues?.mileage_kmpl ?? DEFAULT_VALUES.mileage_kmpl,
@@ -70,6 +75,7 @@ export default function VehicleForm({
   showFuelPreview = true,
 }: VehicleFormProps) {
   const [vehicle, setVehicle] = useState<VehicleDetails>(() => normalizeInitialValues(initialValues));
+  const maxTravellers = vehicle.vehicle_type === "bus" ? 50 : 10;
 
   const presetValues = useMemo(() => VEHICLE_PRESETS[vehicle.vehicle_type].mileage, [vehicle.vehicle_type]);
   const estimatedFuelCost = useMemo(() => {
@@ -108,7 +114,7 @@ export default function VehicleForm({
 
   function adjustPeople(delta: number) {
     updateVehicle({
-      number_of_people: Math.min(10, Math.max(1, vehicle.number_of_people + delta)),
+      number_of_people: Math.min(maxTravellers, Math.max(1, vehicle.number_of_people + delta)),
     });
   }
 
@@ -132,7 +138,7 @@ export default function VehicleForm({
               { type: "bike", icon: <Bike className="h-5 w-5" /> },
               { type: "car", icon: <CarFront className="h-5 w-5" /> },
               { type: "suv", icon: <CarFront className="h-5 w-5" /> },
-              { type: "truck", icon: <Truck className="h-5 w-5" /> },
+              { type: "bus", icon: <Bus className="h-5 w-5" /> },
             ].map(({ type, icon }) => {
               const selected = vehicle.vehicle_type === type;
               return (
@@ -164,9 +170,9 @@ export default function VehicleForm({
                 ? "e.g. Royal Enfield Classic 350"
                 : vehicle.vehicle_type === "car"
                   ? "e.g. Maruti Swift, Honda City"
-                  : vehicle.vehicle_type === "suv"
+                : vehicle.vehicle_type === "suv"
                     ? "e.g. Mahindra Thar, Toyota Fortuner"
-                    : "e.g. Tata Ace, Mahindra Bolero"
+                    : "e.g. Volvo Bus, Tata Coach"
             }
             className="rounded-2xl border border-[#2a2a2a] bg-[#111111] px-4 py-3 text-white outline-none placeholder:text-[#444444] focus:border-white"
           />
@@ -256,13 +262,16 @@ export default function VehicleForm({
             <button
               type="button"
               onClick={() => adjustPeople(1)}
+              disabled={vehicle.number_of_people >= maxTravellers}
               className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-[#2a2a2a] bg-[#111111] text-white transition hover:border-white hover:bg-[#1a1a1a]"
               aria-label="Increase travellers"
             >
               <Plus className="h-4 w-4" />
             </button>
           </div>
-          <p className="mt-2 text-xs text-[#888888]">Fuel cost will be split per person.</p>
+          <p className="mt-2 text-xs text-[#888888]">
+            Fuel cost will be split per person. {vehicle.vehicle_type === "bus" ? "Bus supports up to 50 travellers." : "Maximum 10 travellers."}
+          </p>
         </div>
 
         {showFuelPreview ? (

@@ -12,7 +12,7 @@ export interface TripPlan {
 }
 
 export interface VehicleDetails {
-  vehicle_type: "bike" | "car" | "suv" | "truck";
+  vehicle_type: "bike" | "car" | "suv" | "bus";
   vehicle_name: string;
   fuel_type: "petrol" | "diesel" | "electric" | "cng";
   mileage_kmpl: number;
