@@ -10,13 +10,11 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import inch
 from reportlab.platypus import (
-    PageBreak,
     Paragraph,
     Spacer,
     Table,
     TableStyle,
     SimpleDocTemplate,
-    Flowable,
 )
 from xml.sax.saxutils import escape
 
@@ -37,58 +35,6 @@ def _text(value: Any, default: str = "-") -> str:
         return default
     text = str(value).strip()
     return escape(text) if text else default
-
-
-class RouteMapPlaceholder(Flowable):
-    """A simple vector illustration that stands in for the route map on page 2."""
-
-    def __init__(self, width: float = 6.6 * inch, height: float = 3.3 * inch) -> None:
-        super().__init__()
-        self.width = width
-        self.height = height
-
-    def wrap(self, availWidth: float, availHeight: float) -> tuple[float, float]:
-        return min(self.width, availWidth), min(self.height, availHeight)
-
-    def draw(self) -> None:
-        canvas = self.canv
-        width = self.width
-        height = self.height
-
-        canvas.saveState()
-        canvas.setStrokeColor(colors.HexColor("#0f172a"))
-        canvas.setFillColor(colors.HexColor("#eff6ff"))
-        canvas.roundRect(0, 0, width, height, 18, stroke=1, fill=1)
-
-        canvas.setStrokeColor(colors.HexColor("#94a3b8"))
-        canvas.setLineWidth(2.5)
-        canvas.line(50, height - 55, width - 50, 60)
-        canvas.setStrokeColor(colors.HexColor("#f59e0b"))
-        canvas.setLineWidth(5)
-        canvas.line(80, 70, width * 0.46, height * 0.58)
-        canvas.line(width * 0.46, height * 0.58, width * 0.68, height * 0.42)
-        canvas.line(width * 0.68, height * 0.42, width - 85, height - 70)
-
-        for x, y, label, color in [
-            (65, 70, "Origin", colors.HexColor("#2563eb")),
-            (width * 0.46, height * 0.58, "Waypoint", colors.HexColor("#7c3aed")),
-            (width * 0.68, height * 0.42, "Waypoint", colors.HexColor("#7c3aed")),
-            (width - 80, height - 70, "Destination", colors.HexColor("#dc2626")),
-        ]:
-            canvas.setFillColor(color)
-            canvas.circle(x, y, 9, stroke=0, fill=1)
-            canvas.setFillColor(colors.white)
-            canvas.circle(x, y, 3, stroke=0, fill=1)
-            canvas.setFillColor(colors.HexColor("#0f172a"))
-            canvas.setFont("Helvetica-Bold", 9)
-            canvas.drawString(x + 14, y - 3, label)
-
-        canvas.setFillColor(colors.HexColor("#334155"))
-        canvas.setFont("Helvetica-Bold", 14)
-        canvas.drawCentredString(width / 2, height - 28, "Route map preview")
-        canvas.setFont("Helvetica", 10)
-        canvas.drawCentredString(width / 2, 18, "Placeholder map graphic for the generated PDF report")
-        canvas.restoreState()
 
 
 def _header_footer(canvas, doc) -> None:
@@ -196,10 +142,8 @@ def generate_pdf_report(trip_data: dict[str, Any], output_path: str) -> dict[str
     destination = trip_data.get("destination", "-")
     travel_dates = trip_data.get("travel_dates") or {}
     route = trip_data.get("route") or {}
-    weather = trip_data.get("weather") or []
     recommendations = trip_data.get("recommendations") or {}
     budget = trip_data.get("budget") or {}
-    waypoints = trip_data.get("waypoints") or []
 
     fuel_inr = _money_value(budget, ["fuel", "fuel_inr", "fuel_cost_inr"])
     toll_inr = _money_value(budget, ["tolls", "tolls_inr", "toll_cost_inr"])
@@ -240,83 +184,9 @@ def generate_pdf_report(trip_data: dict[str, Any], output_path: str) -> dict[str
             styles["BodyText"],
         )
     )
-    story.append(Spacer(1, 10))
-    story.append(
-        Table(
-            [[
-                Paragraph("<b>Waypoints</b>", styles["BodyText"]),
-                Paragraph(_text(", ".join(waypoints) if waypoints else "No waypoints provided"), styles["BodyText"]),
-            ]],
-            colWidths=[130, 370],
-        )
-    )
-
-    story.append(PageBreak())
+    story.append(Spacer(1, 16))
 
     # Page 2
-    story.append(Paragraph("Route Overview", styles["RoadMindSection"]))
-    story.append(
-        Paragraph(
-            "The placeholder map below represents the planned road route and the main stopping points on the journey.",
-            styles["BodyText"],
-        )
-    )
-    story.append(Spacer(1, 12))
-    story.append(RouteMapPlaceholder())
-    story.append(Spacer(1, 16))
-    story.append(Paragraph("Waypoints", styles["RoadMindSection"]))
-    waypoint_rows = [[str(index + 1), _text(waypoint)] for index, waypoint in enumerate(waypoints)] or [["-", "No waypoints provided"]]
-    story.append(_build_section_table("Stops", waypoint_rows, [60, 440]))
-
-    story.append(PageBreak())
-
-    # Page 3
-    story.append(Paragraph("Weather Forecast", styles["RoadMindSection"]))
-    story.append(
-        Paragraph(
-            "The table below summarizes the provided weather data for the trip origin, destination, and any intermediate stops.",
-            styles["BodyText"],
-        )
-    )
-    story.append(Spacer(1, 10))
-    weather_rows = []
-    for item in weather:
-        weather_rows.append(
-            [
-                _text(item.get("location") or item.get("city")),
-                _text(item.get("day") or item.get("date")),
-                _text(item.get("temperatureC") or item.get("temp_celsius") or item.get("highC")),
-                _text(item.get("condition")),
-                _text(item.get("severeAlert") or item.get("alert") or "-"),
-            ]
-        )
-    if not weather_rows:
-        weather_rows = [["-", "-", "-", "-", "No weather data provided"]]
-    weather_table = Table(
-        [["Location", "Day", "Temp (°C)", "Condition", "Alert"], *weather_rows],
-        colWidths=[110, 90, 70, 140, 130],
-        repeatRows=1,
-    )
-    weather_table.setStyle(
-        TableStyle(
-            [
-                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#0f172a")),
-                ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
-                ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
-                ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#cbd5e1")),
-                ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.whitesmoke, colors.HexColor("#f8fafc")]),
-                ("VALIGN", (0, 0), (-1, -1), "TOP"),
-                ("FONTSIZE", (0, 0), (-1, -1), 8.5),
-                ("TOPPADDING", (0, 0), (-1, -1), 6),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
-            ]
-        )
-    )
-    story.append(weather_table)
-
-    story.append(PageBreak())
-
-    # Page 4
     story.append(Paragraph("Budget Breakdown", styles["RoadMindSection"]))
     story.append(
         Paragraph(
@@ -348,9 +218,9 @@ def generate_pdf_report(trip_data: dict[str, Any], output_path: str) -> dict[str
     )
     story.append(budget_table)
 
-    story.append(PageBreak())
+    story.append(Spacer(1, 16))
 
-    # Page 5
+    # Page 3
     story.append(Paragraph("Recommendations", styles["RoadMindSection"]))
     story.append(
         Paragraph(

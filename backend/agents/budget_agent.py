@@ -4,7 +4,9 @@ from datetime import date, datetime, timedelta
 from typing import Any
 
 from agents.state import TripState
-from utils.fuel_price import calculate_fuel_cost
+from models.schemas import FuelCalculation
+from utils.fuel_price import get_fuel_price
+from utils.mcp_bridge import mcp_calculate_fuel_cost
 
 
 USD_TO_INR = 83.5
@@ -423,13 +425,24 @@ def run_budget_agent(state: TripState) -> TripState:
 
     print(f"[BUDGET] FINAL days={number_of_days} nights={number_of_nights}")
 
-    fuel_calculation = calculate_fuel_cost(
+    fuel_price = get_fuel_price(vehicle["fuel_type"], origin)
+    fuel_summary = mcp_calculate_fuel_cost(
         distance_km=distance_km,
-        mileage_kmpl=vehicle["mileage_kmpl"],
+        fuel_efficiency_kmpl=vehicle["mileage_kmpl"],
+        fuel_price_per_litre=fuel_price,
+    )
+    fuel_required_litres = float(fuel_summary["litres_needed"])
+    refueling_stops = int(fuel_required_litres / vehicle["tank_capacity_litres"]) if vehicle["tank_capacity_litres"] and vehicle["tank_capacity_litres"] > 0 else 0
+    fuel_calculation = FuelCalculation(
+        distance_km=fuel_summary["distance_km"],
+        mileage_kmpl=round(float(vehicle["mileage_kmpl"]), 2),
+        fuel_required_litres=fuel_summary["litres_needed"],
         fuel_type=vehicle["fuel_type"],
-        tank_capacity=vehicle["tank_capacity_litres"],
-        number_of_people=number_of_people,
-        origin_city=origin,
+        fuel_price_per_litre=fuel_summary["fuel_price_per_litre"],
+        total_fuel_cost_inr=fuel_summary["cost_inr"],
+        total_fuel_cost_usd=fuel_summary["cost_usd"],
+        refueling_stops=refueling_stops,
+        cost_per_person_inr=round(float(fuel_summary["cost_inr"]) / max(number_of_people, 1), 2),
         vehicle_name=vehicle["vehicle_name"],
         vehicle_type=vehicle_type,
     )

@@ -1,6 +1,5 @@
 
 [1m[33mwarn[39m[22m - As of Tailwind CSS v3.3, the `@tailwindcss/line-clamp` plugin is now included by default.
 [1m[33mwarn[39m[22m - Remove it from the `plugins` array in your configuration to eliminate this warning.
-(node:11976) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+(node:7800) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 (Use `node --trace-warnings ...` to show where the warning was created)
-(node:11976) [DEP0060] DeprecationWarning: The `util._extend` API is deprecated. Please use Object.assign() instead.

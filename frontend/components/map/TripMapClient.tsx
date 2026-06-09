@@ -9,8 +9,8 @@ import type { TripMapProps } from "@/components/map/TripMap";
 import type { TripMarker } from "@/types";
 
 const COLORS: Record<TripMarker["type"], string> = {
-  origin: "#ffffff",
-  destination: "#e0e0e0",
+  origin: "#D4AF37",
+  destination: "#ffffff",
   waypoint: "#a0a0a0",
 };
 
@@ -24,7 +24,7 @@ function createMarkerIcon(type: TripMarker["type"], label: string) {
         height: 36px;
         border-radius: 9999px;
         background: ${accent};
-        border: 3px solid rgba(255,255,255,0.95);
+        border: 3px solid rgba(212,175,55,0.95);
         box-shadow: 0 12px 30px rgba(15, 23, 42, 0.28);
         display: flex;
         align-items: center;
@@ -128,7 +128,7 @@ export default function TripMapClient({ routeGeoJSON, markers, focusPoint }: Tri
             <Polyline
               positions={positions}
               pathOptions={{
-                color: "#f97316",
+                color: "#D4AF37",
                 weight: 6,
                 opacity: 0.95,
                 lineCap: "round",

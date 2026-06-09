@@ -1,0 +1,39 @@
+
+> ai-road-trip-planner@1.0.0 dev
+> next dev
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
+  - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 2.5s
+ ○ Compiling / ...
+ ✓ Compiled / in 3.6s (601 modules)
+ GET / 200 in 3806ms
+ GET / 200 in 55ms
+ ○ Compiling /trip-result ...
+ ✓ Compiled /trip-result in 5.8s (1734 modules)
+ ✓ Compiled in 967ms (1734 modules)
+ ✓ Compiled in 703ms (1734 modules)
+ ✓ Compiled /_not-found in 222ms (1723 modules)
+ GET /_next/static/css/app/layout.css?v=1781031089170 404 in 342ms
+ ✓ Compiled in 1371ms (1737 modules)
+ GET /_next/static/css/app/layout.css?v=1781031146377 404 in 221ms
+ ✓ Compiled in 3.4s (1735 modules)
+ GET /trip-result 200 in 906ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 777ms (866 modules)
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 5.5s (1971 modules)
+ GET / 200 in 733ms
+ GET /_next/static/css/app/layout.css?v=1781032159324 404 in 426ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 653ms
+ GET /_next/static/chunks/app/page.js 404 in 652ms
+ GET /_next/static/chunks/main-app.js?v=1781032159324 404 in 658ms
+ GET /_next/static/chunks/app/not-found.js 404 in 576ms
+ GET /_next/static/chunks/app/global-error.js 404 in 585ms
+ GET / 200 in 61ms
+ GET / 404 in 20ms
+ GET / 404 in 23ms
+[?25h

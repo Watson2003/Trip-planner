@@ -13,8 +13,8 @@ function createMarkerIcon() {
         width: 22px;
         height: 22px;
         border-radius: 9999px;
-        background: #ffffff;
-        border: 3px solid rgba(255,255,255,0.95);
+        background: #D4AF37;
+        border: 3px solid rgba(212,175,55,0.95);
         box-shadow: 0 10px 22px rgba(15, 23, 42, 0.35);
       "></div>
     `,

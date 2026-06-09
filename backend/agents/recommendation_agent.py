@@ -9,14 +9,14 @@ from typing import Any
 from urllib.parse import quote_plus
 
 from agents.state import TripState
-from tools import generate_pdf_report
+from utils.mcp_bridge import mcp_generate_pdf_report, mcp_search_places
 from utils.places import (
     clear_cache,
     get_place_details,
     get_photo_url,
     price_level_estimate_inr,
     price_level_to_inr,
-    search_places,
+    search_places as local_search_places,
 )
 
 
@@ -493,19 +493,62 @@ async def _enrich_place(location: str, raw_place: dict[str, Any], kind: str) -> 
     return common
 
 
+def _normalize_mcp_place_result(place: dict[str, Any], kind: str, index: int) -> dict[str, Any]:
+    tags = place.get("tags") or {}
+    if not isinstance(tags, dict):
+        tags = {}
+
+    categories = tags.get("categories") or []
+    if not isinstance(categories, list):
+        categories = []
+
+    display_name = str(place.get("display_name") or place.get("name") or "").strip()
+    name = str(place.get("name") or display_name.split(",")[0] or "").strip()
+    place_id = str(tags.get("place_id") or place.get("place_id") or f"mcp-{kind}-{index + 1}").strip()
+    price_level = int(place.get("price_level") or 0)
+
+    return {
+        "place_id": place_id,
+        "name": name,
+        "display_name": display_name,
+        "address_line1": display_name or name,
+        "address_line2": str(place.get("category") or "").strip(),
+        "rating": float(place.get("rating") or 4.2),
+        "total_reviews": int(place.get("total_reviews") or 0),
+        "price_level": price_level,
+        "lat": float(place.get("lat") or 0.0),
+        "lng": float(place.get("lon") or place.get("lng") or 0.0),
+        "categories": categories,
+        "website": place.get("website"),
+        "phone": place.get("phone"),
+    }
+
+
 async def _search_and_build(location: str, kind: str, keyword: str = "") -> tuple[list[dict[str, Any]], bool]:
     place_type = {"hotel": "lodging", "restaurant": "restaurant", "attraction": "tourist_attraction"}[kind]
     try:
-        raw_places = await asyncio.wait_for(
-            search_places(location=location, place_type=place_type, keyword=keyword),
-            timeout=3.5,
+        payload = await asyncio.wait_for(
+            mcp_search_places(query=keyword or location, location=location, category=place_type),
+            timeout=6.0,
         )
+        raw_places = [
+            _normalize_mcp_place_result(place, kind, index)
+            for index, place in enumerate((payload.get("results") or [])[:10])
+            if isinstance(place, dict)
+        ]
     except asyncio.TimeoutError:
         logger.warning("Timed out searching %s places in %s", kind, location)
         raw_places = []
     except Exception as exc:
-        logger.warning("Search failed for %s in %s: %s", kind, location, exc)
-        raw_places = []
+        logger.warning("MCP search failed for %s in %s, falling back locally: %s", kind, location, exc)
+        try:
+            raw_places = await asyncio.wait_for(
+                local_search_places(location=location, place_type=place_type, keyword=keyword),
+                timeout=3.5,
+            )
+        except Exception as fallback_exc:
+            logger.warning("Local search failed for %s in %s: %s", kind, location, fallback_exc)
+            raw_places = []
 
     raw_places = [place for place in raw_places if place.get("place_id")]
     if not raw_places:
@@ -544,7 +587,7 @@ def _make_pdf(
     report_dir.mkdir(exist_ok=True)
     pdf_path = report_dir / f"trip_report_{state.get('user_id', 'guest')}.pdf"
 
-    generate_pdf_report(
+    mcp_generate_pdf_report(
         {
             "origin": state.get("origin", ""),
             "destination": state.get("destination", ""),
@@ -595,11 +638,14 @@ async def recommendation_agent(state: TripState) -> TripState:
     route_locations = _route_locations(state)
 
     async def build_for_location(location: str) -> dict[str, Any]:
-        # Use the deterministic fallback set for the planning flow so the response stays fast and
-        # predictable even when live Geoapify searches are slow or rate-limited.
-        hotels_raw = _build_fallback_places(location, "hotel")[:5]
-        restaurants_raw = _build_fallback_places(location, "restaurant")[:5]
-        attractions_raw = _build_fallback_places(location, "attraction")[:5]
+        hotels_bundle, restaurants_bundle, attractions_bundle = await asyncio.gather(
+            _search_and_build(location, "hotel"),
+            _search_and_build(location, "restaurant"),
+            _search_and_build(location, "attraction"),
+        )
+        hotels_raw = hotels_bundle[0][:5]
+        restaurants_raw = restaurants_bundle[0][:5]
+        attractions_raw = attractions_bundle[0][:5]
 
         print(f"OK: Destination: {location}")
         print(f"OK: Hotels found: {len(hotels_raw)}")

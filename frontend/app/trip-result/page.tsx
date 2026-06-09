@@ -112,6 +112,16 @@ function safeBudgetTotal(budget: unknown) {
   return typeof total === "number" && Number.isFinite(total) ? total : undefined;
 }
 
+function formatDuration(hours: number) {
+  const totalMinutes = Math.max(0, Math.round(hours * 60));
+  const wholeHours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  if (wholeHours === 0) return `${minutes} min`;
+  if (minutes === 0) return `${wholeHours} hr`;
+  return `${wholeHours} hr ${minutes} min`;
+}
+
 function normalizeTripData(raw: unknown): TripResultStorage | null {
   if (!raw || typeof raw !== "object") return null;
 
@@ -184,7 +194,7 @@ function TripResultContent({ tripData }: { tripData: TripResultStorage }) {
         <StatItem label="Origin" value={tripData.origin} />
         <StatItem label="Destination" value={tripData.destination} />
         <StatItem label="Distance" value={`${tripData.distance_km} km`} />
-        <StatItem label="Duration" value={`${tripData.duration_hours} hrs`} />
+        <StatItem label="Duration" value={formatDuration(tripData.duration_hours)} />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
@@ -226,7 +236,7 @@ function TripResultContent({ tripData }: { tripData: TripResultStorage }) {
                 console.error(error);
               });
             }}
-            className="inline-flex items-center gap-2 rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-[#e0e0e0] disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center gap-2 rounded-2xl bg-[#D4AF37] px-5 py-3 text-sm font-semibold text-black transition hover:bg-[#B8860B] disabled:cursor-not-allowed disabled:opacity-60"
           >
             <ArrowDownToLine className="h-4 w-4" />
             Download PDF Report
@@ -240,9 +250,9 @@ function TripResultContent({ tripData }: { tripData: TripResultStorage }) {
       {(tripData.recommendations?.length ?? 0) > 0 && (
         <section className="space-y-4">
           <div className="flex items-center gap-2">
-            <span className="text-lg">📍</span>
+            <span className="text-lg">??</span>
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.24em] text-white">RECOMMENDATIONS</p>
+              <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#D4AF37]">RECOMMENDATIONS</p>
               <h2 className="text-xl font-black text-white">Places Along Your Route</h2>
             </div>
           </div>
@@ -312,9 +322,9 @@ export default function TripResultPage() {
                 <button
                   type="button"
                   onClick={() => router.push("/")}
-                  className="mt-6 inline-flex items-center justify-center rounded-2xl bg-white px-5 py-3 text-sm font-bold text-black transition hover:bg-[#e0e0e0]"
+                  className="mt-6 inline-flex items-center justify-center rounded-2xl bg-[#D4AF37] px-5 py-3 text-sm font-bold text-black transition hover:bg-[#B8860B]"
                 >
-                  Plan a Trip →
+                  Plan a Trip ?
                 </button>
               </div>
             </section>

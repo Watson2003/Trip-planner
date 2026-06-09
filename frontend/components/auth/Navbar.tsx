@@ -50,7 +50,7 @@ export default function Navbar({ theme, onToggleTheme }: NavbarProps) {
     <header className="sticky top-0 z-50 border-b border-[#1a1a1a] bg-black/95 text-white backdrop-blur-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2 font-bold text-lg text-white">
-          <Route className="h-5 w-5 text-white" />
+          <Route className="h-5 w-5 text-[#D4AF37]" />
           <span>RoadMind AI</span>
         </Link>
 
@@ -61,19 +61,19 @@ export default function Navbar({ theme, onToggleTheme }: NavbarProps) {
                 <button
                   type="button"
                   onClick={onToggleTheme}
-                  className="inline-flex items-center gap-2 rounded-xl border border-[#2a2a2a] bg-[#111111] px-3 py-1.5 text-sm text-[#a0a0a0] transition hover:bg-[#1a1a1a] hover:text-white"
+                  className="inline-flex items-center gap-2 rounded-xl border border-[#2a2a2a] bg-[#111111] px-3 py-1.5 text-sm text-[#a0a0a0] transition hover:border-[#D4AF37] hover:bg-[#1a1a1a] hover:text-[#D4AF37]"
                   aria-label="Toggle theme"
                 >
                   {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
                 </button>
               ) : null}
 
-              <Link href="/my-trips" className="text-sm text-[#a0a0a0] transition hover:text-white">
+              <Link href="/my-trips" className="text-sm text-[#a0a0a0] transition hover:text-[#D4AF37]">
                 My Trips
               </Link>
 
               <div className="flex items-center gap-2 rounded-full border border-[#2a2a2a] bg-[#111111] px-3 py-1.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-sm font-bold text-black">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#D4AF37] text-sm font-bold text-black">
                   {initial}
                 </div>
                 <span className="max-w-[160px] truncate text-sm text-white">Hello, {fullName}</span>
@@ -93,7 +93,7 @@ export default function Navbar({ theme, onToggleTheme }: NavbarProps) {
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen((current) => !current)}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#2a2a2a] bg-[#111111] text-white transition hover:bg-[#1a1a1a]"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#2a2a2a] bg-[#111111] text-white transition hover:border-[#D4AF37] hover:bg-[#1a1a1a]"
                 aria-label="Open navigation menu"
                 aria-expanded={mobileMenuOpen}
               >
@@ -104,7 +104,7 @@ export default function Navbar({ theme, onToggleTheme }: NavbarProps) {
                 <div className="absolute left-0 right-0 top-16 border-b border-[#1a1a1a] bg-black px-4 py-4">
                   <div className="flex flex-col gap-3">
                     <div className="flex items-center gap-3 rounded-2xl border border-[#2a2a2a] bg-[#111111] px-3 py-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-sm font-bold text-black">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#D4AF37] text-sm font-bold text-black">
                         {initial}
                       </div>
                       <div className="min-w-0">
@@ -116,7 +116,7 @@ export default function Navbar({ theme, onToggleTheme }: NavbarProps) {
                     <Link
                       href="/my-trips"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="rounded-xl border border-[#2a2a2a] bg-[#111111] px-3 py-3 text-sm font-semibold text-white transition hover:bg-[#1a1a1a]"
+                      className="rounded-xl border border-[#2a2a2a] bg-[#111111] px-3 py-3 text-sm font-semibold text-white transition hover:border-[#D4AF37] hover:bg-[#1a1a1a] hover:text-[#D4AF37]"
                     >
                       My Trips
                     </Link>

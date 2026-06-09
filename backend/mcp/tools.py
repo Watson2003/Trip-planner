@@ -7,11 +7,26 @@ from typing import Any
 
 import httpx
 from dotenv import load_dotenv
-from mcp.server.fastmcp import FastMCP
-from tools import generate_pdf_report as build_pdf_report
 
 
 load_dotenv()
+
+try:
+    from mcp.server.fastmcp import FastMCP
+except Exception:  # pragma: no cover - optional MCP server dependency
+    class FastMCP:  # type: ignore[no-redef]
+        def __init__(self, *_args: Any, **_kwargs: Any) -> None:
+            pass
+
+        def tool(self, *_args: Any, **_kwargs: Any):
+            def decorator(func):
+                return func
+
+            return decorator
+
+        def run(self) -> None:
+            raise RuntimeError("MCP server runtime is unavailable in this environment.")
+
 
 mcp = FastMCP("road-trip-tools")
 ORS_BASE_URL = "https://api.openrouteservice.org"
@@ -254,6 +269,11 @@ def calculate_fuel_cost(distance_km: float, fuel_efficiency_kmpl: float, fuel_pr
 @mcp.tool()
 def generate_pdf_report(trip_data: dict[str, Any], output_path: str) -> dict[str, Any]:
     """Generate a styled PDF summary for a road trip."""
+    try:
+        from tools import generate_pdf_report as build_pdf_report
+    except Exception as exc:  # pragma: no cover - optional PDF dependency
+        raise RuntimeError(f"PDF generation is unavailable: {exc}") from exc
+
     return build_pdf_report(trip_data, output_path)
 
 

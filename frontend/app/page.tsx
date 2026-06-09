@@ -614,7 +614,13 @@ export default function HomePage() {
                     step={500}
                     value={form.budget}
                     onChange={(event) => setForm((current) => ({ ...current, budget: Number(event.target.value) }))}
-                    className="h-2 w-full cursor-pointer appearance-none rounded-full bg-[#111111] accent-white"
+                    className="h-2 w-full cursor-pointer appearance-none rounded-full bg-transparent accent-[#D4AF37]"
+                    style={{
+                      background: `linear-gradient(to right, #D4AF37 0%, #D4AF37 ${Math.max(
+                        0,
+                        Math.min(100, ((form.budget - 5000) / (100000 - 5000)) * 100),
+                      )}%, #2a2a2a ${Math.max(0, Math.min(100, ((form.budget - 5000) / (100000 - 5000)) * 100))}%, #2a2a2a 100%)`,
+                    }}
                   />
                   <div className="flex justify-between text-xs text-[#888888]">
                     <span>{"\u20b95,000"}</span>
@@ -648,7 +654,11 @@ export default function HomePage() {
                   <div className="h-px flex-1 bg-white/10" />
                 </div>
 
-                <VehicleForm initialValues={vehicle} onChange={(nextVehicle) => setVehicle(nextVehicle)} />
+                <VehicleForm
+                  initialValues={vehicle}
+                  onChange={(nextVehicle) => setVehicle(nextVehicle)}
+                  showFuelPreview={false}
+                />
 
                 {error && (
                   <div className="rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm font-medium text-red-200">

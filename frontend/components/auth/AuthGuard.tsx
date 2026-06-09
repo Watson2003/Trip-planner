@@ -32,7 +32,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-black text-white">
         <div className="flex items-center gap-3 rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a] px-5 py-4 shadow-2xl shadow-black/30 backdrop-blur">
-          <Loader2 className="h-5 w-5 animate-spin text-white" />
+          <Loader2 className="h-5 w-5 animate-spin text-[#D4AF37]" />
           <span className="text-sm font-medium text-[#a0a0a0]">Checking your session...</span>
         </div>
       </main>
@@ -43,7 +43,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-black text-white">
         <div className="flex items-center gap-3 rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a] px-5 py-4 shadow-2xl shadow-black/30 backdrop-blur">
-          <Loader2 className="h-5 w-5 animate-spin text-white" />
+          <Loader2 className="h-5 w-5 animate-spin text-[#D4AF37]" />
           <span className="text-sm font-medium text-[#a0a0a0]">Redirecting to login...</span>
         </div>
       </main>

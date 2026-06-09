@@ -7,11 +7,9 @@ from collections.abc import Mapping
 from datetime import date, datetime, time, timedelta
 from typing import Any
 
-import httpx
-
 from agents.state import TripState
 from models.schemas import DailyWeather
-from utils.config import settings
+from utils.mcp_bridge import mcp_get_weather
 
 
 logger = logging.getLogger(__name__)
@@ -139,6 +137,25 @@ def _build_alert(temp_max_celsius: float, wind_speed_kmh: float, rain_chance_per
     return None
 
 
+def _weather_main_from_description(description: str) -> str:
+    lowered = (description or "").strip().lower()
+    if any(term in lowered for term in ["thunder", "storm"]):
+        return "thunderstorm"
+    if "drizzle" in lowered:
+        return "drizzle"
+    if "rain" in lowered:
+        return "rain"
+    if any(term in lowered for term in ["snow", "hail"]):
+        return "snow"
+    if "clear" in lowered:
+        return "clear"
+    if any(term in lowered for term in ["cloud", "overcast", "scattered", "broken"]):
+        return "clouds"
+    if any(term in lowered for term in ["mist", "fog", "haze"]):
+        return "mist"
+    return description
+
+
 def _representative_entry(entries: list[dict[str, Any]], target_day: date) -> dict[str, Any]:
     noon = datetime.combine(target_day, time(hour=12))
 
@@ -183,27 +200,94 @@ def _build_daily_weather(location: str, target_day: date, entries: list[dict[str
     )
 
 
-async def _fetch_location_weather(
-    client: httpx.AsyncClient,
+def _build_daily_weather_from_mcp(location: str, target_day: date, forecast_day: dict[str, Any]) -> DailyWeather:
+    temp_info = forecast_day.get("temp_celsius") or {}
+    if not isinstance(temp_info, Mapping):
+        temp_info = {}
+
+    entries = forecast_day.get("entries") or []
+    if not isinstance(entries, list):
+        entries = []
+
+    temperatures = [float(entry.get("temp_celsius", 0.0)) for entry in entries if isinstance(entry, dict)]
+    humidity_values = [int(round(float(entry.get("humidity", 0)))) for entry in entries if isinstance(entry, dict)]
+    wind_speeds = [float(entry.get("wind_speed", 0.0)) for entry in entries if isinstance(entry, dict)]
+    condition = str(forecast_day.get("condition") or "Unknown")
+    if not condition and entries:
+        condition = str((entries[0] or {}).get("condition") or "Unknown")
+
+    temp_min_celsius = round(float(temp_info.get("min", min(temperatures) if temperatures else 0.0)), 1)
+    temp_max_celsius = round(float(temp_info.get("max", max(temperatures) if temperatures else 0.0)), 1)
+    temp_feels_like = round(float(temp_info.get("avg", sum(temperatures) / len(temperatures) if temperatures else temp_max_celsius)), 1)
+    humidity = int(round(sum(humidity_values) / len(humidity_values))) if humidity_values else 0
+    wind_speed_kmh = round((max(wind_speeds) if wind_speeds else 0.0) * 3.6, 1)
+    alert = _build_alert(temp_max_celsius=temp_max_celsius, wind_speed_kmh=wind_speed_kmh, rain_chance_percent=0)
+
+    return DailyWeather(
+        date=target_day.isoformat(),
+        day_name=target_day.strftime("%A"),
+        location=location,
+        temp_min_celsius=temp_min_celsius,
+        temp_max_celsius=temp_max_celsius,
+        temp_feels_like=temp_feels_like,
+        humidity_percent=humidity,
+        condition=condition,
+        weather_icon=_weather_icon(_weather_main_from_description(condition), condition),
+        wind_speed_kmh=wind_speed_kmh,
+        rain_chance_percent=0,
+        alert=alert,
+    )
+
+
+def _filter_mcp_forecast_by_date_range(
+    payload: dict[str, Any],
     location: str,
     start_date: date,
     end_date: date,
 ) -> list[dict[str, Any]]:
-    if not settings.openweathermap_api_key:
-        logger.error("OPENWEATHERMAP_API_KEY is not set in the environment.")
+    days = payload.get("days") or []
+    if not isinstance(days, list):
         return []
 
+    weather_days: list[dict[str, Any]] = []
+    for forecast_day in days:
+        if not isinstance(forecast_day, dict):
+            continue
+        date_value = str(forecast_day.get("date") or "").strip()
+        if not date_value:
+            continue
+        try:
+            forecast_date = datetime.strptime(date_value, "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        if not (start_date <= forecast_date <= end_date):
+            continue
+
+        daily_weather = _build_daily_weather_from_mcp(location, forecast_date, forecast_day)
+        daily_payload = daily_weather.model_dump()
+        daily_payload.update(
+            {
+                "day": daily_payload["day_name"],
+                "city": daily_payload["location"],
+                "temperatureC": daily_payload["temp_max_celsius"],
+                "temp_celsius": daily_payload["temp_max_celsius"],
+                "severeAlert": daily_payload["alert"],
+            }
+        )
+        weather_days.append(daily_payload)
+
+    return weather_days
+
+
+async def _fetch_location_weather(location: str, start_date: date, end_date: date) -> list[dict[str, Any]]:
     last_error: Exception | None = None
     for query in _location_queries(location):
         try:
-            response = await client.get(
-                OPENWEATHER_URL,
-                params={"q": query, "appid": settings.openweathermap_api_key, "units": "metric"},
-            )
-            response.raise_for_status()
-            payload = response.json()
-            return filter_openweather_forecast_by_date_range(payload, location, start_date, end_date)
-        except (httpx.HTTPError, ValueError) as exc:
+            payload = await asyncio.wait_for(mcp_get_weather(location=query, days=5), timeout=15.0)
+            weather_days = _filter_mcp_forecast_by_date_range(payload, location, start_date, end_date)
+            if weather_days:
+                return weather_days
+        except Exception as exc:  # noqa: BLE001 - keep weather fallback resilient
             last_error = exc
             logger.warning("Weather lookup failed for %s using query %s: %s", location, query, exc)
 
@@ -299,9 +383,8 @@ async def weather_agent(state: TripState) -> TripState:
 
     # Keep the end-to-end trip plan responsive; weather should fail fast and fall back to an empty list
     # rather than holding the entire planning request open.
-    async with httpx.AsyncClient(timeout=2.0) as client:
-        tasks = [_fetch_location_weather(client, location, start_date, end_date) for location in locations]
-        results = await asyncio.gather(*tasks)
+    tasks = [_fetch_location_weather(location, start_date, end_date) for location in locations]
+    results = await asyncio.gather(*tasks)
 
     # Flatten the per-location forecast output into a single list for the trip state.
     weather_days = [day for location_days in results for day in location_days]

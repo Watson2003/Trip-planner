@@ -9,6 +9,7 @@ type VehicleFormProps = {
   onChange: (vehicle: VehicleDetails) => void;
   initialValues?: Partial<VehicleDetails>;
   routeDistanceKm?: number | null;
+  showFuelPreview?: boolean;
 };
 
 const VEHICLE_PRESETS: Record<VehicleDetails["vehicle_type"], { mileage: number[]; tank: number; label: string }> = {
@@ -62,7 +63,12 @@ function tankLabel(fuelType: VehicleDetails["fuel_type"]) {
   return fuelType === "electric" ? "Battery Range (km)" : "Tank Capacity (litres)";
 }
 
-export default function VehicleForm({ onChange, initialValues, routeDistanceKm }: VehicleFormProps) {
+export default function VehicleForm({
+  onChange,
+  initialValues,
+  routeDistanceKm,
+  showFuelPreview = true,
+}: VehicleFormProps) {
   const [vehicle, setVehicle] = useState<VehicleDetails>(() => normalizeInitialValues(initialValues));
 
   const presetValues = useMemo(() => VEHICLE_PRESETS[vehicle.vehicle_type].mileage, [vehicle.vehicle_type]);
@@ -259,36 +265,36 @@ export default function VehicleForm({ onChange, initialValues, routeDistanceKm }
           <p className="mt-2 text-xs text-[#888888]">Fuel cost will be split per person.</p>
         </div>
 
-        <div className="rounded-3xl border border-[#1a1a1a] bg-[#0a0a0a] p-4">
-          <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-white">
-            <Fuel className="h-4 w-4" />
-            Estimated Fuel Cost Preview
+        {showFuelPreview ? (
+          <div className="rounded-3xl border border-[#1a1a1a] bg-[#0a0a0a] p-4">
+            <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-white">
+              <Fuel className="h-4 w-4" />
+              Estimated Fuel Cost Preview
+            </div>
+            <div className="grid gap-2 text-sm text-[#a0a0a0]">
+              <div className="flex items-center justify-between gap-4">
+                <span className="text-[#888888]">Based on your vehicle data</span>
+                <span className="font-semibold text-white">Final cost calculated after route planning</span>
+              </div>
+              <div className="flex items-center justify-between gap-4">
+                <span>Distance</span>
+                <span>{estimatedFuelCost ? `${estimatedFuelCost.distanceKm} km` : "--- km"}</span>
+              </div>
+              <div className="flex items-center justify-between gap-4">
+                <span>Fuel needed</span>
+                <span>{estimatedFuelCost ? `${estimatedFuelCost.fuelRequired.toFixed(2)} units` : "---"}</span>
+              </div>
+              <div className="flex items-center justify-between gap-4">
+                <span>Estimated cost</span>
+                <span>{estimatedFuelCost ? `???${estimatedFuelCost.total.toFixed(0)}` : "???---"}</span>
+              </div>
+              <div className="flex items-center justify-between gap-4">
+                <span>Per person</span>
+                <span>{estimatedFuelCost ? `???${estimatedFuelCost.perPerson.toFixed(0)}` : "???---"}</span>
+              </div>
+            </div>
           </div>
-          <div className="grid gap-2 text-sm text-[#a0a0a0]">
-            <div className="flex items-center justify-between gap-4">
-              <span className="text-[#888888]">Based on your vehicle data</span>
-              <span className="font-semibold text-white">
-                Final cost calculated after route planning
-              </span>
-            </div>
-            <div className="flex items-center justify-between gap-4">
-              <span>Distance</span>
-              <span>{estimatedFuelCost ? `${estimatedFuelCost.distanceKm} km` : "--- km"}</span>
-            </div>
-            <div className="flex items-center justify-between gap-4">
-              <span>Fuel needed</span>
-              <span>{estimatedFuelCost ? `${estimatedFuelCost.fuelRequired.toFixed(2)} units` : "---"}</span>
-            </div>
-            <div className="flex items-center justify-between gap-4">
-              <span>Estimated cost</span>
-              <span>{estimatedFuelCost ? `₹${estimatedFuelCost.total.toFixed(0)}` : "₹---"}</span>
-            </div>
-            <div className="flex items-center justify-between gap-4">
-              <span>Per person</span>
-              <span>{estimatedFuelCost ? `₹${estimatedFuelCost.perPerson.toFixed(0)}` : "₹---"}</span>
-            </div>
-          </div>
-        </div>
+        ) : null}
       </div>
     </section>
   );

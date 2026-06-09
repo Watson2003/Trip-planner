@@ -32,13 +32,13 @@ export default function GlobalError({
               <button
                 type="button"
                 onClick={reset}
-                className="rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-[#e0e0e0]"
+                className="rounded-2xl bg-[#D4AF37] px-5 py-3 text-sm font-semibold text-black transition hover:bg-[#B8860B]"
               >
                 Try again
               </button>
               <Link
                 href="/"
-                className="inline-flex items-center gap-2 rounded-2xl border border-[#2a2a2a] bg-transparent px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1a1a1a]"
+                className="inline-flex items-center gap-2 rounded-2xl border border-[#D4AF37]/40 bg-transparent px-5 py-3 text-sm font-semibold text-[#D4AF37] transition hover:border-[#D4AF37] hover:bg-[#1a1a1a]"
               >
                 <Home className="h-4 w-4" />
                 Home

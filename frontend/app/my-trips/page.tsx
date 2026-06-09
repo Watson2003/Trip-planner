@@ -240,7 +240,7 @@ export default function MyTripsPage() {
         <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           <section className="mb-8 overflow-hidden rounded-[2rem] border border-[#1a1a1a] bg-[#0a0a0a] p-6 shadow-2xl shadow-black/30 sm:p-8">
             <div className="max-w-3xl space-y-4">
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm font-semibold text-white">
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-4 py-2 text-sm font-semibold text-[#D4AF37]">
                 <Route className="h-4 w-4" />
                 My Trips
               </div>
@@ -263,7 +263,7 @@ export default function MyTripsPage() {
             </div>
           ) : trips.length === 0 ? (
             <section className="flex min-h-[40vh] w-full flex-col items-center justify-center rounded-[2rem] border border-[#1a1a1a] bg-[#0a0a0a] px-6 py-20 text-center">
-              <div className="mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-white/10 text-white ring-1 ring-white/20">
+              <div className="mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-[#D4AF37]/10 text-[#D4AF37] ring-1 ring-[#D4AF37]/30">
                 <Route className="h-10 w-10" />
               </div>
               <h2 className="text-2xl font-black tracking-tight">No trips yet</h2>
@@ -272,7 +272,7 @@ export default function MyTripsPage() {
               </p>
               <Link
                 href="/"
-                className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-white px-5 py-3 text-sm font-bold text-black transition hover:bg-[#e0e0e0]"
+                className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-[#D4AF37] px-5 py-3 text-sm font-bold text-black transition hover:bg-[#B8860B]"
               >
                 Plan Your First Trip
               </Link>
@@ -294,14 +294,14 @@ export default function MyTripsPage() {
                       </h2>
                     </div>
 
-                    <div className="rounded-full border border-white/20 bg-white/10 px-3 py-2 text-xs font-semibold text-white">
+                    <div className="rounded-full border border-[#D4AF37]/20 bg-[#D4AF37]/10 px-3 py-2 text-xs font-semibold text-[#D4AF37]">
                       Saved
                     </div>
                   </div>
 
                   <div className="mt-5 grid gap-3 sm:grid-cols-2">
                     <div className="rounded-2xl border border-[#1a1a1a] bg-[#111111] p-4">
-                      <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-[#888888]">
+                      <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-[#D4AF37]">
                         <CalendarDays className="h-3.5 w-3.5" />
                         Travel Dates
                       </div>
@@ -311,7 +311,7 @@ export default function MyTripsPage() {
                     </div>
 
                     <div className="rounded-2xl border border-[#1a1a1a] bg-[#111111] p-4">
-                      <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-[#888888]">
+                      <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-[#D4AF37]">
                         <IndianRupee className="h-3.5 w-3.5" />
                         Total Budget
                       </div>
@@ -323,7 +323,7 @@ export default function MyTripsPage() {
                   </div>
 
                   <div className="mt-4 rounded-2xl border border-[#1a1a1a] bg-[#111111] p-4">
-                    <div className="text-xs uppercase tracking-[0.2em] text-[#888888]">Created</div>
+                    <div className="text-xs uppercase tracking-[0.2em] text-[#D4AF37]">Created</div>
                     <div className="mt-2 text-sm font-semibold text-white">{formatDate(trip.created_at)}</div>
                   </div>
 
@@ -335,7 +335,7 @@ export default function MyTripsPage() {
                           setError(downloadError instanceof Error ? downloadError.message : "Unable to download PDF");
                         });
                       }}
-                      className="inline-flex w-full flex-1 items-center justify-center gap-2 rounded-2xl bg-white px-5 py-3 text-sm font-bold text-black transition hover:bg-[#e0e0e0]"
+                      className="inline-flex w-full flex-1 items-center justify-center gap-2 rounded-2xl bg-[#D4AF37] px-5 py-3 text-sm font-bold text-black transition hover:bg-[#B8860B]"
                     >
                       <FileDown className="h-4 w-4" />
                       Download PDF
@@ -344,7 +344,7 @@ export default function MyTripsPage() {
                     <button
                       type="button"
                       onClick={() => toggleRecommendations(trip.id)}
-                      className="inline-flex w-full flex-1 items-center justify-center gap-2 rounded-2xl border border-[#2a2a2a] bg-transparent px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1a1a1a]"
+                      className="inline-flex w-full flex-1 items-center justify-center gap-2 rounded-2xl border border-[#D4AF37]/30 bg-transparent px-5 py-3 text-sm font-semibold text-[#D4AF37] transition hover:bg-[#D4AF37]/10"
                     >
                       View Recommendations
                       {expandedTrips.includes(trip.id) ? (
@@ -364,7 +364,7 @@ export default function MyTripsPage() {
                       />
                       <button
                         type="button"
-                        className="inline-flex w-full items-center justify-center rounded-2xl bg-white px-5 py-3 text-sm font-bold text-black transition hover:bg-[#e0e0e0]"
+                        className="inline-flex w-full items-center justify-center rounded-2xl bg-[#D4AF37] px-5 py-3 text-sm font-bold text-black transition hover:bg-[#B8860B]"
                       >
                         See Full Trip
                       </button>

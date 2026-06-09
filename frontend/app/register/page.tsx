@@ -137,7 +137,7 @@ export default function RegisterPage() {
       <div className="relative mx-auto flex min-h-screen w-full max-w-md items-center px-4 py-12 sm:px-0">
         <section className="w-full rounded-[2rem] border border-[#1a1a1a] bg-[#0a0a0a]/95 p-6 shadow-2xl shadow-black/40 backdrop-blur-xl sm:p-8">
           <div className="mb-8 text-center">
-            <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 text-white ring-1 ring-white/20">
+            <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-[#D4AF37]/10 text-[#D4AF37] ring-1 ring-[#D4AF37]/30">
               <Route className="h-7 w-7" />
             </div>
             <h1 className="text-3xl font-black tracking-tight text-white">RoadMind AI</h1>
@@ -160,7 +160,7 @@ export default function RegisterPage() {
                   setForm((current) => ({ ...current, full_name: event.target.value }));
                   setFieldErrors((current) => ({ ...current, full_name: undefined, server: undefined }));
                 }}
-                className="w-full rounded-2xl border border-[#2a2a2a] bg-[#111111] px-4 py-3 text-white outline-none transition placeholder:text-[#444444] focus:border-white focus:bg-[#111111]"
+                className="w-full rounded-2xl border border-[#2a2a2a] bg-[#111111] px-4 py-3 text-white outline-none transition placeholder:text-[#444444] focus:border-[#D4AF37] focus:bg-[#111111]"
                 placeholder="Your full name"
               />
               <FieldError message={fieldErrors.full_name} />
@@ -179,7 +179,7 @@ export default function RegisterPage() {
                   setForm((current) => ({ ...current, username: event.target.value }));
                   setFieldErrors((current) => ({ ...current, username: undefined, server: undefined }));
                 }}
-                className="w-full rounded-2xl border border-[#2a2a2a] bg-[#111111] px-4 py-3 text-white outline-none transition placeholder:text-[#444444] focus:border-white focus:bg-[#111111]"
+                className="w-full rounded-2xl border border-[#2a2a2a] bg-[#111111] px-4 py-3 text-white outline-none transition placeholder:text-[#444444] focus:border-[#D4AF37] focus:bg-[#111111]"
                 placeholder="Choose a username"
               />
               <FieldError message={fieldErrors.username} />
@@ -198,7 +198,7 @@ export default function RegisterPage() {
                   setForm((current) => ({ ...current, email: event.target.value }));
                   setFieldErrors((current) => ({ ...current, email: undefined, server: undefined }));
                 }}
-                className="w-full rounded-2xl border border-[#2a2a2a] bg-[#111111] px-4 py-3 text-white outline-none transition placeholder:text-[#444444] focus:border-white focus:bg-[#111111]"
+                className="w-full rounded-2xl border border-[#2a2a2a] bg-[#111111] px-4 py-3 text-white outline-none transition placeholder:text-[#444444] focus:border-[#D4AF37] focus:bg-[#111111]"
                 placeholder="you@example.com"
               />
               <FieldError message={fieldErrors.email} />
@@ -208,7 +208,7 @@ export default function RegisterPage() {
               <label htmlFor="password" className="text-sm font-medium text-[#a0a0a0]">
                 Password
               </label>
-              <div className="flex items-stretch overflow-hidden rounded-2xl border border-[#2a2a2a] bg-[#111111] transition focus-within:border-white focus-within:bg-[#111111]">
+              <div className="flex items-stretch overflow-hidden rounded-2xl border border-[#2a2a2a] bg-[#111111] transition focus-within:border-[#D4AF37] focus-within:bg-[#111111]">
                 <input
                   id="password"
                   type={showPassword ? "text" : "password"}
@@ -233,7 +233,7 @@ export default function RegisterPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword((current) => !current)}
-                  className="inline-flex items-center justify-center px-4 text-[#888888] transition hover:text-white"
+                  className="inline-flex items-center justify-center px-4 text-[#888888] transition hover:text-[#D4AF37]"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
@@ -246,7 +246,7 @@ export default function RegisterPage() {
               <label htmlFor="confirmPassword" className="text-sm font-medium text-[#a0a0a0]">
                 Confirm Password
               </label>
-              <div className="flex items-stretch overflow-hidden rounded-2xl border border-[#2a2a2a] bg-[#111111] transition focus-within:border-white focus-within:bg-[#111111]">
+              <div className="flex items-stretch overflow-hidden rounded-2xl border border-[#2a2a2a] bg-[#111111] transition focus-within:border-[#D4AF37] focus-within:bg-[#111111]">
                 <input
                   id="confirmPassword"
                   type={showConfirmPassword ? "text" : "password"}
@@ -262,7 +262,7 @@ export default function RegisterPage() {
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword((current) => !current)}
-                  className="inline-flex items-center justify-center px-4 text-[#888888] transition hover:text-white"
+                  className="inline-flex items-center justify-center px-4 text-[#888888] transition hover:text-[#D4AF37]"
                   aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
                 >
                   {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
@@ -280,7 +280,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-white px-5 py-3.5 text-sm font-bold text-black transition hover:bg-[#e0e0e0] disabled:cursor-not-allowed disabled:opacity-70"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[#D4AF37] px-5 py-3.5 text-sm font-bold text-black transition hover:bg-[#B8860B] disabled:cursor-not-allowed disabled:opacity-70"
             >
               {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
               {loading ? "Creating account..." : "Create Account"}
@@ -289,7 +289,7 @@ export default function RegisterPage() {
 
           <p className="mt-6 text-center text-sm text-[#a0a0a0]">
             Already have an account?{" "}
-            <Link href="/login" className="font-semibold text-white underline transition hover:text-[#e0e0e0]">
+            <Link href="/login" className="font-semibold text-[#D4AF37] underline transition hover:text-[#FFD700]">
               Sign In
             </Link>
           </p>
