@@ -15,7 +15,7 @@ interface TravelChatProps {
 }
 
 const QUICK_REPLIES = ["What to pack?", "Best time to visit", "Safety tips", "Local cuisine"];
-const CHAT_WS_URL = process.env.NEXT_PUBLIC_CHAT_WS_URL ?? "ws://localhost:8100/api/chat/ws";
+const CHAT_WS_URL = process.env.NEXT_PUBLIC_CHAT_WS_URL ?? "ws://localhost:8000/api/chat/ws";
 
 function createMessage(role: Message["role"], content: string, streaming = false): Message {
   return {

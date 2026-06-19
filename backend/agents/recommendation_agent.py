@@ -10,6 +10,7 @@ from urllib.parse import quote_plus
 
 from agents.state import TripState
 from utils.mcp_bridge import mcp_generate_pdf_report, mcp_search_places
+from utils.config import settings
 from utils.places import (
     clear_cache,
     get_place_details,
@@ -583,8 +584,8 @@ def _make_pdf(
     attractions: list[dict[str, Any]],
 ) -> str:
     # Keep generated reports inside the backend tree so download endpoints can resolve them consistently.
-    report_dir = Path(__file__).resolve().parents[1] / "reports"
-    report_dir.mkdir(exist_ok=True)
+    report_dir = Path(settings.reports_dir)
+    report_dir.mkdir(parents=True, exist_ok=True)
     pdf_path = report_dir / f"trip_report_{state.get('user_id', 'guest')}.pdf"
 
     mcp_generate_pdf_report(

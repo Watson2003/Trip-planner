@@ -17,6 +17,7 @@ type FormState = {
   scenicRoute: boolean;
   budgetHotels: boolean;
   vegetarianFood: boolean;
+  budgetRestaurants: boolean;
 };
 
 type TripResultStorage = {
@@ -49,6 +50,7 @@ const DEFAULT_FORM: FormState = {
   scenicRoute: true,
   budgetHotels: false,
   vegetarianFood: false,
+  budgetRestaurants: false,
 };
 
 function formatEta(hours: number) {
@@ -345,8 +347,9 @@ export default function HomePage() {
     if (form.scenicRoute) preferences.push("scenic");
     if (form.budgetHotels) preferences.push("budget hotels");
     if (form.vegetarianFood) preferences.push("vegetarian food");
+    if (form.budgetRestaurants) preferences.push("budget restaurants");
     return preferences;
-  }, [form.budgetHotels, form.scenicRoute, form.vegetarianFood]);
+  }, [form.budgetHotels, form.budgetRestaurants, form.scenicRoute, form.vegetarianFood]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -628,7 +631,7 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-2 rounded-2xl border border-[#1a1a1a] bg-[#111111] p-4">
+                <div className="grid gap-2 rounded-2xl border border-[#1a1a1a] bg-[#111111] p-4 sm:grid-cols-2">
                   <PreferenceCheck
                     label="Scenic route"
                     checked={form.scenicRoute}
@@ -643,6 +646,11 @@ export default function HomePage() {
                     label="Vegetarian food"
                     checked={form.vegetarianFood}
                     onChange={(checked) => setForm((current) => ({ ...current, vegetarianFood: checked }))}
+                  />
+                  <PreferenceCheck
+                    label="Budget restaurants"
+                    checked={form.budgetRestaurants}
+                    onChange={(checked) => setForm((current) => ({ ...current, budgetRestaurants: checked }))}
                   />
                 </div>
 

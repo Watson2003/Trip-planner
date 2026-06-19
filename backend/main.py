@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager
+import os
 import sys
 
 
@@ -29,9 +30,16 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="AI Road Trip Planner", version="1.0.0", lifespan=lifespan)
 
+# Get frontend URL from environment
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        FRONTEND_URL,
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

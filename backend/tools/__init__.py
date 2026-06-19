@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 from pathlib import Path
 from typing import Any
+import urllib.parse
 
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER
@@ -35,6 +36,25 @@ def _text(value: Any, default: str = "-") -> str:
         return default
     text = str(value).strip()
     return escape(text) if text else default
+
+
+def build_google_maps_directions_url(origin: str, destination: str) -> str:
+    """
+    Build a Google Maps direction URL from
+    origin to destination.
+    """
+    origin_encoded = urllib.parse.quote(origin)
+    destination_encoded = urllib.parse.quote(destination)
+
+    url = (
+        f"https://www.google.com/maps/dir/"
+        f"?api=1"
+        f"&origin={origin_encoded}"
+        f"&destination={destination_encoded}"
+        f"&travelmode=driving"
+    )
+
+    return url
 
 
 def _header_footer(canvas, doc) -> None:
@@ -152,6 +172,7 @@ def generate_pdf_report(trip_data: dict[str, Any], output_path: str) -> dict[str
     misc_inr = _money_value(budget, ["miscellaneous", "miscellaneous_inr"])
     total_inr = _money_value(budget, ["total", "total_inr"])
     total_usd = _money_value(budget, ["total_usd"]) or round(total_inr / INR_PER_USD, 2)
+    maps_url = build_google_maps_directions_url(origin=str(origin), destination=str(destination))
 
     story: list[Any] = []
 
@@ -171,6 +192,41 @@ def generate_pdf_report(trip_data: dict[str, Any], output_path: str) -> dict[str
     ]
     story.append(_build_section_table("Trip Summary", trip_summary_rows, [180, 320]))
     story.append(Spacer(1, 16))
+
+    route_heading_style = ParagraphStyle(
+        "RouteHeading",
+        fontSize=14,
+        textColor=colors.HexColor("#D4AF37"),
+        spaceAfter=8,
+        fontName="Helvetica-Bold",
+    )
+    link_style = ParagraphStyle(
+        "LinkStyle",
+        fontSize=10,
+        textColor=colors.HexColor("#D4AF37"),
+        underline=True,
+        spaceAfter=12,
+    )
+
+    story.append(Paragraph("🗺️ Route Directions", route_heading_style))
+    story.append(
+        Paragraph(
+            f"Click the link below to get turn-by-turn navigation from {_text(origin)} to {_text(destination)}:",
+            ParagraphStyle(
+                "NormalText",
+                fontSize=10,
+                textColor=colors.HexColor("#475569"),
+            ),
+        )
+    )
+    story.append(Spacer(1, 6))
+    story.append(
+        Paragraph(
+            f'<a href="{maps_url}" color="#D4AF37">🔗 Open in Google Maps →</a>',
+            link_style,
+        )
+    )
+    story.append(Spacer(1, 12))
 
     story.append(Paragraph("Plan at a glance", styles["RoadMindSection"]))
     story.append(
@@ -240,10 +296,17 @@ def generate_pdf_report(trip_data: dict[str, Any], output_path: str) -> dict[str
         story.append(Paragraph(section_name, styles["Heading3"]))
         rec_rows = []
         for index, item in enumerate(entries[:3]):
+            place_name = _text(item.get("name") or item.get("title"))
+            place_maps_url = item.get("maps_url", "")
+            if place_maps_url:
+                place_name = (
+                    f"{place_name}<br/>"
+                    f'<font color="#D4AF37"><a href="{place_maps_url}">📍 View on Google Maps</a></font>'
+                )
             rec_rows.append(
                 [
                     str(index + 1),
-                    _text(item.get("name") or item.get("title")),
+                    Paragraph(place_name, styles["BodyText"]),
                     _text(item.get("description") or item.get("why_it_fits")),
                 ]
             )

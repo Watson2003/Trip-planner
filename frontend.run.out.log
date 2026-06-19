@@ -1,17 +1,22 @@
 
 > ai-road-trip-planner@1.0.0 dev
-> next dev --port 3000
+> next dev
 
   ▲ Next.js 14.2.35
   - Local:        http://localhost:3000
   - Environments: .env
 
  ✓ Starting...
- ✓ Ready in 6.5s
+ ✓ Ready in 10.9s
  ○ Compiling / ...
- ✓ Compiled / in 9.6s (601 modules)
- GET / 200 in 10186ms
+ ✓ Compiled / in 5.7s (601 modules)
+ GET / 200 in 6043ms
+ GET / 200 in 57ms
  ○ Compiling /trip-result ...
- ✓ Compiled /trip-result in 10.2s (1716 modules)
- GET /trip-result 200 in 11084ms
- ✓ Compiled in 1043ms (870 modules)
+ ✓ Compiled /trip-result in 6.8s (1734 modules)
+ ○ Compiling /my-trips ...
+ ✓ Compiled /my-trips in 2.3s (1740 modules)
+ ✓ Compiled in 965ms (1754 modules)
+ GET / 200 in 194ms
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 2.6s (1974 modules)

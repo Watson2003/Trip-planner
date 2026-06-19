@@ -1,0 +1,11 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+*.db
+reports/
+rag/chroma_store/
+.git/
+*.md
+tests/

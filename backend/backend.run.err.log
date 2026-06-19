@@ -1,17 +1,4 @@
-python-dotenv could not parse statement starting at line 7
-python-dotenv could not parse statement starting at line 8
-INFO:     Started server process [15820]
+INFO:     Started server process [10456]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8100 (Press CTRL+C to quit)
-python-dotenv could not parse statement starting at line 7
-python-dotenv could not parse statement starting at line 8
-(trapped) error reading bcrypt version
-Traceback (most recent call last):
-  File "D:\ROOT\Trip planner\backend\venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
-    version = _bcrypt.__about__.__version__
-              ^^^^^^^^^^^^^^^^^
-AttributeError: module 'bcrypt' has no attribute '__about__'
-INFO:     127.0.0.1:65519 - "WebSocket /api/chat/ws" [accepted]
-INFO:     connection open
-INFO:     connection closed

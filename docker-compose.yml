@@ -3,26 +3,57 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    env_file:
-      - ./backend/.env
-    environment:
-      DATABASE_URL: sqlite+aiosqlite:///./road_trip_planner.db
+    container_name: roadmind-backend
+    restart: unless-stopped
     ports:
       - "8000:8000"
+    environment:
+      DATABASE_URL: sqlite+aiosqlite:///./data/road_trip_planner.db
+      NVIDIA_API_KEY: ${NVIDIA_API_KEY}
+      OPENWEATHERMAP_API_KEY: ${OPENWEATHERMAP_API_KEY}
+      GEOAPIFY_API_KEY: ${GEOAPIFY_API_KEY}
+      GOOGLE_PLACES_API_KEY: ${GOOGLE_PLACES_API_KEY}
+      OPENROUTESERVICE_API_KEY: ${ORS_API_KEY}
+      SECRET_KEY: ${SECRET_KEY}
+      ENVIRONMENT: development
+      FRONTEND_URL: http://localhost:3000
+    volumes:
+      - ./data/sqlite:/app/data
+      - ./data/chroma:/app/rag/chroma_store
+      - ./data/reports:/app/reports
+      - ./backend:/app
+      - /app/venv
+    networks:
+      - roadmind-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-      args:
-        BACKEND_URL: http://backend:8000
-        NEXT_PUBLIC_CHAT_WS_URL: ws://localhost:8000/api/chat/ws
-    env_file:
-      - ./frontend/.env.example
-    environment:
-      BACKEND_URL: http://backend:8000
-      NEXT_PUBLIC_CHAT_WS_URL: ws://localhost:8000/api/chat/ws
-    depends_on:
-      - backend
+    container_name: roadmind-frontend
+    restart: unless-stopped
     ports:
       - "3000:3000"
+    environment:
+      BACKEND_URL: http://backend:8000
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+      NEXT_PUBLIC_CHAT_WS_URL: ws://localhost:8000/api/chat/ws
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - roadmind-network
+
+networks:
+  roadmind-network:
+    driver: bridge

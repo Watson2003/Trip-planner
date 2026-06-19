@@ -9,6 +9,8 @@ load_dotenv()
 
 class Settings(BaseModel):
     database_url: str = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///./road_trip_planner.db")
+    reports_dir: str = os.getenv("REPORTS_DIR", "./reports")
+    rag_chroma_dir: str = os.getenv("RAG_CHROMA_DIR", "./rag/chroma_store")
     secret_key: str | None = os.getenv("SECRET_KEY")
     nvidia_api_key: str | None = os.getenv("NVIDIA_API_KEY")
     nvidia_model: str = os.getenv("NVIDIA_MODEL", "meta/llama-3.1-70b-instruct")

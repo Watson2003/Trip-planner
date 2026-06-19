@@ -1,5 +1,7 @@
-fastapi
-uvicorn
+fastapi==0.115.14
+starlette==0.46.2
+uvicorn==0.30.6
+pydantic==2.8.2
 langgraph
 langchain
 langchain-community
@@ -10,7 +12,6 @@ python-dotenv
 httpx
 sqlalchemy
 aiosqlite
-pydantic
 sentence-transformers
 mcp
 python-jose[cryptography]

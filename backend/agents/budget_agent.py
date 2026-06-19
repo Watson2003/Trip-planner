@@ -62,50 +62,50 @@ DESTINATION_HOTEL_PRICES: dict[str, dict[str, int]] = {
 }
 
 DESTINATION_FOOD_PRICES: dict[str, dict[str, int]] = {
-    "ooty": {"veg": 300, "nonveg": 420},
-    "kodaikanal": {"veg": 280, "nonveg": 400},
-    "munnar": {"veg": 320, "nonveg": 450},
-    "coorg": {"veg": 350, "nonveg": 500},
-    "wayanad": {"veg": 300, "nonveg": 450},
-    "yercaud": {"veg": 250, "nonveg": 350},
-    "valparai": {"veg": 230, "nonveg": 320},
-    "goa": {"veg": 500, "nonveg": 750},
-    "pondicherry": {"veg": 400, "nonveg": 600},
-    "varkala": {"veg": 380, "nonveg": 550},
-    "alleppey": {"veg": 350, "nonveg": 520},
-    "mahabalipuram": {"veg": 350, "nonveg": 500},
-    "rameswaram": {"veg": 200, "nonveg": 280},
-    "kanyakumari": {"veg": 220, "nonveg": 300},
-    "manali": {"veg": 400, "nonveg": 580},
-    "shimla": {"veg": 380, "nonveg": 550},
-    "mussoorie": {"veg": 400, "nonveg": 580},
-    "nainital": {"veg": 380, "nonveg": 530},
-    "rishikesh": {"veg": 300, "nonveg": 420},
-    "haridwar": {"veg": 250, "nonveg": 350},
-    "darjeeling": {"veg": 350, "nonveg": 500},
-    "leh": {"veg": 450, "nonveg": 650},
-    "hampi": {"veg": 250, "nonveg": 350},
-    "varanasi": {"veg": 280, "nonveg": 400},
-    "agra": {"veg": 350, "nonveg": 500},
-    "jaipur": {"veg": 380, "nonveg": 520},
-    "udaipur": {"veg": 400, "nonveg": 580},
-    "mysore": {"veg": 300, "nonveg": 420},
-    "mysuru": {"veg": 300, "nonveg": 420},
-    "madurai": {"veg": 220, "nonveg": 320},
-    "chennai": {"veg": 450, "nonveg": 650},
-    "bangalore": {"veg": 500, "nonveg": 750},
-    "bengaluru": {"veg": 500, "nonveg": 750},
-    "mumbai": {"veg": 600, "nonveg": 900},
-    "delhi": {"veg": 550, "nonveg": 800},
-    "hyderabad": {"veg": 450, "nonveg": 680},
-    "pune": {"veg": 450, "nonveg": 650},
-    "kolkata": {"veg": 400, "nonveg": 580},
-    "trichy": {"veg": 200, "nonveg": 300},
-    "tiruchirappalli": {"veg": 200, "nonveg": 300},
-    "coimbatore": {"veg": 220, "nonveg": 320},
-    "salem": {"veg": 180, "nonveg": 270},
-    "tirunelveli": {"veg": 180, "nonveg": 260},
-    "thanjavur": {"veg": 180, "nonveg": 260},
+    "ooty": {"veg": 300, "nonveg": 420, "budget_veg": 150, "budget_nonveg": 200},
+    "kodaikanal": {"veg": 280, "nonveg": 400, "budget_veg": 140, "budget_nonveg": 190},
+    "munnar": {"veg": 320, "nonveg": 450, "budget_veg": 160, "budget_nonveg": 210},
+    "coorg": {"veg": 350, "nonveg": 500, "budget_veg": 170, "budget_nonveg": 230},
+    "wayanad": {"veg": 300, "nonveg": 450, "budget_veg": 150, "budget_nonveg": 210},
+    "yercaud": {"veg": 250, "nonveg": 350, "budget_veg": 120, "budget_nonveg": 170},
+    "goa": {"veg": 500, "nonveg": 750, "budget_veg": 250, "budget_nonveg": 350},
+    "pondicherry": {"veg": 400, "nonveg": 600, "budget_veg": 200, "budget_nonveg": 280},
+    "varkala": {"veg": 380, "nonveg": 550, "budget_veg": 190, "budget_nonveg": 260},
+    "alleppey": {"veg": 350, "nonveg": 520, "budget_veg": 175, "budget_nonveg": 245},
+    "manali": {"veg": 400, "nonveg": 580, "budget_veg": 200, "budget_nonveg": 270},
+    "shimla": {"veg": 380, "nonveg": 550, "budget_veg": 190, "budget_nonveg": 260},
+    "mussoorie": {"veg": 400, "nonveg": 580, "budget_veg": 200, "budget_nonveg": 270},
+    "nainital": {"veg": 380, "nonveg": 530, "budget_veg": 190, "budget_nonveg": 250},
+    "rishikesh": {"veg": 300, "nonveg": 420, "budget_veg": 150, "budget_nonveg": 200},
+    "haridwar": {"veg": 250, "nonveg": 350, "budget_veg": 120, "budget_nonveg": 170},
+    "darjeeling": {"veg": 350, "nonveg": 500, "budget_veg": 175, "budget_nonveg": 235},
+    "leh": {"veg": 450, "nonveg": 650, "budget_veg": 225, "budget_nonveg": 305},
+    "hampi": {"veg": 250, "nonveg": 350, "budget_veg": 120, "budget_nonveg": 165},
+    "varanasi": {"veg": 280, "nonveg": 400, "budget_veg": 140, "budget_nonveg": 190},
+    "agra": {"veg": 350, "nonveg": 500, "budget_veg": 175, "budget_nonveg": 235},
+    "jaipur": {"veg": 380, "nonveg": 520, "budget_veg": 190, "budget_nonveg": 245},
+    "udaipur": {"veg": 400, "nonveg": 580, "budget_veg": 200, "budget_nonveg": 275},
+    "mysore": {"veg": 300, "nonveg": 420, "budget_veg": 150, "budget_nonveg": 200},
+    "mysuru": {"veg": 300, "nonveg": 420, "budget_veg": 150, "budget_nonveg": 200},
+    "madurai": {"veg": 220, "nonveg": 320, "budget_veg": 110, "budget_nonveg": 150},
+    "chennai": {"veg": 450, "nonveg": 650, "budget_veg": 200, "budget_nonveg": 280},
+    "bangalore": {"veg": 500, "nonveg": 750, "budget_veg": 220, "budget_nonveg": 320},
+    "bengaluru": {"veg": 500, "nonveg": 750, "budget_veg": 220, "budget_nonveg": 320},
+    "mumbai": {"veg": 600, "nonveg": 900, "budget_veg": 280, "budget_nonveg": 400},
+    "delhi": {"veg": 550, "nonveg": 800, "budget_veg": 250, "budget_nonveg": 360},
+    "hyderabad": {"veg": 450, "nonveg": 680, "budget_veg": 200, "budget_nonveg": 300},
+    "pune": {"veg": 450, "nonveg": 650, "budget_veg": 200, "budget_nonveg": 290},
+    "kolkata": {"veg": 400, "nonveg": 580, "budget_veg": 180, "budget_nonveg": 260},
+    "trichy": {"veg": 200, "nonveg": 300, "budget_veg": 100, "budget_nonveg": 140},
+    "tiruchirappalli": {"veg": 200, "nonveg": 300, "budget_veg": 100, "budget_nonveg": 140},
+    "coimbatore": {"veg": 220, "nonveg": 320, "budget_veg": 110, "budget_nonveg": 150},
+    "salem": {"veg": 180, "nonveg": 270, "budget_veg": 90, "budget_nonveg": 130},
+    "tirunelveli": {"veg": 180, "nonveg": 260, "budget_veg": 90, "budget_nonveg": 125},
+    "thanjavur": {"veg": 180, "nonveg": 260, "budget_veg": 90, "budget_nonveg": 125},
+    "mahabalipuram": {"veg": 350, "nonveg": 500, "budget_veg": 175, "budget_nonveg": 235},
+    "rameswaram": {"veg": 200, "nonveg": 280, "budget_veg": 100, "budget_nonveg": 135},
+    "kanyakumari": {"veg": 220, "nonveg": 300, "budget_veg": 110, "budget_nonveg": 145},
+    "valparai": {"veg": 230, "nonveg": 320, "budget_veg": 115, "budget_nonveg": 155},
 }
 
 TOLL_COST_PER_100KM: dict[str, int] = {
@@ -267,26 +267,65 @@ def get_hotel_price_per_night(destination: str, total_budget: float, preferences
 
 
 def get_food_price_per_day(destination: str, preferences: list, total_budget: float) -> dict[str, Any]:
-    food_data = _get_city_price_map(destination, DESTINATION_FOOD_PRICES, {"veg": 300, "nonveg": 450})
+    dest_lower = destination.lower().strip()
 
-    is_vegetarian = any(str(p).lower() in ["vegetarian", "vegetarian food", "veg"] for p in preferences)
-    base_price = food_data["veg"] if is_vegetarian else food_data["nonveg"]
+    food_data = None
+    for city, prices in DESTINATION_FOOD_PRICES.items():
+        if city in dest_lower or dest_lower in city:
+            food_data = prices
+            break
 
-    if total_budget <= 8000:
-        multiplier = 0.7
-        food_type = "Street food / Local dhabas"
-    elif total_budget >= 40000:
-        multiplier = 1.5
-        food_type = "Restaurants"
+    if not food_data:
+        food_data = {
+            "veg": 300,
+            "nonveg": 450,
+            "budget_veg": 150,
+            "budget_nonveg": 210,
+        }
+
+    is_vegetarian = any(p.lower() in ["vegetarian", "vegetarian food", "veg"] for p in preferences)
+
+    is_budget_restaurant = any(
+        p.lower() in [
+            "budget restaurants",
+            "budget restaurant",
+            "budget food",
+        ]
+        for p in preferences
+    )
+
+    print(f"[FOOD] destination={destination}")
+    print(f"[FOOD] is_vegetarian={is_vegetarian}")
+    print(f"[FOOD] is_budget_restaurant={is_budget_restaurant}")
+
+    if is_budget_restaurant and is_vegetarian:
+        base_price = food_data["budget_veg"]
+        food_type = "Budget street food (Veg)"
+    elif is_budget_restaurant and not is_vegetarian:
+        base_price = food_data["budget_nonveg"]
+        food_type = "Budget street food (Non-Veg)"
+    elif is_vegetarian:
+        base_price = food_data["veg"]
+        food_type = "Local restaurants (Veg)"
     else:
-        multiplier = 1.0
-        food_type = "Local restaurants"
+        base_price = food_data["nonveg"]
+        food_type = "Local restaurants (Non-Veg)"
 
-    final_price = round(base_price * multiplier, 0)
+    if not is_budget_restaurant:
+        if total_budget <= 8000:
+            base_price = round(base_price * 0.7, 0)
+            food_type = "Street food / Dhabas"
+        elif total_budget >= 40000:
+            base_price = round(base_price * 1.5, 0)
+            food_type = food_type.replace("Local", "Premium")
+
+    print(f"[FOOD] price=₹{base_price} type={food_type}")
+
     return {
-        "price_per_day_per_person": final_price,
+        "price_per_day_per_person": float(base_price),
         "food_type": food_type,
         "is_vegetarian": is_vegetarian,
+        "is_budget": is_budget_restaurant,
     }
 
 

@@ -1,4 +1,6 @@
 import json
+from pathlib import Path
+from urllib.parse import urlparse
 
 from sqlalchemy import inspect
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
@@ -7,6 +9,17 @@ from models.trip import Base
 from utils.config import settings
 
 
+def _ensure_sqlite_directory(database_url: str) -> None:
+    if not database_url.startswith("sqlite"):
+        return
+
+    parsed = urlparse(database_url.replace("sqlite+aiosqlite:///", "file:///"))
+    db_path = Path(parsed.path)
+    if db_path.parent:
+        db_path.parent.mkdir(parents=True, exist_ok=True)
+
+
+_ensure_sqlite_directory(settings.database_url)
 engine = create_async_engine(settings.database_url, echo=False, future=True)
 async_session_maker = async_sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
 

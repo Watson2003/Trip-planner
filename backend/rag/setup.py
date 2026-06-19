@@ -6,10 +6,11 @@ from pathlib import Path
 import chromadb
 from langchain_community.embeddings import HuggingFaceEmbeddings
 
+from utils.config import settings
+
 
 # Persist the vector store inside the backend so the seed data survives restarts.
-RAG_DIR = Path(__file__).resolve().parent
-CHROMA_DIR = RAG_DIR / "chroma_store"
+CHROMA_DIR = Path(settings.rag_chroma_dir)
 COLLECTION_NAME = "travel_guides"
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 
@@ -34,4 +35,3 @@ def get_chroma_client() -> chromadb.PersistentClient:
 def get_collection():
     """Get or create the shared travel guide collection."""
     return get_chroma_client().get_or_create_collection(name=COLLECTION_NAME)
-
