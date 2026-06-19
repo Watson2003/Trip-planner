@@ -146,6 +146,191 @@ def _apply_location_flow(
     return adjusted
 
 
+def is_destination_place(place: Any, destination: str) -> bool:
+    destination_key = normalize_place_name(destination)
+    if not destination_key:
+        return False
+
+    if isinstance(place, TimeSlot):
+        candidates = (place.place_name, place.location, place.title, place.activity)
+    elif isinstance(place, Mapping):
+        candidates = (
+            place.get("name"),
+            place.get("location"),
+            place.get("title"),
+            place.get("place_name"),
+        )
+    else:
+        candidates = (place,)
+
+    for candidate in candidates:
+        normalized = normalize_place_name(_normalize_text(candidate))
+        if normalized and (normalized == destination_key or destination_key in normalized):
+            return True
+    return False
+
+
+def is_origin_phase(route_progress_percent: float) -> bool:
+    return _safe_float(route_progress_percent, 0.0) < 10.0
+
+
+def is_enroute_phase(route_progress_percent: float) -> bool:
+    progress = _safe_float(route_progress_percent, 0.0)
+    return 10.0 <= progress < 90.0
+
+
+def is_arrived_phase(route_progress_percent: float) -> bool:
+    return _safe_float(route_progress_percent, 0.0) >= 90.0
+
+
+def select_origin_meal_place(origin: str, meal_type: str, used_places: set[str]) -> dict[str, Any]:
+    category = "restaurants"
+    if _normalize_text(meal_type).casefold() == "hotel":
+        category = "hotels"
+    return get_unique_place(category, origin, used_places)
+
+
+def select_route_stop(origin: str, destination: str, progress_percent: float, waypoints: list[str] | None = None) -> str:
+    waypoint_list = [item for item in (waypoints or []) if _normalize_text(item)]
+    route_index = 0 if _safe_float(progress_percent, 0.0) < 50.0 else 1
+    return _route_side_stop_name(origin, destination, waypoint_list, route_index)
+
+
+def select_destination_place(destination: str, category: str, used_places: set[str]) -> dict[str, Any]:
+    normalized = _normalize_text(category).casefold()
+    if normalized in {"breakfast", "lunch", "dinner", "restaurant", "restaurants"}:
+        target_category = "restaurants"
+    elif normalized in {"hotel", "hotels", "stay", "resort"}:
+        target_category = "hotels"
+    else:
+        target_category = "attractions"
+    return get_unique_place(target_category, destination, used_places)
+
+
+def validate_itinerary_route_logic(
+    origin: str,
+    destination: str,
+    itinerary_items: list[DayItinerary],
+) -> tuple[list[DayItinerary], int]:
+    validated_days: list[DayItinerary] = []
+    fixed_count = 0
+
+    for day_index, day in enumerate(itinerary_items):
+        day_slots: list[TimeSlot] = []
+        has_arrived_destination = False
+        previous_location = origin if day_index == 0 else destination
+        used_places: set[str] = set()
+        route_stop = select_route_stop(origin, destination, 45.0)
+
+        for slot_index, slot in enumerate(day.time_slots):
+            slot_copy = slot.model_copy(deep=True)
+            route_progress = _safe_float(slot_copy.route_progress_percent, 0.0)
+            current_time = _normalize_text(slot_copy.time)
+            print(f"[ITINERARY][ROUTE] origin={origin} destination={destination} current_time={current_time} current_location_before={slot_copy.current_location_before} current_location_after={slot_copy.current_location_after} route_progress_percent={route_progress} has_arrived_destination={has_arrived_destination}")
+
+            if slot_copy.type == ActivityCategory.DRIVE:
+                has_arrived_destination = has_arrived_destination or is_arrived_phase(route_progress) or is_destination_place(slot_copy.location, destination)
+                previous_location = slot_copy.current_location_after or slot_copy.location or previous_location
+                day_slots.append(slot_copy)
+                continue
+
+            if is_origin_phase(route_progress) and slot_copy.type == ActivityCategory.BREAKFAST:
+                replacement = select_origin_meal_place(origin, "breakfast", used_places)
+                replacement_name = _normalize_text(replacement.get("name"), origin)
+                slot_copy.place_name = replacement_name
+                slot_copy.title = _replace_slot_place_text(slot_copy.title, replacement_name)
+                slot_copy.location = origin
+                slot_copy.current_location_before = origin
+                slot_copy.current_location_after = origin
+                slot_copy.is_destination_activity = False
+                slot_copy.requires_arrival = False
+                fixed_count += 1
+
+            if is_enroute_phase(route_progress) and slot_copy.type in {ActivityCategory.LUNCH, ActivityCategory.FUEL}:
+                if not slot_copy.location or is_destination_place(slot_copy, destination):
+                    route_location = select_route_stop(origin, destination, route_progress)
+                    slot_copy.location = route_location
+                    slot_copy.current_location_before = previous_location
+                    slot_copy.current_location_after = route_location
+                    slot_copy.requires_arrival = False
+                    slot_copy.is_destination_activity = False
+                    fixed_count += 1
+
+            if not has_arrived_destination and is_destination_place(slot_copy, destination) and slot_copy.type in {ActivityCategory.LUNCH, ActivityCategory.DINNER, ActivityCategory.ATTRACTION, ActivityCategory.SIGHTSEEING, ActivityCategory.HOTEL}:
+                if slot_copy.type == ActivityCategory.HOTEL:
+                    route_location = select_route_stop(origin, destination, route_progress or 50.0)
+                    slot_copy.location = route_location
+                    slot_copy.current_location_before = previous_location
+                    slot_copy.current_location_after = route_location
+                    slot_copy.requires_arrival = False
+                    slot_copy.is_destination_activity = False
+                elif slot_copy.type in {ActivityCategory.LUNCH, ActivityCategory.DINNER}:
+                    route_location = select_route_stop(origin, destination, route_progress or 50.0)
+                    slot_copy.location = route_location
+                    slot_copy.place_name = _normalize_text(slot_copy.place_name, route_location)
+                    slot_copy.title = _replace_slot_place_text(slot_copy.title, route_location)
+                    slot_copy.current_location_before = previous_location
+                    slot_copy.current_location_after = route_location
+                    slot_copy.requires_arrival = False
+                    slot_copy.is_destination_activity = False
+                fixed_count += 1
+
+            if is_arrived_phase(route_progress) or has_arrived_destination:
+                if slot_copy.type in {ActivityCategory.HOTEL, ActivityCategory.ATTRACTION, ActivityCategory.SIGHTSEEING, ActivityCategory.DINNER, ActivityCategory.LUNCH, ActivityCategory.BREAKFAST}:
+                    slot_copy.is_destination_activity = True
+                    slot_copy.requires_arrival = True if slot_copy.type in {ActivityCategory.HOTEL, ActivityCategory.ATTRACTION, ActivityCategory.SIGHTSEEING, ActivityCategory.DINNER, ActivityCategory.LUNCH} else False
+                    has_arrived_destination = True
+
+            slot_copy.current_location_before = _normalize_text(slot_copy.current_location_before, previous_location)
+            slot_copy.current_location_after = _normalize_text(slot_copy.current_location_after, slot_copy.location)
+
+            if slot_copy.type != ActivityCategory.DRIVE and not slot_copy.is_destination_activity and is_destination_place(slot_copy, destination):
+                route_location = select_route_stop(origin, destination, route_progress or 50.0)
+                slot_copy.location = route_location
+                slot_copy.current_location_after = route_location
+                fixed_count += 1
+
+            if slot_copy.type == ActivityCategory.DRIVE:
+                previous_location = slot_copy.current_location_after or slot_copy.location or previous_location
+            else:
+                previous_location = slot_copy.current_location_after or slot_copy.location or previous_location
+
+            day_slots.append(slot_copy)
+
+        if day_index == 0 and not any(slot.type == ActivityCategory.DRIVE for slot in day_slots):
+            drive_location = select_route_stop(origin, destination, 25.0)
+            drive_slot = _make_time_slot(
+                time="08:15 AM",
+                type_=ActivityCategory.DRIVE,
+                title=f"Drive from {origin} toward {destination}",
+                location=drive_location,
+                estimated_duration_minutes=max(60, _safe_int(day.driving_hours * 60, 60)),
+                cost_inr=0.0,
+                reason="Added missing drive block to keep the itinerary route-aware.",
+                current_location_before=origin,
+                current_location_after=drive_location,
+                route_progress_percent=25.0,
+            )
+            day_slots.insert(1, drive_slot)
+            fixed_count += 1
+
+        validated_day_slots = _apply_location_flow(
+            day_slots,
+            start_location=origin if day_index == 0 else destination,
+            day_kind="arrival" if day_index == 0 else ("return" if day_index == len(itinerary_items) - 1 and len(itinerary_items) >= 3 else "full"),
+            destination=destination,
+        )
+        validated_days.append(day.model_copy(update={"time_slots": validated_day_slots}))
+
+    logger.info(
+        "[ITINERARY] validate_itinerary_route_logic origin=%s destination=%s invalid_items_fixed_count=%d",
+        origin,
+        destination,
+        fixed_count,
+    )
+    return validated_days, fixed_count
+
+
 def normalize_place_name(name: str) -> str:
     """Normalize a place label for duplicate detection."""
     text = _normalize_text(name).casefold()
@@ -1562,6 +1747,9 @@ def _make_time_slot(
     nearby_places: list[str] | None = None,
     distance_from_previous_km: float | None = None,
     cluster: str = "",
+    route_progress_percent: float | None = None,
+    is_destination_activity: bool = False,
+    requires_arrival: bool = False,
 ) -> TimeSlot:
     return TimeSlot(
         time=time,
@@ -1587,6 +1775,9 @@ def _make_time_slot(
         cluster=cluster,
         nearby_places=nearby_places or [],
         distance_from_previous_km=distance_from_previous_km,
+        route_progress_percent=route_progress_percent,
+        is_destination_activity=is_destination_activity,
+        requires_arrival=requires_arrival,
     )
 
 
@@ -1668,6 +1859,18 @@ def _build_route_aware_itinerary(
     route_fuel = get_unique_place("fuel_stops", route_stop, used_places)
     route_rest = get_unique_place("rest_stops", route_stop, used_places)
     destination_hotel = get_unique_place("hotels", destination, used_places)
+    destination_attraction = _pick_place_name(
+        block=destination_block,
+        kind="attractions",
+        fallback=_fallback_place_entry(destination, "attractions", 0)["name"],
+        index=0,
+    )
+    destination_secondary_attraction = _pick_place_name(
+        block=destination_block,
+        kind="attractions",
+        fallback=_fallback_place_entry(destination, "attractions", 1)["name"],
+        index=1,
+    )
     destination_dinner = get_unique_place("restaurants", destination, used_places)
 
     travel_tips = [
@@ -1747,18 +1950,6 @@ def _build_route_aware_itinerary(
                 "progress": 0.55,
             },
             {
-                "time": "02:00 PM",
-                "type": ActivityCategory.DRIVE,
-                "title": f"Final drive into {destination}",
-                "location": destination,
-                "estimated_duration_minutes": max(75, int(max(duration_hours, 1.0) * 60 * 0.45)),
-                "cost_inr": 0.0,
-                "reason": "Complete the last stretch only after the route-side meal break.",
-                "current_location_before": route_stop,
-                "current_location_after": destination,
-                "progress": 0.92,
-            },
-            {
                 "time": "05:30 PM",
                 "type": ActivityCategory.HOTEL,
                 "title": f"Check in at {destination_hotel.get('name', destination)}",
@@ -1772,9 +1963,47 @@ def _build_route_aware_itinerary(
                     is_return_day=False,
                 ),
                 "reason": "Check in only after arrival so the hotel stay follows the completed journey.",
+                "current_location_before": route_stop,
+                "current_location_after": destination,
+                "progress": 0.92,
+            },
+            {
+                "time": "06:30 PM",
+                "type": ActivityCategory.ATTRACTION,
+                "title": f"Visit {destination_attraction}",
+                "place_name": destination_attraction,
+                "location": destination,
+                "estimated_duration_minutes": 60,
+                "cost_inr": _fallback_slot_cost(
+                    ActivityCategory.ATTRACTION,
+                    distance_km=distance_km,
+                    vehicle_type=vehicle_type,
+                    is_travel_day=True,
+                    is_return_day=False,
+                ),
+                "reason": "A short first-evening attraction helps the arrival day feel complete after check-in.",
                 "current_location_before": destination,
                 "current_location_after": destination,
-                "progress": 1.0,
+                "progress": 0.96,
+            },
+            {
+                "time": "07:15 PM",
+                "type": ActivityCategory.ATTRACTION,
+                "title": f"Visit {destination_secondary_attraction}",
+                "place_name": destination_secondary_attraction,
+                "location": destination,
+                "estimated_duration_minutes": 45,
+                "cost_inr": _fallback_slot_cost(
+                    ActivityCategory.ATTRACTION,
+                    distance_km=distance_km,
+                    vehicle_type=vehicle_type,
+                    is_travel_day=True,
+                    is_return_day=False,
+                ),
+                "reason": "A second quick evening stop gives the arrival day a more complete destination feel.",
+                "current_location_before": destination,
+                "current_location_after": destination,
+                "progress": 0.98,
             },
             {
                 "time": "08:00 PM",
@@ -1800,8 +2029,21 @@ def _build_route_aware_itinerary(
         breakfast_place = get_unique_place("restaurants", destination, used_places)
         lunch_place = get_unique_place("restaurants", destination, used_places)
         dinner_place = get_unique_place("restaurants", destination, used_places)
-        attraction_title = get_unique_place("attractions", destination, used_places).get("name", destination)
-        secondary_attraction = get_unique_place("attractions", destination, used_places).get("name", destination)
+        attraction_start_index = 0 if day_index == 1 else 2
+        attraction_count = 2 if day_index == 1 else 4
+        attraction_names = [
+            _pick_place_name(
+                block=destination_block,
+                kind="attractions",
+                fallback=_fallback_place_entry(destination, "attractions", attraction_start_index + offset)["name"],
+                index=attraction_start_index + offset,
+            )
+            for offset in range(attraction_count)
+        ]
+        attraction_title = attraction_names[0]
+        secondary_attraction = attraction_names[1] if len(attraction_names) > 1 else attraction_title
+        tertiary_attraction = attraction_names[2] if len(attraction_names) > 2 else secondary_attraction
+        quaternary_attraction = attraction_names[3] if len(attraction_names) > 3 else tertiary_attraction
         return _annotate_slot_travel_metrics([
             {
                 "time": "08:00 AM",
@@ -1876,6 +2118,42 @@ def _build_route_aware_itinerary(
                 "progress": 1.0,
             },
             {
+                "time": "05:00 PM",
+                "type": ActivityCategory.ATTRACTION,
+                "title": f"Visit {tertiary_attraction}",
+                "location": destination,
+                "estimated_duration_minutes": 75,
+                "cost_inr": _fallback_slot_cost(
+                    ActivityCategory.ATTRACTION,
+                    distance_km=distance_km,
+                    vehicle_type=vehicle_type,
+                    is_travel_day=False,
+                    is_return_day=False,
+                ),
+                "reason": "A third destination stop rounds out the day with a lighter late-afternoon visit.",
+                "current_location_before": destination,
+                "current_location_after": destination,
+                "progress": 1.0,
+            },
+            {
+                "time": "06:00 PM",
+                "type": ActivityCategory.ATTRACTION,
+                "title": f"Visit {quaternary_attraction}",
+                "location": destination,
+                "estimated_duration_minutes": 60,
+                "cost_inr": _fallback_slot_cost(
+                    ActivityCategory.ATTRACTION,
+                    distance_km=distance_km,
+                    vehicle_type=vehicle_type,
+                    is_travel_day=False,
+                    is_return_day=False,
+                ),
+                "reason": "A final destination stop keeps the day varied and prevents a short sightseeing list.",
+                "current_location_before": destination,
+                "current_location_after": destination,
+                "progress": 1.0,
+            },
+            {
                 "time": "07:30 PM",
                 "type": ActivityCategory.DINNER,
                 "title": f"Dinner at {dinner_place.get('name', destination)}",
@@ -1916,7 +2194,24 @@ def _build_route_aware_itinerary(
     def return_day_slot_plan() -> list[dict[str, Any]]:
         breakfast_place = get_unique_place("restaurants", destination, used_places)
         lunch_place = get_unique_place("restaurants", destination, used_places)
-        attraction_place = get_unique_place("attractions", destination, used_places)
+        attraction_place = _pick_place_name(
+            block=destination_block,
+            kind="attractions",
+            fallback=_fallback_place_entry(destination, "attractions", 6)["name"],
+            index=6,
+        )
+        secondary_return_attraction = _pick_place_name(
+            block=destination_block,
+            kind="attractions",
+            fallback=_fallback_place_entry(destination, "attractions", 7)["name"],
+            index=7,
+        )
+        tertiary_return_attraction = _pick_place_name(
+            block=destination_block,
+            kind="attractions",
+            fallback=_fallback_place_entry(destination, "attractions", 8)["name"],
+            index=8,
+        )
         return [
             {
                 "time": "08:00 AM",
@@ -1939,7 +2234,8 @@ def _build_route_aware_itinerary(
             {
                 "time": "09:30 AM",
                 "type": ActivityCategory.ATTRACTION,
-                "title": f"Final stop at {attraction_place.get('name', destination)}",
+                "title": f"Final stop at {attraction_place}",
+                "place_name": attraction_place,
                 "location": destination,
                 "estimated_duration_minutes": 90,
                 "cost_inr": _fallback_slot_cost(
@@ -1950,6 +2246,44 @@ def _build_route_aware_itinerary(
                     is_return_day=True,
                 ),
                 "reason": "A short destination stop works before the return drive begins.",
+                "current_location_before": destination,
+                "current_location_after": destination,
+                "progress": 1.0,
+            },
+            {
+                "time": "10:15 AM",
+                "type": ActivityCategory.ATTRACTION,
+                "title": f"Visit {secondary_return_attraction}",
+                "place_name": secondary_return_attraction,
+                "location": destination,
+                "estimated_duration_minutes": 45,
+                "cost_inr": _fallback_slot_cost(
+                    ActivityCategory.ATTRACTION,
+                    distance_km=distance_km,
+                    vehicle_type=vehicle_type,
+                    is_travel_day=False,
+                    is_return_day=True,
+                ),
+                "reason": "A second scenic stop gives the return morning a proper road-trip feel.",
+                "current_location_before": destination,
+                "current_location_after": destination,
+                "progress": 1.0,
+            },
+            {
+                "time": "10:55 AM",
+                "type": ActivityCategory.ATTRACTION,
+                "title": f"Visit {tertiary_return_attraction}",
+                "place_name": tertiary_return_attraction,
+                "location": destination,
+                "estimated_duration_minutes": 35,
+                "cost_inr": _fallback_slot_cost(
+                    ActivityCategory.ATTRACTION,
+                    distance_km=distance_km,
+                    vehicle_type=vehicle_type,
+                    is_travel_day=False,
+                    is_return_day=True,
+                ),
+                "reason": "A third quick stop keeps the morning varied before the drive back starts.",
                 "current_location_before": destination,
                 "current_location_after": destination,
                 "progress": 1.0,
@@ -2063,6 +2397,33 @@ def _build_route_aware_itinerary(
                 location = route_stop
 
             cost = _safe_float(raw_slot.get("cost_inr"), 0.0)
+            place_name = _normalize_text(raw_slot.get("place_name"))
+            if not place_name:
+                place_name = _normalize_text(title)
+                for prefix in (
+                    "Breakfast at ",
+                    "Lunch at ",
+                    "Dinner at ",
+                    "Visit ",
+                    "Explore ",
+                    "Check in at ",
+                    "Fuel and tea stop at ",
+                    "Fuel and tea break at ",
+                    "Drive from ",
+                    "Drive back to ",
+                    "Final drive into ",
+                    "Return to ",
+                ):
+                    if place_name.startswith(prefix):
+                        place_name = place_name[len(prefix) :].strip()
+                        break
+            route_progress_percent = _safe_float(raw_slot.get("route_progress_percent"), progress * 100.0 if progress <= 1.0 else progress)
+            is_destination_activity = bool(raw_slot.get("is_destination_activity"))
+            if not is_destination_activity:
+                is_destination_activity = route_progress_percent >= 90.0 and slot_type not in {ActivityCategory.DRIVE, ActivityCategory.FUEL}
+            requires_arrival = bool(raw_slot.get("requires_arrival"))
+            if not requires_arrival and slot_type in {ActivityCategory.HOTEL, ActivityCategory.ATTRACTION, ActivityCategory.SIGHTSEEING, ActivityCategory.DINNER, ActivityCategory.LUNCH}:
+                requires_arrival = route_progress_percent < 90.0
             slot = _make_time_slot(
                 time=_normalize_text(raw_slot.get("time")),
                 type_=slot_type,
@@ -2075,8 +2436,12 @@ def _build_route_aware_itinerary(
                 current_location_after=current_after,
                 activity=_normalize_text(raw_slot.get("activity"), title),
                 description=_normalize_text(raw_slot.get("description"), _normalize_text(raw_slot.get("reason"))),
+                place_name=place_name,
                 distance_from_previous_km=_safe_float(raw_slot.get("distance_from_previous_km"), 0.0) or None,
                 cluster=_normalize_text(raw_slot.get("cluster")),
+                route_progress_percent=route_progress_percent,
+                is_destination_activity=is_destination_activity,
+                requires_arrival=requires_arrival,
             )
             day_slots.append(slot)
             day_cost += slot.cost_inr
@@ -2132,6 +2497,19 @@ def _build_route_aware_itinerary(
             )
         )
 
+    days, invalid_items_fixed_count = validate_itinerary_route_logic(origin, destination, days)
+    logger.info(
+        "[ITINERARY] route_plan_summary origin=%s destination=%s total_drive_hours=%.2f current_time=%s current_location_before=%s current_location_after=%s route_progress_percent=%s has_arrived_destination=%s invalid_items_fixed_count=%d",
+        origin,
+        destination,
+        duration_hours,
+        days[0].time_slots[0].time if days and days[0].time_slots else "",
+        days[0].time_slots[0].current_location_before if days and days[0].time_slots else "",
+        days[0].time_slots[0].current_location_after if days and days[0].time_slots else "",
+        days[0].time_slots[0].route_progress_percent if days and days[0].time_slots else None,
+        bool(days and days[0].time_slots and days[0].time_slots[0].is_destination_activity),
+        invalid_items_fixed_count,
+    )
     before_validation_places = _itinerary_place_names(days)
     before_duplicates = len(before_validation_places) - len(set(before_validation_places))
     days = _validate_unique_itinerary_places(days)
@@ -3544,7 +3922,14 @@ def _run_sightseeing_itinerary_agent(state: dict) -> dict:
     return state
 
 
-run_itinerary_agent = _run_sightseeing_itinerary_agent
+def run_itinerary_agent(state: dict) -> dict:
+    origin = _normalize_text(state.get("origin"))
+    destination = _normalize_text(state.get("destination"))
+    route = state.get("route", {}) or {}
+    distance_km = _safe_float(route.get("distance_km"), 0.0)
+    if origin and destination and origin.casefold() != destination.casefold() and distance_km >= 0:
+        return _run_route_aware_itinerary_agent(state)
+    return _run_sightseeing_itinerary_agent(state)
 
 
 async def itinerary_agent(state: TripState) -> TripState:

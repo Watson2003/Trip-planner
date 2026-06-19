@@ -321,6 +321,9 @@ export interface TimeSlot {
   nearby_places?: string[];
   travel_time_minutes?: number | null;
   distance_from_previous_km?: number | null;
+  route_progress_percent?: number | null;
+  is_destination_activity?: boolean;
+  requires_arrival?: boolean;
   current_location_before: string;
   current_location_after: string;
   activity?: string;

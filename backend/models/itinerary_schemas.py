@@ -36,6 +36,9 @@ class TimeSlot(BaseModel):
     nearby_places: list[str] = Field(default_factory=list)
     travel_time_minutes: Optional[int] = None
     distance_from_previous_km: Optional[float] = None
+    route_progress_percent: Optional[float] = None
+    is_destination_activity: bool = False
+    requires_arrival: bool = False
     current_location_before: str
     current_location_after: str
     activity: Optional[str] = ""
