@@ -50,6 +50,13 @@ function firstPositiveNumber(...values: Array<number | null | undefined>) {
   return 0;
 }
 
+function estimateTollCost(routeDistanceKm: number | null | undefined) {
+  const distanceKm = Math.max(0, Number(routeDistanceKm ?? 0));
+  if (distanceKm <= 0) return 0;
+  const estimated = distanceKm * 1.2;
+  return Math.max(10, Math.round(estimated / 10) * 10);
+}
+
 function hasUsableFuelCalculation(value: FuelCalculation | null | undefined) {
   if (!value) return false;
   return firstNumber(value.distance_km, value.fuel_required_litres, value.total_fuel_cost_inr) > 0 && firstNumber(value.total_fuel_cost_inr) > 0;
@@ -106,37 +113,6 @@ function normalizeBudget(
   const totalInr = firstNumber(budget.breakdown?.total?.inr, budget.total, fuelInr + tollsInr + hotelsInr + foodInr + miscInr);
 
   return { fuelInr, tollsInr, hotelsInr, foodInr, miscInr, totalInr };
-}
-
-function PieLabel({
-  cx,
-  cy,
-  midAngle,
-  innerRadius,
-  outerRadius,
-  percent,
-  value,
-}: {
-  cx?: number;
-  cy?: number;
-  midAngle?: number;
-  innerRadius?: number;
-  outerRadius?: number;
-  percent?: number;
-  value?: number;
-}) {
-  if (!cx || !cy || !midAngle || !innerRadius || !outerRadius || !percent || percent < 0.05 || !value) return null;
-
-  const radian = Math.PI / 180;
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.65;
-  const x = cx + radius * Math.cos(-midAngle * radian);
-  const y = cy + radius * Math.sin(-midAngle * radian);
-
-  return (
-    <text x={x} y={y} fill="#1d1d1f" textAnchor={x > cx ? "start" : "end"} dominantBaseline="central" className="text-[11px] font-semibold">
-      {`${Math.round(percent * 100)}%`}
-    </text>
-  );
 }
 
 function Row({ label, value }: { label: string; value: string }) {
@@ -212,7 +188,15 @@ export default function BudgetBreakdown({
     normalized.hotelsInr,
   );
   const foodCostRaw = firstNumber(budgetData.food_cost_inr, budgetData.food_cost, budgetData.foodCost, budgetData.food, normalized.foodInr);
-  const tollCost = firstNumber(budgetData.toll_cost_inr, budgetData.toll_cost, budgetData.tollCost, budgetData.tolls, budgetData.toll, normalized.tollsInr);
+  const tollCostRaw = firstNumber(
+    budgetData.toll_cost_inr,
+    budgetData.toll_cost,
+    budgetData.tollCost,
+    budgetData.tolls,
+    budgetData.toll,
+    normalized.tollsInr,
+  );
+  const tollCost = firstPositiveNumber(tollCostRaw, estimateTollCost(routeDistanceKm));
   const miscCost = firstNumber(budgetData.misc_cost_inr, budgetData.misc_cost, budgetData.miscCost, budgetData.miscellaneous, budgetData.activities, budgetData.misc, normalized.miscInr);
   const numberOfPeople = firstNumber(budgetData.number_of_people, budgetData.numberOfPeople, budgetData.people, vehicle?.number_of_people) || 1;
   const pricePerNight = firstNumber(budgetData.hotel_price_per_night, budgetData.hotelPricePerNight, budgetData.price_per_night);
@@ -247,6 +231,25 @@ export default function BudgetBreakdown({
     { name: "Tolls", value: tollCost, color: COLORS.Tolls },
     { name: "Misc", value: miscCost, color: COLORS.Misc },
   ];
+
+  const chartTooltip = ({
+    active,
+    payload,
+  }: {
+    active?: boolean;
+    payload?: Array<{ payload?: { name?: string; value?: number } }>;
+  }) => {
+    if (!active || !payload?.length) return null;
+    const item = payload[0]?.payload;
+    if (!item) return null;
+
+    return (
+      <div className="rounded-xl border border-slate-200 bg-white px-3 py-2 shadow-lg">
+        <div className="text-xs uppercase tracking-[0.2em] text-slate-500">{item.name}</div>
+        <div className="mt-1 text-sm font-bold text-slate-950">{formatInr(item.value ?? 0)}</div>
+      </div>
+    );
+  };
 
   return (
     <section className="w-full overflow-hidden rounded-[2rem] border border-slate-200 bg-white text-slate-950 shadow-xl">
@@ -379,13 +382,12 @@ export default function BudgetBreakdown({
                     outerRadius={95}
                     paddingAngle={3}
                     labelLine={false}
-                    label={PieLabel}
                   >
                     {chartData.map((entry) => (
                       <Cell key={entry.name} fill={entry.color} />
                     ))}
                   </Pie>
-                  <Tooltip formatter={(value: number) => formatInr(value)} />
+                  <Tooltip content={chartTooltip} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
