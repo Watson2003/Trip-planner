@@ -15,8 +15,10 @@ import {
 
 import AuthGuard from "@/components/auth/AuthGuard";
 import Navbar from "@/components/auth/Navbar";
+import { normalizeRecommendations } from "@/lib/trip-result";
+import { API_BASE_URL } from "@/lib/api";
 import { getAuthHeaders } from "@/lib/auth";
-import type { LocationRecommendation } from "@/types";
+import type { RecommendationPayload } from "@/types";
 
 type TripSummary = {
   id: number;
@@ -31,7 +33,7 @@ type TripSummary = {
 };
 
 type TripDetailResponse = {
-  recommendations?: LocationRecommendation[];
+  recommendations?: RecommendationPayload;
 };
 
 function formatDate(value?: string | null) {
@@ -69,10 +71,12 @@ function RecommendationPreview({
   loading,
   error,
 }: {
-  recommendations: LocationRecommendation[];
+  recommendations: RecommendationPayload;
   loading: boolean;
   error: string;
 }) {
+  const normalized = normalizeRecommendations(recommendations);
+
   if (loading) {
     return (
       <div className="grid gap-3 md:grid-cols-2">
@@ -90,7 +94,7 @@ function RecommendationPreview({
     );
   }
 
-  if (!recommendations.length) {
+  if (!normalized.hotels.length && !normalized.restaurants.length && !normalized.attractions.length) {
     return (
       <div className="rounded-2xl border border-[#1a1a1a] bg-[#111111] px-4 py-3 text-sm text-[#888888]">
         No recommendation details available for this trip yet.
@@ -100,25 +104,27 @@ function RecommendationPreview({
 
   return (
     <div className="grid gap-3 md:grid-cols-2">
-      {recommendations.map((locationItem) => (
-        <div key={locationItem.location} className="rounded-2xl border border-[#1a1a1a] bg-[#111111] p-4">
-          <div className="text-sm font-bold text-white">{locationItem.location}</div>
-          <div className="mt-3 space-y-3 text-sm text-[#a0a0a0]">
-            <div>
-              <div className="text-[11px] uppercase tracking-[0.18em] text-white">Hotel</div>
-              <div className="mt-1 font-semibold text-white">
-                {locationItem.hotels[0]?.name ?? "No hotel suggestion"}
-              </div>
+      <div className="rounded-2xl border border-[#1a1a1a] bg-[#111111] p-4">
+        <div className="text-sm font-bold text-white">{normalized.destination || "Destination recommendations"}</div>
+        <div className="mt-3 space-y-3 text-sm text-[#a0a0a0]">
+          <div>
+            <div className="text-[11px] uppercase tracking-[0.18em] text-white">Hotel</div>
+            <div className="mt-1 font-semibold text-white">{normalized.hotels[0]?.name ?? "No hotel suggestion"}</div>
+          </div>
+          <div>
+            <div className="text-[11px] uppercase tracking-[0.18em] text-[#a0a0a0]">Restaurant</div>
+            <div className="mt-1 font-semibold text-white">
+              {normalized.restaurants[0]?.name ?? "No restaurant suggestion"}
             </div>
-            <div>
-              <div className="text-[11px] uppercase tracking-[0.18em] text-[#a0a0a0]">Restaurant</div>
-              <div className="mt-1 font-semibold text-white">
-                {locationItem.restaurants[0]?.name ?? "No restaurant suggestion"}
-              </div>
+          </div>
+          <div>
+            <div className="text-[11px] uppercase tracking-[0.18em] text-[#a0a0a0]">Attraction</div>
+            <div className="mt-1 font-semibold text-white">
+              {normalized.attractions[0]?.name ?? "No attraction suggestion"}
             </div>
           </div>
         </div>
-      ))}
+      </div>
     </div>
   );
 }
@@ -128,7 +134,7 @@ export default function MyTripsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [expandedTrips, setExpandedTrips] = useState<number[]>([]);
-  const [recommendationsByTripId, setRecommendationsByTripId] = useState<Record<number, LocationRecommendation[]>>({});
+  const [recommendationsByTripId, setRecommendationsByTripId] = useState<Record<number, RecommendationPayload>>({});
   const [loadingRecommendations, setLoadingRecommendations] = useState<Record<number, boolean>>({});
   const [recommendationErrors, setRecommendationErrors] = useState<Record<number, string>>({});
 
@@ -140,7 +146,7 @@ export default function MyTripsPage() {
       setError("");
 
       try {
-        const response = await fetch("/api/trip/my-trips", {
+        const response = await fetch(`${API_BASE_URL}/api/trip/my-trips`, {
           headers: {
             ...getAuthHeaders(),
           },
@@ -176,7 +182,7 @@ export default function MyTripsPage() {
     setRecommendationErrors((current) => ({ ...current, [tripId]: "" }));
 
     try {
-      const response = await fetch(`/api/trip/${tripId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/trip/${tripId}`, {
         headers: {
           ...getAuthHeaders(),
         },
@@ -210,7 +216,7 @@ export default function MyTripsPage() {
   }
 
   async function downloadPdf(tripId: number) {
-    const response = await fetch(`/api/trip/${tripId}/pdf`, {
+    const response = await fetch(`${API_BASE_URL}/api/trip/${tripId}/pdf`, {
       headers: {
         ...getAuthHeaders(),
       },

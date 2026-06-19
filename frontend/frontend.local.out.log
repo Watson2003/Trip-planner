@@ -7,29 +7,29 @@
   - Environments: .env
 
  ✓ Starting...
- ✓ Ready in 5.3s
+ ✓ Ready in 7.1s
  ○ Compiling / ...
- ✓ Compiled / in 2.3s (570 modules)
- GET / 200 in 2830ms
- GET / 200 in 41ms
- GET / 200 in 52ms
- ○ Compiling /_error ...
- ✓ Compiled /_error in 4.8s (818 modules)
- GET / 200 in 157ms
- ○ Compiling /trip-result ...
- ✓ Compiled /trip-result in 1941ms (1952 modules)
- GET / 200 in 172ms
- GET /trip-result 200 in 198ms
- ✓ Compiled in 1729ms (1966 modules)
- GET /trip-result 200 in 837ms
- ✓ Compiled in 680ms (1966 modules)
- GET /trip-result 200 in 365ms
- ✓ Compiled in 460ms (1966 modules)
- GET / 200 in 68ms
- GET / 200 in 114ms
- ✓ Compiled in 1640ms (1966 modules)
- ✓ Compiled in 444ms (1062 modules)
+ ✓ Compiled / in 5.6s (570 modules)
+ GET / 200 in 9214ms
  ○ Compiling /login ...
- ✓ Compiled /login in 3.4s (1978 modules)
- ✓ Compiled in 1466ms (1971 modules)
- GET / 200 in 426ms
+ ✓ Compiled /login in 3.2s (582 modules)
+ ✓ Compiled in 538ms (287 modules)
+ ✓ Compiled in 782ms (287 modules)
+ ✓ Compiled in 387ms (287 modules)
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 2.5s (816 modules)
+ ✓ Compiled in 506ms (480 modules)
+ ○ Compiling /register ...
+ ✓ Compiled /register in 3.3s (822 modules)
+ ✓ Compiled in 202ms (482 modules)
+ ✓ Compiled in 5.4s (866 modules)
+ ✓ Compiled in 185ms (537 modules)
+ ✓ Compiled in 1491ms (551 modules)
+ ✓ Compiled in 543ms (537 modules)
+ ✓ Compiled in 3.1s (1009 modules)
+ ✓ Compiled in 1468ms (1009 modules)
+ ✓ Compiled in 113ms (537 modules)
+ ✓ Compiled in 1595ms (551 modules)
+ ✓ Compiled in 91ms (537 modules)
+ ✓ Compiled in 1593ms (1009 modules)
+ ✓ Compiled in 142ms (537 modules)

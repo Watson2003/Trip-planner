@@ -6,7 +6,7 @@ from typing import Any
 import httpx
 from fastapi import APIRouter, HTTPException, Query, status
 
-from agents.fallbacks import fallback_route
+from agents.fallbacks import fallback_route, fallback_route_road
 from models.schemas import GeoJsonRouteResponse
 from utils.config import settings
 
@@ -35,7 +35,9 @@ async def _geocode_place(client: httpx.AsyncClient, place: str, api_key: str) ->
 @router.get("/map/route", response_model=GeoJsonRouteResponse)
 async def get_route(origin: str = Query(...), destination: str = Query(...)) -> dict[str, Any]:
     if not settings.openrouteservice_api_key:
-        route = fallback_route(origin, destination, [])
+        route = await fallback_route_road(origin, destination, [])
+        if route is None:
+            route = fallback_route(origin, destination, [])
         if route is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Could not build a route for {origin} to {destination}")
         return {
@@ -69,7 +71,9 @@ async def get_route(origin: str = Query(...), destination: str = Query(...)) -> 
             response.raise_for_status()
             payload = response.json()
     except (asyncio.TimeoutError, httpx.TransportError) as exc:
-        route = fallback_route(origin, destination, [])
+        route = await fallback_route_road(origin, destination, [])
+        if route is None:
+            route = fallback_route(origin, destination, [])
         if route is not None:
             return {
                 "type": "FeatureCollection",

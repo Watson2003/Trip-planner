@@ -5,7 +5,7 @@ export interface TripPlan {
   route: RouteInfo;
   weather: DailyWeather[];
   budget: BudgetBreakdown;
-  recommendations: LocationRecommendation[];
+  recommendations: RecommendationPayload;
   chat: ChatMessage[];
   vehicle: VehicleDetails;
   fuel_calculation: FuelCalculation;
@@ -88,7 +88,18 @@ export interface LocationRecommendation {
   hotels: HotelRecommendation[];
   restaurants: RestaurantRecommendation[];
   attractions: AttractionRecommendation[];
+  fallback_generated?: boolean;
 }
+
+export interface RecommendationCatalog {
+  destination: string;
+  hotels: HotelRecommendation[];
+  restaurants: RestaurantRecommendation[];
+  attractions: AttractionRecommendation[];
+  fallback_generated?: boolean;
+}
+
+export type RecommendationPayload = RecommendationCatalog | LocationRecommendation[];
 
 export interface WeatherResponse {
   status: "success" | "unavailable" | "past_dates";
@@ -230,8 +241,9 @@ export interface PlannedTripResponse {
   weather: DailyWeather[];
   weather_status?: "success" | "unavailable" | "past_dates";
   weather_message?: string | null;
-  recommendations: LocationRecommendation[];
+  recommendations: RecommendationPayload;
   recommendation_locations?: string[];
+  itinerary?: FullItinerary | null;
   report_summary: string;
   pdf_path?: string | null;
   vehicle?: VehicleDetails | null;
@@ -278,4 +290,67 @@ export interface TripMarker {
   label: string;
   type: "origin" | "destination" | "waypoint";
   eta?: string;
+}
+
+export type ActivityCategory =
+  | "drive"
+  | "breakfast"
+  | "lunch"
+  | "dinner"
+  | "attraction"
+  | "sightseeing"
+  | "hotel"
+  | "shopping"
+  | "rest"
+  | "fuel"
+  | "misc";
+
+export interface TimeSlot {
+  time: string;
+  type: ActivityCategory;
+  title: string;
+  place_name?: string;
+  location: string;
+  latitude?: number | null;
+  longitude?: number | null;
+  estimated_duration_minutes: number;
+  cost_inr: number;
+  reason: string;
+  best_time_to_visit?: string;
+  nearby_places?: string[];
+  travel_time_minutes?: number | null;
+  current_location_before: string;
+  current_location_after: string;
+  activity?: string;
+  description?: string;
+  duration_minutes?: number;
+  category?: ActivityCategory;
+  estimated_cost_inr?: number;
+  tips?: string;
+}
+
+export interface DayItinerary {
+  day_number: number;
+  date: string;
+  day_title: string;
+  summary: string;
+  location: string;
+  time_slots: TimeSlot[];
+  day_total_cost_inr: number;
+  distance_km: number;
+  driving_hours: number;
+  highlights: string[];
+}
+
+export interface FullItinerary {
+  trip_id: string;
+  origin: string;
+  destination: string;
+  total_days: number;
+  start_date: string;
+  end_date: string;
+  days: DayItinerary[];
+  total_itinerary_cost_inr: number;
+  generated_at: string;
+  travel_tips: string[];
 }

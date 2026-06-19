@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Loader2, Route } from "lucide-react";
 
+import { API_BASE_URL } from "@/lib/api";
 import { saveToken, isLoggedIn } from "@/lib/auth";
 import type { AuthResponse, RegisterForm } from "@/types/auth";
 
@@ -85,7 +86,7 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      const registerResponse = await fetch("/api/auth/register", {
+      const registerResponse = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -103,7 +104,7 @@ export default function RegisterPage() {
         throw new Error(readServerMessage(payload, "Unable to create account"));
       }
 
-      const loginResponse = await fetch("/api/auth/login", {
+      const loginResponse = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

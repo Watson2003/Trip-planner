@@ -9,6 +9,11 @@ from urllib.parse import quote_plus
 import httpx
 
 from utils.config import settings
+from tools.osm_places import (
+    fetch_osm_places as fetch_osm_destination_places,
+    geocode_location as geocode_osm_location,
+    normalize_place_name as normalize_osm_place_name,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -16,6 +21,9 @@ logger = logging.getLogger(__name__)
 GEOAPIFY_GEOCODE_URL = "https://api.geoapify.com/v1/geocode/search"
 GEOAPIFY_PLACES_URL = "https://api.geoapify.com/v2/places"
 GEOAPIFY_PLACE_DETAILS_URL = "https://api.geoapify.com/v2/place-details"
+GOOGLE_PLACES_TEXTSEARCH_URL = "https://maps.googleapis.com/maps/api/place/textsearch/json"
+GOOGLE_PLACES_DETAILS_URL = "https://maps.googleapis.com/maps/api/place/details/json"
+GOOGLE_PLACES_PHOTO_URL = "https://maps.googleapis.com/maps/api/place/photo"
 
 _coords_cache: dict[str, dict[str, float]] = {}
 _coordinates_cache = _coords_cache
@@ -580,7 +588,7 @@ def _build_fallback_places(location: str, kind: str) -> list[dict[str, Any]]:
 
 
 async def get_coordinates(location: str) -> dict[str, float]:
-    """Resolve a city name into latitude/longitude using Geoapify, with a local fallback."""
+    """Resolve a city name into latitude/longitude using OSM Nominatim."""
     print(f"DEBUG get_coordinates called with: '{location}'")
     cache_key = location.strip().lower()
     if not cache_key:
@@ -591,61 +599,154 @@ async def get_coordinates(location: str) -> dict[str, float]:
         print(f"DEBUG cache hit for: '{cache_key}' -> {cached}")
         return cached
 
-    api_key = _geoapify_api_key()
-    if api_key:
-        try:
-            async with httpx.AsyncClient(timeout=3.0, headers=_geoapify_headers()) as client:
-                response = await client.get(
-                    GEOAPIFY_GEOCODE_URL,
-                    params={
-                        "text": location,
-                        "format": "json",
-                        "limit": 1,
-                        "apiKey": api_key,
-                    },
-                )
-                response.raise_for_status()
-                payload = response.json()
-        except (httpx.HTTPError, ValueError) as exc:
-            logger.warning("Geoapify geocoding failed for %s: %s", location, exc)
-            payload = {}
+    try:
+        osm_result = await geocode_osm_location(location)
+    except Exception as exc:
+        logger.warning("OSM geocoding failed for %s: %s", location, exc)
+        osm_result = None
 
-        results = payload.get("results") if isinstance(payload, dict) else None
-        if isinstance(results, list) and results:
-            first = results[0]
-            lat = first.get("lat")
-            lon = first.get("lon")
-            if lat is not None and lon is not None:
-                resolved = {"lat": float(lat), "lng": float(lon)}
-                print(f"DEBUG geocoded '{location}' -> {resolved}")
-                _coords_cache[cache_key] = resolved
-                return resolved
+    if isinstance(osm_result, dict):
+        lat = osm_result.get("latitude")
+        lng = osm_result.get("longitude")
+        if lat is not None and lng is not None:
+            resolved = {"lat": float(lat), "lng": float(lng)}
+            print(f"DEBUG geocoded '{location}' via OSM -> {resolved}")
+            _coords_cache[cache_key] = resolved
+            return resolved
 
-        features = payload.get("features") if isinstance(payload, dict) else None
-        if isinstance(features, list) and features:
-            props = _feature_properties(features[0])
-            lat = props.get("lat")
-            lon = props.get("lon")
-            if lat is not None and lon is not None:
-                resolved = {"lat": float(lat), "lng": float(lon)}
-                print(f"DEBUG geocoded '{location}' -> {resolved}")
-                _coords_cache[cache_key] = resolved
-                return resolved
+    return {}
 
-    lat, lng = _fallback_coordinates(location)
-    resolved = {"lat": lat, "lng": lng}
-    print(f"DEBUG geocoded '{location}' -> {resolved}")
-    _coords_cache[cache_key] = resolved
-    return resolved
+
+def _osm_category_match(place: dict[str, Any], category: str, keyword: str = "") -> bool:
+    normalized_category = _normalize_text(category).casefold()
+    normalized_keyword = normalize_osm_place_name(keyword)
+    place_category = _normalize_text(place.get("category")).casefold()
+    place_name = normalize_osm_place_name(place.get("name", ""))
+    tags = place.get("tags") if isinstance(place.get("tags"), dict) else {}
+    tourism = _normalize_text(tags.get("tourism")).casefold()
+    amenity = _normalize_text(tags.get("amenity")).casefold()
+    leisure = _normalize_text(tags.get("leisure")).casefold()
+    natural = _normalize_text(tags.get("natural")).casefold()
+    historic = _normalize_text(tags.get("historic")).casefold()
+    shop = _normalize_text(tags.get("shop")).casefold()
+
+    if normalized_category == "hotel":
+        return place_category in {"hotel", "guest_house", "resort"} or tourism in {"hotel", "guest_house", "resort"} or amenity == "hotel"
+    if normalized_category == "restaurant":
+        return place_category in {"restaurant", "cafe"} or amenity in {"restaurant", "cafe"}
+    if normalized_category == "attraction":
+        if not normalized_keyword:
+            return place_category not in {"hotel", "guest_house", "resort", "restaurant", "cafe"}
+        return normalized_keyword in place_name or normalized_keyword in normalize_osm_place_name(place_category)
+
+    return bool(
+        place_category == normalized_category
+        or normalized_category in place_name
+        or normalized_keyword in place_name
+        or tourism == normalized_category
+        or amenity == normalized_category
+        or leisure == normalized_category
+        or natural == normalized_category
+        or historic == normalized_category
+        or shop == normalized_category
+    )
+
+
+def _osm_category_priority(place: dict[str, Any], category: str, keyword: str = "") -> tuple[int, int, str]:
+    normalized_category = _normalize_text(category).casefold()
+    normalized_keyword = normalize_osm_place_name(keyword)
+    place_name = normalize_osm_place_name(place.get("name", ""))
+    tags = place.get("tags") if isinstance(place.get("tags"), dict) else {}
+    tourism = _normalize_text(tags.get("tourism")).casefold()
+    amenity = _normalize_text(tags.get("amenity")).casefold()
+    leisure = _normalize_text(tags.get("leisure")).casefold()
+    natural = _normalize_text(tags.get("natural")).casefold()
+    historic = _normalize_text(tags.get("historic")).casefold()
+    accommodation_terms = {"hotel", "guest house", "guesthouse", "guest_house", "resort", "stay", "lodge"}
+
+    if normalized_category == "attraction":
+        if any(term in place_name for term in accommodation_terms):
+            return (3, 1 if normalized_keyword and normalized_keyword in place_name else 0, place_name)
+        if tourism in {"attraction", "museum", "viewpoint"}:
+            return (0, 0 if normalized_keyword and normalized_keyword in place_name else 1, place_name)
+        if natural in {"peak", "waterfall", "lake"} or leisure == "park" or historic:
+            return (0, 0 if normalized_keyword and normalized_keyword in place_name else 1, place_name)
+        return (1, 1 if normalized_keyword and normalized_keyword in place_name else 0, place_name)
+
+    if normalized_category == "hotel":
+        return (0, 0 if tourism in {"hotel", "guest_house", "resort"} or amenity == "hotel" else 1, place_name)
+    if normalized_category == "restaurant":
+        return (0, 0 if amenity in {"restaurant", "cafe"} else 1, place_name)
+    return (0, 0 if normalized_keyword and normalized_keyword in place_name else 1, place_name)
+
+
+def _osm_rating_estimate(category: str) -> float:
+    key = _normalize_text(category).casefold()
+    if key == "hotel":
+        return 4.4
+    if key == "restaurant":
+        return 4.3
+    if key in {"museum", "viewpoint", "park", "peak", "waterfall", "lake", "historic"}:
+        return 4.5
+    return 4.2
+
+
+def _osm_reviews_estimate(category: str) -> int:
+    key = _normalize_text(category).casefold()
+    if key == "hotel":
+        return 160
+    if key == "restaurant":
+        return 210
+    if key in {"museum", "viewpoint", "park", "peak", "waterfall", "lake", "historic"}:
+        return 120
+    return 100
+
+
+def _osm_place_to_search_payload(place: dict[str, Any], location: str, category: str) -> dict[str, Any]:
+    tags = place.get("tags") if isinstance(place.get("tags"), dict) else {}
+    latitude = float(place.get("latitude") or 0.0)
+    longitude = float(place.get("longitude") or 0.0)
+    address = _normalize_text(place.get("address")) or location
+    name = _normalize_text(place.get("name"))
+    place_category = _normalize_text(place.get("category")) or category
+    normalized_tags = {
+        str(key): value
+        for key, value in (tags or {}).items()
+    }
+    return {
+        "place_id": _normalize_text(place.get("place_id")) or f"osm-{normalize_osm_place_name(name) or 'place'}",
+        "name": name,
+        "formatted": address,
+        "address_line1": address,
+        "address_line2": place_category.title(),
+        "city": location,
+        "street": "",
+        "lat": latitude,
+        "lng": longitude,
+        "distance": 0.0,
+        "categories": [f"osm.{place_category}"] if place_category else ["osm.attraction"],
+        "website": normalized_tags.get("website"),
+        "phone": normalized_tags.get("phone") or normalized_tags.get("contact:phone"),
+        "opening_hours": normalized_tags.get("opening_hours"),
+        "category": place_category,
+        "rating": _osm_rating_estimate(category),
+        "total_reviews": _osm_reviews_estimate(category),
+        "price_level": 0,
+        "description": _normalize_text(place.get("best_time_to_visit")) or "OSM place",
+        "osm_type": place.get("osm_type"),
+        "tags": normalized_tags,
+        "estimated_duration_minutes": place.get("estimated_duration_minutes"),
+        "best_time_to_visit": place.get("best_time_to_visit"),
+    }
 
 
 async def search_places(
     location: str,
     place_type: str,
     keyword: str = "",
-    max_results: int = 10,
+    max_results: int = 5,
 ) -> list[dict[str, Any]]:
-    """Search nearby real places around a location using Geoapify Places."""
+    """Search nearby real places around a location using Geoapify or OSM."""
     print(f"DEBUG search_places: location='{location}' type='{place_type}'")
     category = _place_type_for_search(place_type)
     keyword_key = _normalize_text(keyword).casefold()
@@ -655,12 +756,6 @@ async def search_places(
         return cached
 
     api_key = _geoapify_api_key()
-    if not api_key:
-        logger.warning("GEOAPIFY_API_KEY is not set; falling back to generated places for %s (%s).", location, category)
-        fallback_places = _build_fallback_places(location, category)
-        _search_cache[cache_key] = fallback_places
-        return fallback_places
-
     coordinates = await get_coordinates(location)
     if not coordinates:
         print(f"DEBUG: No coordinates for '{location}'")
@@ -669,75 +764,174 @@ async def search_places(
     lat = coordinates["lat"]
     lng = coordinates["lng"]
     print(f"DEBUG search_places: using coords lat={lat}, lng={lng} for '{location}'")
-    radius = 8000 if category == "hotel" else 5000 if category == "restaurant" else 10000
-    limit = max(1, int(max_results or 10))
+    limit = max(1, int(max_results or 5))
 
-    async def _single_search(search_keyword: str = "") -> list[dict[str, Any]]:
-        try:
-            async with httpx.AsyncClient(timeout=3.0, headers=_geoapify_headers()) as client:
-                response = await client.get(
-                    GEOAPIFY_PLACES_URL,
-                    params={
-                        "categories": _geoapify_categories(category, search_keyword),
-                        "filter": f"circle:{lng},{lat},{radius}",
-                        "bias": f"proximity:{lng},{lat}",
-                        "limit": limit,
-                        "apiKey": api_key,
-                    },
-                )
-                response.raise_for_status()
-                payload = response.json()
-        except (httpx.HTTPError, ValueError) as exc:
-            logger.warning("Geoapify place search failed for %s (%s): %s", location, category, exc)
+    osm_places_cache: list[dict[str, Any]] | None = None
+
+    async def _search_osm(search_keyword: str = "") -> list[dict[str, Any]]:
+        nonlocal osm_places_cache
+        if osm_places_cache is None:
+            try:
+                osm_places_cache = await fetch_osm_destination_places(location, radius_km=8)
+            except Exception as exc:
+                logger.warning("OSM place search failed for %s (%s): %s", location, category, exc)
+                osm_places_cache = []
+
+        if not osm_places_cache:
             return []
 
-        features = payload.get("features") if isinstance(payload, dict) else None
-        if not isinstance(features, list) or not features:
-            return []
+        effective_keyword = search_keyword or keyword
+        matches = [place for place in osm_places_cache if _osm_category_match(place, category, effective_keyword)]
+        if not matches and category == "attraction":
+            matches = [place for place in osm_places_cache if _normalize_text(place.get("category")).casefold() not in {"hotel", "guest_house", "resort", "restaurant", "cafe"}]
+        matches.sort(key=lambda item: _osm_category_priority(item, category, effective_keyword))
+        return [
+            _osm_place_to_search_payload(place, location, category)
+            for place in matches[:limit]
+            if _normalize_text(place.get("name"))
+        ]
 
-        results: list[dict[str, Any]] = []
-        for feature in features:
-            if not isinstance(feature, dict):
+    async def _single_search(search_keyword: str = "", radius: int = 10000) -> list[dict[str, Any]]:
+        osm_results = await _search_osm(search_keyword)
+        if osm_results:
+            return osm_results
+        return []
+
+    def _dedupe_extend(target: list[dict[str, Any]], seen: set[str], entries: list[dict[str, Any]]) -> None:
+        for entry in entries:
+            dedupe_key = str(entry.get("place_id") or "").strip()
+            if not dedupe_key or dedupe_key in seen:
                 continue
-            entry = _place_search_payload(feature, category)
-            if not entry.get("place_id"):
-                continue
-            results.append(entry)
-        return results
+            seen.add(dedupe_key)
+            target.append(entry)
+            if len(target) >= limit:
+                break
 
     if category == "attraction":
         searches = ["", "park", "temple"]
         combined: list[dict[str, Any]] = []
         seen: set[str] = set()
         for search_keyword in searches:
-            for entry in await _single_search(search_keyword):
-                dedupe_key = str(entry.get("place_id") or "").strip()
-                if not dedupe_key or dedupe_key in seen:
-                    continue
-                seen.add(dedupe_key)
-                combined.append(entry)
+            _dedupe_extend(combined, seen, await _single_search(search_keyword))
+            if len(combined) >= limit:
+                break
         combined.sort(key=lambda item: (item.get("distance", 0.0), -item.get("rating", 0.0), -item.get("total_reviews", 0)))
-        limited = combined[:limit] or _build_fallback_places(location, category)
+        if not combined:
+            osm_places = await _search_osm()
+            _search_cache[cache_key] = osm_places
+            return osm_places
+        limited = combined[:limit]
+        _search_cache[cache_key] = limited
+        return limited
+
+    if category == "hotel":
+        searches = [keyword_key, "hotel", "stay", "resort", "lodging"]
+        combined: list[dict[str, Any]] = []
+        seen: set[str] = set()
+        for search_keyword in searches:
+            _dedupe_extend(combined, seen, await _single_search(search_keyword))
+            if len(combined) >= limit:
+                break
+        combined.sort(key=lambda item: (item.get("distance", 0.0), -item.get("rating", 0.0), -item.get("total_reviews", 0)))
+        if not combined:
+            osm_places = await _search_osm()
+            _search_cache[cache_key] = osm_places
+            return osm_places
+        limited = combined[:limit]
+        _search_cache[cache_key] = limited
+        return limited
+
+    if category == "restaurant":
+        searches = [keyword_key, "restaurant", "cafe", "food", "dhaba"]
+        combined: list[dict[str, Any]] = []
+        seen: set[str] = set()
+        for search_keyword in searches:
+            _dedupe_extend(combined, seen, await _single_search(search_keyword))
+            if len(combined) >= limit:
+                break
+        combined.sort(key=lambda item: (item.get("distance", 0.0), -item.get("rating", 0.0), -item.get("total_reviews", 0)))
+        if not combined:
+            osm_places = await _search_osm()
+            _search_cache[cache_key] = osm_places
+            return osm_places
+        limited = combined[:limit]
         _search_cache[cache_key] = limited
         return limited
 
     results = await _single_search(keyword_key)
     if not results:
-        fallback_places = _build_fallback_places(location, category)
-        _search_cache[cache_key] = fallback_places
-        return fallback_places
+        osm_places = await _search_osm()
+        _search_cache[cache_key] = osm_places
+        return osm_places
 
     results.sort(key=lambda item: (item.get("distance", 0.0), -item.get("rating", 0.0), -item.get("total_reviews", 0)))
-    limited = results[:limit] or _build_fallback_places(location, category)
+    limited = results[:limit]
     _search_cache[cache_key] = limited
     return limited
 
 
-async def get_place_details(place_id: str) -> dict[str, Any]:
+async def get_place_details(place_id: str, query: str | None = None) -> dict[str, Any]:
     """Fetch place details from Geoapify for an individual place id."""
     place_id = _normalize_text(place_id)
-    if not place_id or place_id.startswith("fallback-"):
+    query = _normalize_text(query)
+    if (not place_id and not query) or place_id.startswith("fallback-"):
         return {}
+
+    google_api_key = os.getenv("GOOGLE_PLACES_API_KEY") or os.getenv("google_places_api_key") or ""
+    if google_api_key:
+        print(f"[PLACES] Getting details for: {place_id or query}")
+        try:
+            async with httpx.AsyncClient(timeout=3.0) as client:
+                resolved_place_id = place_id if place_id and not place_id.startswith("osm-") else ""
+                if not resolved_place_id and query:
+                    search_response = await client.get(
+                        GOOGLE_PLACES_TEXTSEARCH_URL,
+                        params={
+                            "query": query,
+                            "key": google_api_key,
+                        },
+                    )
+                    search_response.raise_for_status()
+                    search_data = search_response.json()
+                    search_results = search_data.get("results", []) if isinstance(search_data, dict) else []
+                    if isinstance(search_results, list) and search_results:
+                        first_result = search_results[0] if isinstance(search_results[0], dict) else {}
+                        resolved_place_id = str(first_result.get("place_id") or "").strip()
+                        print(f"[PLACES] Resolved Google place id: {resolved_place_id[:30]}...")
+
+                if not resolved_place_id:
+                    resolved_place_id = place_id
+
+                response = await client.get(
+                    GOOGLE_PLACES_DETAILS_URL,
+                    params={
+                        "place_id": resolved_place_id,
+                        "fields": (
+                            "name,rating,formatted_address,"
+                            "formatted_phone_number,website,"
+                            "opening_hours,price_level,"
+                            "editorial_summary,geometry,"
+                            "photos,types,user_ratings_total"
+                        ),
+                        "key": google_api_key,
+                    },
+                )
+                response.raise_for_status()
+                data = response.json()
+        except (httpx.HTTPError, ValueError) as exc:
+            logger.warning("Google place details failed for %s: %s", place_id or query, exc)
+        else:
+            print(f"[PLACES] Status: {data.get('status')}")
+            result = data.get("result", {})
+            photos = result.get("photos", []) if isinstance(result, dict) else []
+            print(f"[PLACES] Photos found: {len(photos) if isinstance(photos, list) else 0}")
+            if isinstance(photos, list) and photos:
+                first_photo = photos[0] if isinstance(photos[0], dict) else {}
+                photo_reference = str(first_photo.get("photo_reference", ""))
+                print(f"[PLACES] First photo_reference: {photo_reference[:30]}...")
+            else:
+                print(f"[PLACES] No photos available for '{result.get('name', 'unknown') if isinstance(result, dict) else 'unknown'}'")
+            return result if isinstance(result, dict) else {}
 
     api_key = _geoapify_api_key()
     if not api_key:
@@ -775,16 +969,19 @@ async def get_place_details(place_id: str) -> dict[str, Any]:
     return properties
 
 
-def get_photo_url(photo_reference: str, max_width: int = 600) -> str:
+def get_photo_url(photo_reference: str, max_width: int = 600) -> str | None:
     google_api_key = os.getenv("GOOGLE_PLACES_API_KEY") or os.getenv("google_places_api_key") or ""
     if not photo_reference or not google_api_key:
-        return ""
-    return (
-        "https://maps.googleapis.com/maps/api/place/photo"
+        return None
+
+    url = (
+        f"{GOOGLE_PLACES_PHOTO_URL}"
         f"?maxwidth={max_width}"
         f"&photo_reference={photo_reference}"
         f"&key={google_api_key}"
     )
+    print(f"[PHOTO] Generated URL: {url[:80]}...")
+    return url
 
 
 def price_level_to_inr(price_level: int, category: str) -> str:

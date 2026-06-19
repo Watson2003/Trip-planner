@@ -219,6 +219,14 @@ class AttractionRecommendation(BaseModel):
     entry_fee_inr: Optional[float] = None
 
 
+class RecommendationCatalog(BaseModel):
+    destination: str = ""
+    hotels: list[HotelRecommendation] = Field(default_factory=list)
+    restaurants: list[RestaurantRecommendation] = Field(default_factory=list)
+    attractions: list[AttractionRecommendation] = Field(default_factory=list)
+    fallback_generated: bool = False
+
+
 class LocationRecommendation(BaseModel):
     location: str
     hotels: list[HotelRecommendation] = Field(default_factory=list)
@@ -243,8 +251,9 @@ class TripPlanResponse(BaseModel):
     weather: list[dict[str, Any]] = Field(default_factory=list)
     weather_status: str = "success"
     weather_message: str | None = None
-    recommendations: list[LocationRecommendation] = Field(default_factory=list)
+    recommendations: RecommendationCatalog = Field(default_factory=RecommendationCatalog)
     recommendation_locations: list[str] = Field(default_factory=list)
+    itinerary: dict[str, Any] | None = None
     report_summary: str = ""
     pdf_path: str | None = None
     vehicle: VehicleDetails | None = None
@@ -282,7 +291,7 @@ class TripDetailResponse(BaseModel):
     waypoints: list[Any]
     created_at: datetime
     pdf_path: str | None = None
-    recommendations: list[LocationRecommendation] = Field(default_factory=list)
+    recommendations: RecommendationCatalog = Field(default_factory=RecommendationCatalog)
     recommendation_locations: list[str] = Field(default_factory=list)
 
 

@@ -1,0 +1,17 @@
+INFO:     Started server process [14316]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+Local search failed for hotel in Ooty: 
+[REC] WARNING: No hotels found for Ooty. Returning empty recommendations.
+Local search failed for hotel in Trichy: 
+[REC] WARNING: No hotels found for Trichy. Returning empty recommendations.
+Local search failed for restaurant in Ooty: 
+[REC] WARNING: No restaurants found for Ooty. Returning empty recommendations.
+Local search failed for restaurant in Trichy: 
+[REC] WARNING: No restaurants found for Trichy. Returning empty recommendations.
+Local search failed for attraction in Ooty: 
+[REC] WARNING: No attractions found for Ooty. Returning empty recommendations.
+Local search failed for attraction in Trichy: 
+[REC] WARNING: No attractions found for Trichy. Returning empty recommendations.
+NVIDIA LLM ranking failed: The read operation timed out

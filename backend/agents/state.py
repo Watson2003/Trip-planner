@@ -38,8 +38,12 @@ class TripState(TypedDict, total=False):
     hotels: list[dict[str, Any]]
     restaurants: list[dict[str, Any]]
     attractions: list[dict[str, Any]]
+    recommendation_catalog: dict[str, Any]
+    osm_places: list[dict[str, Any]]
+    destination_explorer: dict[str, Any]
     recommendations: list[dict[str, Any]]
     recommendation_locations: list[str]
+    itinerary: dict[str, Any]
     rag_context: list[dict[str, Any]]
     pdf_path: str
     report_summary: str

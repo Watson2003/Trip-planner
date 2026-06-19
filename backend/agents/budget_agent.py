@@ -319,7 +319,7 @@ def get_food_price_per_day(destination: str, preferences: list, total_budget: fl
             base_price = round(base_price * 1.5, 0)
             food_type = food_type.replace("Local", "Premium")
 
-    print(f"[FOOD] price=₹{base_price} type={food_type}")
+    print(f"[FOOD] price=Rs{base_price} type={food_type}")
 
     return {
         "price_per_day_per_person": float(base_price),

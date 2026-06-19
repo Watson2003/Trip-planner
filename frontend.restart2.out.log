@@ -1,0 +1,89 @@
+
+> ai-road-trip-planner@1.0.0 dev
+> next dev --port 3000
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
+  - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 5.4s
+ ○ Compiling / ...
+ ✓ Compiled / in 11.8s (773 modules)
+ GET / 200 in 12706ms
+ GET /_next/static/css/app/layout.css?v=1 404 in 12779ms
+ ✓ Compiled in 563ms (339 modules)
+ ✓ Compiled in 126ms (339 modules)
+ GET / 200 in 123ms
+ GET / 200 in 130ms
+ GET / 200 in 283ms
+ ○ Compiling /login ...
+ ✓ Compiled /login in 2.4s (783 modules)
+ ✓ Compiled in 329ms (344 modules)
+ ○ Compiling /trip-result ...
+ ✓ Compiled /trip-result in 6.5s (1951 modules)
+ ✓ Compiled in 617ms (927 modules)
+ ✓ Compiled in 183ms (927 modules)
+ ✓ Compiled in 7s (941 modules)
+ ✓ Compiled in 825ms (927 modules)
+ ✓ Compiled in 289ms (927 modules)
+ ✓ Compiled in 1373ms (1951 modules)
+ ✓ Compiled in 1346ms (941 modules)
+ ✓ Compiled in 725ms (927 modules)
+ ✓ Compiled in 795ms (927 modules)
+ ✓ Compiled in 335ms (927 modules)
+ ✓ Compiled in 3.9s (1963 modules)
+ ✓ Compiled in 568ms (926 modules)
+ GET /trip-result 200 in 4388ms
+ ✓ Compiled in 3.2s (1963 modules)
+ GET /trip-result 200 in 1420ms
+ ✓ Compiled in 1204ms (926 modules)
+ ✓ Compiled in 823ms (926 modules)
+ ✓ Compiled in 3.3s (1963 modules)
+ ✓ Compiled in 461ms (926 modules)
+ ✓ Compiled in 1264ms (926 modules)
+ ✓ Compiled in 771ms (926 modules)
+ ✓ Compiled in 423ms (926 modules)
+ ✓ Compiled in 711ms (926 modules)
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 5.9s (2182 modules)
+ ✓ Compiled in 802ms (1119 modules)
+ GET /trip-result 500 in 10163ms
+ ○ Compiling /trip-result/itinerary ...
+ ✓ Compiled /trip-result/itinerary in 7.6s (2196 modules)
+ GET /trip-result 200 in 3805ms
+ ✓ Compiled in 12.9s (1125 modules)
+ GET / 200 in 10920ms
+ ✓ Compiled in 5.4s (1125 modules)
+ GET / 200 in 420ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 7.1s (2198 modules)
+ GET /_next/static/css/app/layout.css?v=1781767344351 404 in 8024ms
+ GET /_next/static/chunks/main-app.js?v=1781767344351 404 in 8730ms
+ GET /_next/static/chunks/app/page.js 404 in 7668ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 7818ms
+ GET /_next/static/chunks/app/not-found.js 404 in 7667ms
+ GET /_next/static/chunks/app/global-error.js 404 in 7668ms
+ ✓ Compiled in 5.4s (1125 modules)
+ ✓ Compiled in 1053ms (1125 modules)
+ ✓ Compiled in 356ms (1125 modules)
+ ✓ Compiled in 1416ms (1125 modules)
+ ✓ Compiled in 846ms (1125 modules)
+ ✓ Compiled in 860ms (1125 modules)
+ ✓ Compiled in 769ms (1125 modules)
+ ✓ Compiled in 1025ms (1125 modules)
+ ✓ Compiled in 775ms (1125 modules)
+ ✓ Compiled in 1391ms (1125 modules)
+ ✓ Compiled in 1074ms (1125 modules)
+ ✓ Compiled in 1582ms (1125 modules)
+ ✓ Compiled in 196ms (1125 modules)
+ GET /login 200 in 157ms
+ GET /_next/static/css/app/layout.css?v=1781767418028 404 in 742ms
+ GET /_next/static/chunks/main-app.js?v=1781767418028 404 in 799ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 799ms
+ GET /_next/static/chunks/app/login/page.js 404 in 798ms
+ GET /_next/static/chunks/app/global-error.js 404 in 790ms
+ GET /_next/static/chunks/app/not-found.js 404 in 798ms
+ GET /login 200 in 60ms
+ GET /login 200 in 71ms
+[?25h

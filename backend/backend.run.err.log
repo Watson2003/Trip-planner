@@ -1,4 +1,16 @@
-INFO:     Started server process [10456]
+INFO:     Started server process [11732]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8100 (Press CTRL+C to quit)
+Timed out searching hotel places in Ooty
+[REC] WARNING: No hotels found for Ooty. Showing all available.
+Timed out searching restaurant places in Ooty
+[REC] WARNING: No restaurants found for Ooty. Showing all available.
+Timed out searching attraction places in Ooty
+[REC] WARNING: No attractions found for Ooty. Showing all available.
+Timed out searching hotel places in Trichy
+[REC] WARNING: No hotels found for Trichy. Showing all available.
+Timed out searching restaurant places in Trichy
+[REC] WARNING: No restaurants found for Trichy. Showing all available.
+Timed out searching attraction places in Trichy
+[REC] WARNING: No attractions found for Trichy. Showing all available.

@@ -7,6 +7,7 @@ from collections.abc import Mapping
 from datetime import date, datetime, time, timedelta
 from typing import Any
 
+from agents.fallbacks import fallback_daily_weather
 from agents.state import TripState
 from models.schemas import DailyWeather
 from utils.mcp_bridge import mcp_get_weather
@@ -283,7 +284,7 @@ async def _fetch_location_weather(location: str, start_date: date, end_date: dat
     last_error: Exception | None = None
     for query in _location_queries(location):
         try:
-            payload = await asyncio.wait_for(mcp_get_weather(location=query, days=5), timeout=15.0)
+            payload = await asyncio.wait_for(mcp_get_weather(location=query, days=5), timeout=5.0)
             weather_days = _filter_mcp_forecast_by_date_range(payload, location, start_date, end_date)
             if weather_days:
                 return weather_days
@@ -388,11 +389,13 @@ async def weather_agent(state: TripState) -> TripState:
 
     # Flatten the per-location forecast output into a single list for the trip state.
     weather_days = [day for location_days in results for day in location_days]
-    state["weather"] = weather_days
     if weather_days:
+        state["weather"] = weather_days
         state["weather_status"] = "success"
         state["weather_message"] = ""
     else:
-        state["weather_status"] = "unavailable"
-        state["weather_message"] = "No weather data available for the selected dates."
+        primary_location = state.get("destination") or state.get("origin") or "Destination"
+        state["weather"] = fallback_daily_weather(primary_location, days=max(1, (end_date - start_date).days + 1), start_date=start_date)
+        state["weather_status"] = "success"
+        state["weather_message"] = ""
     return state

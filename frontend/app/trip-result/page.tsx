@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowDownToLine } from "lucide-react";
+import Link from "next/link";
+import { ArrowDownToLine, ArrowRight, CalendarDays, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import Navbar from "@/components/auth/Navbar";
@@ -10,10 +11,13 @@ import TravelChat from "@/components/chat/TravelChat";
 import RecommendationCards from "@/components/recommendations/RecommendationCards";
 import TripMap from "@/components/map/TripMap";
 import WeatherPanel from "@/components/weather/WeatherPanel";
+import { API_BASE_URL } from "@/lib/api";
 import { getAuthHeaders } from "@/lib/auth";
+import { loadStoredTripResult, normalizeRecommendations, normalizeDestinationKey } from "@/lib/trip-result";
 import type {
   BudgetBreakdown as BudgetBreakdownType,
-  LocationRecommendation,
+  FullItinerary,
+  RecommendationPayload,
   TripMarker,
   VehicleDetails,
 } from "@/types";
@@ -55,7 +59,8 @@ type TripResultStorage = {
     vehicle_name: string;
     vehicle_type: string;
   } | null;
-  recommendations: LocationRecommendation[];
+  recommendations: RecommendationPayload;
+  itinerary: FullItinerary | null;
   vehicle: VehicleDetails;
   startDate: string;
   endDate: string;
@@ -144,9 +149,8 @@ function normalizeTripData(raw: unknown): TripResultStorage | null {
     weather_message: (value.weather_message as string | null | undefined) ?? null,
     budget: (value.budget as BudgetBreakdownType) ?? DEFAULT_BUDGET,
     fuel_calculation: (value.fuel_calculation as TripResultStorage["fuel_calculation"]) ?? null,
-    recommendations: Array.isArray(value.recommendations)
-      ? (value.recommendations as LocationRecommendation[])
-      : [],
+    recommendations: normalizeRecommendations(value.recommendations, safeString(value.destination)),
+    itinerary: (value.itinerary as FullItinerary | null | undefined) ?? null,
     vehicle: (value.vehicle as VehicleDetails) ?? DEFAULT_VEHICLE,
     startDate: safeString(value.startDate ?? travelDates.start),
     endDate: safeString(value.endDate ?? travelDates.end),
@@ -165,9 +169,38 @@ function StatItem({ label, value }: { label: string; value: string }) {
   );
 }
 
+function normalizePlaceName(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/[\u2018\u2019`']/g, "")
+    .replace(/\b(visit|explore|breakfast|lunch|dinner|check in at|check-in at|hotel|restaurant|stay at)\b/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getPlanPlaces(day: FullItinerary["days"][number]) {
+  const seen = new Set<string>();
+  const places: string[] = [];
+  for (const slot of day.time_slots) {
+    const label = slot.place_name || slot.title || slot.activity || "";
+    const normalized = normalizePlaceName(label);
+    if (!normalized || seen.has(normalized)) continue;
+    seen.add(normalized);
+    places.push(label);
+  }
+  return places;
+}
+
 function TripResultContent({ tripData }: { tripData: TripResultStorage }) {
+  const normalizedRecommendations = normalizeRecommendations(tripData.recommendations, tripData.destination);
+  const recommendationCount =
+    normalizedRecommendations.hotels.length +
+    normalizedRecommendations.restaurants.length +
+    normalizedRecommendations.attractions.length;
+
   async function downloadReport() {
-    const response = await fetch(`/api/trip/${tripData.trip_id}/pdf`, {
+    const response = await fetch(`${API_BASE_URL}/api/trip/${tripData.trip_id}/pdf`, {
       headers: {
         ...getAuthHeaders(),
       },
@@ -219,6 +252,90 @@ function TripResultContent({ tripData }: { tripData: TripResultStorage }) {
         />
       </div>
 
+      <section className="rounded-[2rem] border border-[#1a1a1a] bg-[#0a0a0a] p-5 shadow-2xl">
+        <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p className="text-xs uppercase tracking-[0.24em] text-[#D4AF37]">Day-by-Day Plan</p>
+              <h2 className="mt-2 text-2xl font-bold text-white">Tourist-focused itinerary snapshot</h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-[#a0a0a0]">
+                The detailed schedule, grouped attractions, and travel tips live in the itinerary page. This snapshot
+                shows the trip shape at a glance.
+              </p>
+            </div>
+            <Link
+              href="/trip-result/itinerary"
+              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#D4AF37] px-5 py-3 text-sm font-semibold text-black transition hover:bg-[#B8860B]"
+            >
+              Open itinerary page
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+
+          {tripData.itinerary?.days?.length ? (
+            <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+              {tripData.itinerary.days.slice(0, 3).map((day) => {
+                const places = getPlanPlaces(day);
+                const attractionCount = day.time_slots.filter((slot) => {
+                  const type = slot.type ?? slot.category;
+                  return type === "attraction" || type === "sightseeing";
+                }).length;
+                return (
+                  <article
+                    key={`${day.day_number}-${day.date}`}
+                    className="rounded-3xl border border-[#1a1a1a] bg-[#111111] p-4"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-[#8a8a8a]">
+                          <CalendarDays className="h-4 w-4 text-[#D4AF37]" />
+                          Day {day.day_number}
+                        </p>
+                        <h3 className="mt-2 text-base font-semibold text-white">{day.day_title}</h3>
+                      </div>
+                      <span className="rounded-full border border-[#D4AF37]/20 bg-[#D4AF37]/10 px-3 py-1 text-xs text-[#F2DB8A]">
+                        {attractionCount} places
+                      </span>
+                    </div>
+
+                    <p className="mt-3 text-sm leading-6 text-[#a0a0a0]">{day.summary}</p>
+
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {places.slice(0, 4).map((place) => (
+                        <span
+                          key={`${day.day_number}-${place}`}
+                          className="rounded-full border border-white/5 bg-black/30 px-3 py-1 text-xs text-[#c8c8c8]"
+                        >
+                          {place}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="mt-4 flex items-center justify-between text-xs text-[#8a8a8a]">
+                      <span className="inline-flex items-center gap-1">
+                        <Sparkles className="h-3.5 w-3.5 text-[#D4AF37]" />
+                        {day.time_slots.length} planned stops
+                      </span>
+                      <Link
+                        href="/trip-result/itinerary"
+                        className="inline-flex items-center gap-1 text-[#D4AF37] transition hover:text-[#F2DB8A]"
+                      >
+                        View full day
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </Link>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="rounded-3xl border border-dashed border-[#2a2a2a] bg-[#111111] p-5 text-sm text-[#8a8a8a]">
+              No itinerary snapshot is available yet. Open the itinerary page to generate the full plan.
+            </div>
+          )}
+        </div>
+      </section>
+
       <BudgetBreakdown
         budget={tripData.budget}
         fuelCalculation={tripData.fuel_calculation}
@@ -247,16 +364,16 @@ function TripResultContent({ tripData }: { tripData: TripResultStorage }) {
         </div>
       </section>
 
-      {(tripData.recommendations?.length ?? 0) > 0 && (
+      {recommendationCount > 0 && (
         <section className="space-y-4">
           <div className="flex items-center gap-2">
-            <span className="text-lg">??</span>
+            <span className="text-lg">🧭</span>
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#D4AF37]">RECOMMENDATIONS</p>
               <h2 className="text-xl font-black text-white">Places Along Your Route</h2>
             </div>
           </div>
-          <RecommendationCards recommendations={tripData.recommendations} destination={tripData.destination} />
+          <RecommendationCards recommendations={normalizedRecommendations} destination={tripData.destination} />
         </section>
       )}
     </div>
@@ -282,20 +399,23 @@ export default function TripResultPage() {
   }, [theme]);
 
   useEffect(() => {
-    const stored = window.sessionStorage.getItem("tripResult");
-    if (!stored) {
+    const trip = loadStoredTripResult();
+    if (!trip) {
       setTripData(null);
       setLoaded(true);
       return;
     }
 
-    try {
-      setTripData(normalizeTripData(JSON.parse(stored)));
-    } catch {
+    const resolvedDestinationKey = normalizeDestinationKey(trip.destination);
+    if (trip.destination_key && trip.destination_key !== resolvedDestinationKey) {
+      window.sessionStorage.removeItem("tripResult:active");
       setTripData(null);
-    } finally {
       setLoaded(true);
+      return;
     }
+
+    setTripData(trip);
+    setLoaded(true);
   }, []);
 
   return (
@@ -324,7 +444,7 @@ export default function TripResultPage() {
                   onClick={() => router.push("/")}
                   className="mt-6 inline-flex items-center justify-center rounded-2xl bg-[#D4AF37] px-5 py-3 text-sm font-bold text-black transition hover:bg-[#B8860B]"
                 >
-                  Plan a Trip ?
+                  Plan a Trip
                 </button>
               </div>
             </section>

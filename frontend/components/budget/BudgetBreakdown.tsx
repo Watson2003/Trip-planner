@@ -36,6 +36,15 @@ function formatInr(value: number) {
   }).format(value);
 }
 
+function firstNumber(...values: Array<number | null | undefined>) {
+  for (const value of values) {
+    if (typeof value === "number" && Number.isFinite(value)) {
+      return value;
+    }
+  }
+  return 0;
+}
+
 function buildFallbackFuelCalculation(
   vehicle: VehicleDetails | null | undefined,
   routeDistanceKm: number | null | undefined,
@@ -78,25 +87,26 @@ function normalizeBudget(
   routeDistanceKm?: number | null,
 ) {
   const fallbackFuel = buildFallbackFuelCalculation(vehicle, routeDistanceKm, vehicle?.number_of_people ?? 1);
-  const resolvedFuel = fuelCalculation?.distance_km ? fuelCalculation : fallbackFuel;
+  const resolvedFuel = fuelCalculation ?? fallbackFuel;
 
-  const fuelInr = resolvedFuel?.total_fuel_cost_inr ?? budget.breakdown?.fuel?.inr ?? budget.fuel ?? 0;
-  const tollsInr = budget.breakdown?.tolls?.inr ?? budget.tolls ?? 0;
+  const fuelInr = firstNumber(resolvedFuel?.total_fuel_cost_inr, budget.breakdown?.fuel?.inr, budget.fuel);
+  const tollsInr = firstNumber(budget.breakdown?.tolls?.inr, budget.tolls);
   const inferredHotelNights =
-    budget.hotel_nights ??
-    budget.hotel_daily_breakdown?.length ??
+    firstNumber(budget.hotel_nights, budget.hotel_daily_breakdown?.length) ||
     Math.max(1, (budget.trip_days ?? 1) - 1);
-  const hotelsInr =
-    (budget.hotel_price_per_night && inferredHotelNights
-      ? budget.hotel_price_per_night * inferredHotelNights
-      : null) ??
-    budget.breakdown?.hotels?.inr ??
-    budget.hotels ??
-    budget.lodging ??
-    0;
-  const foodInr = budget.breakdown?.food?.inr ?? budget.food ?? 0;
-  const miscInr = budget.breakdown?.miscellaneous?.inr ?? budget.miscellaneous ?? budget.activities ?? 0;
-  const totalInr = budget.breakdown?.total?.inr ?? budget.total ?? fuelInr + tollsInr + hotelsInr + foodInr + miscInr;
+  const hotelsInr = firstNumber(
+    budget.hotel_price_per_night && inferredHotelNights ? budget.hotel_price_per_night * inferredHotelNights : undefined,
+    budget.breakdown?.hotels?.inr,
+    budget.hotels,
+    budget.lodging,
+  );
+  const foodInr = firstNumber(budget.breakdown?.food?.inr, budget.food);
+  const miscInr = firstNumber(budget.breakdown?.miscellaneous?.inr, budget.miscellaneous, budget.activities);
+  const totalInr = firstNumber(
+    budget.breakdown?.total?.inr,
+    budget.total,
+    fuelInr + tollsInr + hotelsInr + foodInr + miscInr,
+  );
 
   return {
     fuelInr,
@@ -196,89 +206,67 @@ export default function BudgetBreakdown({
   console.log("food_cost_inr:", budgetData.food_cost_inr);
 
   const normalized = normalizeBudget(budget, fuelCalculation, vehicle, routeDistanceKm);
-  const fuelDetails =
-    fuelCalculation && fuelCalculation.distance_km > 0
-      ? fuelCalculation
-      : buildFallbackFuelCalculation(vehicle, routeDistanceKm, vehicle?.number_of_people ?? 1, normalized.fuelInr);
+  const fuelDetails = fuelCalculation ?? buildFallbackFuelCalculation(vehicle, routeDistanceKm, vehicle?.number_of_people ?? 1, normalized.fuelInr);
 
-  const fuelCost =
-    budgetData.fuel_cost_inr ||
-    budgetData.fuel_cost ||
-    budgetData.fuelCost ||
-    budgetData.fuel ||
-    fuelDetails?.total_fuel_cost_inr ||
-    normalized.fuelInr ||
-    0;
+  const fuelCost = firstNumber(
+    budgetData.fuel_cost_inr,
+    budgetData.fuel_cost,
+    budgetData.fuelCost,
+    budgetData.fuel,
+    fuelDetails?.total_fuel_cost_inr,
+    normalized.fuelInr,
+  );
 
-  const hotelCostRaw =
-    budgetData.hotel_cost_inr ||
-    budgetData.hotel_cost ||
-    budgetData.hotelCost ||
-    budgetData.hotel ||
-    budgetData.hotels ||
-    budgetData.lodging ||
-    normalized.hotelsInr ||
-    0;
+  const hotelCostRaw = firstNumber(
+    budgetData.hotel_cost_inr,
+    budgetData.hotel_cost,
+    budgetData.hotelCost,
+    budgetData.hotel,
+    budgetData.hotels,
+    budgetData.lodging,
+    normalized.hotelsInr,
+  );
 
-  const foodCostRaw =
-    budgetData.food_cost_inr ||
-    budgetData.food_cost ||
-    budgetData.foodCost ||
-    budgetData.food ||
-    normalized.foodInr ||
-    0;
+  const foodCostRaw = firstNumber(
+    budgetData.food_cost_inr,
+    budgetData.food_cost,
+    budgetData.foodCost,
+    budgetData.food,
+    normalized.foodInr,
+  );
 
-  const tollCost =
-    budgetData.toll_cost_inr ||
-    budgetData.toll_cost ||
-    budgetData.tollCost ||
-    budgetData.tolls ||
-    budgetData.toll ||
-    normalized.tollsInr ||
-    0;
+  const tollCost = firstNumber(
+    budgetData.toll_cost_inr,
+    budgetData.toll_cost,
+    budgetData.tollCost,
+    budgetData.tolls,
+    budgetData.toll,
+    normalized.tollsInr,
+  );
 
-  const miscCost =
-    budgetData.misc_cost_inr ||
-    budgetData.misc_cost ||
-    budgetData.miscCost ||
-    budgetData.miscellaneous ||
-    budgetData.activities ||
-    budgetData.misc ||
-    normalized.miscInr ||
-    0;
+  const miscCost = firstNumber(
+    budgetData.misc_cost_inr,
+    budgetData.misc_cost,
+    budgetData.miscCost,
+    budgetData.miscellaneous,
+    budgetData.activities,
+    budgetData.misc,
+    normalized.miscInr,
+  );
 
-  const numberOfPeople =
-    budgetData.number_of_people ||
-    budgetData.numberOfPeople ||
-    budgetData.people ||
-    vehicle?.number_of_people ||
-    1;
+  const numberOfPeople = firstNumber(budgetData.number_of_people, budgetData.numberOfPeople, budgetData.people, vehicle?.number_of_people) || 1;
 
-  const pricePerNight =
-    budgetData.hotel_price_per_night ||
-    budgetData.hotelPricePerNight ||
-    budgetData.price_per_night ||
-    0;
+  const pricePerNight = firstNumber(budgetData.hotel_price_per_night, budgetData.hotelPricePerNight, budgetData.price_per_night);
 
-  const numberOfNights =
-    budgetData.hotel_nights ||
-    budgetData.hotelNights ||
-    budgetData.nights ||
-    budgetData.trip_nights ||
-    1;
+  const numberOfNights = firstNumber(budgetData.hotel_nights, budgetData.hotelNights, budgetData.nights, budgetData.trip_nights) || 1;
 
-  const pricePerDayPerPerson =
-    budgetData.food_price_per_day_per_person ||
-    budgetData.foodPricePerDayPerPerson ||
-    budgetData.food_per_day ||
-    0;
+  const pricePerDayPerPerson = firstNumber(
+    budgetData.food_price_per_day_per_person,
+    budgetData.foodPricePerDayPerPerson,
+    budgetData.food_per_day,
+  );
 
-  const numberOfDays =
-    budgetData.food_days ||
-    budgetData.foodDays ||
-    budgetData.trip_days ||
-    budgetData.days ||
-    1;
+  const numberOfDays = firstNumber(budgetData.food_days, budgetData.foodDays, budgetData.trip_days, budgetData.days) || 1;
 
   const hotelTotal = pricePerNight > 0 ? pricePerNight * numberOfNights : hotelCostRaw;
   const foodTotal = pricePerDayPerPerson > 0 ? pricePerDayPerPerson * numberOfPeople * numberOfDays : foodCostRaw;

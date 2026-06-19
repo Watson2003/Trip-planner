@@ -1,0 +1,51 @@
+
+> ai-road-trip-planner@1.0.0 dev
+> next dev --port 3000
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
+  - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 5.3s
+ ○ Compiling /login ...
+ ✓ Compiled /login in 12.9s (767 modules)
+ GET /login 200 in 14256ms
+ GET /login 200 in 71ms
+ ○ Compiling / ...
+ ✓ Compiled / in 2.4s (796 modules)
+ ✓ Compiled in 131ms (343 modules)
+ ○ Compiling /trip-result ...
+ ✓ Compiled /trip-result in 12.6s (1948 modules)
+ ✓ Compiled in 268ms (925 modules)
+ ○ Compiling /trip-result/itinerary ...
+ ✓ Compiled /trip-result/itinerary in 2.4s (1962 modules)
+ ✓ Compiled in 4s (1976 modules)
+ ✓ Compiled in 443ms (931 modules)
+ ✓ Compiled in 1973ms (1976 modules)
+ ✓ Compiled in 746ms (931 modules)
+ ✓ Compiled in 2.4s (1976 modules)
+ GET /trip-result/itinerary 200 in 855ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 4.5s (1965 modules)
+ GET /_next/static/css/app/layout.css?v=1781770551454 404 in 5481ms
+ GET /_next/static/chunks/app/trip-result/itinerary/page.js 404 in 5714ms
+ GET /_next/static/chunks/webpack.js?v=1781770551454 404 in 5723ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 5720ms
+ GET /_next/static/chunks/main-app.js?v=1781770551454 404 in 5723ms
+ GET /_next/static/chunks/app/not-found.js 404 in 5718ms
+ ✓ Compiled in 1299ms (932 modules)
+ GET /_next/static/chunks/app/global-error.js 404 in 447ms
+ ✓ Compiled in 844ms (932 modules)
+ ✓ Compiled in 419ms (932 modules)
+ GET /trip-result 200 in 1599ms
+ GET /_next/static/css/app/layout.css?v=1781770564815 404 in 130ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 168ms
+ GET /_next/static/chunks/main-app.js?v=1781770564815 404 in 174ms
+ GET /_next/static/chunks/app/trip-result/page.js 404 in 169ms
+ GET /_next/static/chunks/app/not-found.js 404 in 160ms
+ GET /_next/static/chunks/app/global-error.js 404 in 157ms
+ GET /trip-result 200 in 46ms
+ GET /trip-result 200 in 195ms
+ GET /_next/static/css/app/layout.css?v=1781770602939 404 in 38ms
+[?25h

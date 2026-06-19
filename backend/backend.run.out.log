@@ -1,0 +1,86 @@
+=== TRIP REQUEST RECEIVED ===
+origin: Trichy
+destination: Ooty
+dates: 2026-06-12 to 2026-06-15
+trip_days: 4
+budget: 25000.0
+preferences: ['scenic']
+=== TRIPSTATE BEING BUILT ===
+trip_days going into state: 4
+TripState trip_days = 4
+[BUDGET] raw trip_days from state: 4
+[BUDGET] trip_days_input: 4
+[BUDGET] FINAL days=4 nights=3
+[BUDGET] Hotel: Rs1800/night x 3 nights = Rs5400
+[FOOD] destination=Ooty
+[FOOD] is_vegetarian=False
+[FOOD] is_budget_restaurant=False
+[FOOD] price=₹420 type=Local restaurants (Non-Veg)
+[BUDGET] Food: Rs420.0/person/day x 3 people x 4 days = Rs5040.0
+[BUDGET] Cost per person: Rs13383.34 ÷ 3 = Rs4461.11
+[BUDGET] === FINAL SUMMARY ===
+  Fuel:   Rs1497.8
+  Hotel:  Rs5400 (3 nights)
+  Food:   Rs5040.0 (4 days)
+  Toll:   Rs195.54
+  Misc:   Rs1250.0
+  TOTAL:  Rs13383.34
+=== RECOMMENDATION AGENT ===
+Origin received: 'Trichy'
+Destination received: 'Ooty'
+Will fetch recommendations for: 'Ooty'
+DEBUG: coordinates cache cleared
+Target city for API calls: 'Ooty'
+DEBUG: fetching recommendations for: Ooty
+DEBUG search_places: location='Ooty' type='lodging'
+DEBUG get_coordinates called with: 'Ooty'
+DEBUG search_places: location='Ooty' type='restaurant'
+DEBUG get_coordinates called with: 'Ooty'
+DEBUG search_places: location='Ooty' type='tourist_attraction'
+DEBUG get_coordinates called with: 'Ooty'
+DEBUG search_places: location='Trichy' type='lodging'
+DEBUG get_coordinates called with: 'Trichy'
+DEBUG search_places: location='Trichy' type='restaurant'
+DEBUG get_coordinates called with: 'Trichy'
+DEBUG search_places: location='Trichy' type='tourist_attraction'
+DEBUG get_coordinates called with: 'Trichy'
+DEBUG geocoded 'Ooty' -> {'lat': 11.4126769, 'lng': 76.7030504}
+DEBUG search_places: using coords lat=11.4126769, lng=76.7030504 for 'Ooty'
+DEBUG geocoded 'Ooty' -> {'lat': 11.4126769, 'lng': 76.7030504}
+DEBUG search_places: using coords lat=11.4126769, lng=76.7030504 for 'Ooty'
+DEBUG geocoded 'Trichy' -> {'lat': 10.80289, 'lng': 78.69875}
+DEBUG search_places: using coords lat=10.80289, lng=78.69875 for 'Trichy'
+DEBUG geocoded 'Trichy' -> {'lat': 10.80289, 'lng': 78.69875}
+DEBUG search_places: using coords lat=10.80289, lng=78.69875 for 'Trichy'
+DEBUG geocoded 'Trichy' -> {'lat': 10.80289, 'lng': 78.69875}
+DEBUG search_places: using coords lat=10.80289, lng=78.69875 for 'Trichy'
+OK: Destination: Ooty
+OK: Hotels found: 0
+OK: Restaurants found: 0
+OK: Attractions found: 0
+[REC] Hotels: 0 found
+[REC] Restaurants: 0 found
+[REC] Attractions: 0 found
+[REC] WARNING: Only 0 hotels found for Ooty. Showing all available.
+[REC] WARNING: Only 0 restaurants found for Ooty. Showing all available.
+[REC] WARNING: Only 0 attractions found for Ooty. Showing all available.
+OK: Final hotel count: 0
+[REC] Hotels: 0 found
+[REC] Restaurants: 0 found
+[REC] Attractions: 0 found
+OK: Destination: Trichy
+OK: Hotels found: 0
+OK: Restaurants found: 0
+OK: Attractions found: 0
+[REC] Hotels: 0 found
+[REC] Restaurants: 0 found
+[REC] Attractions: 0 found
+[REC] WARNING: Only 0 hotels found for Ooty. Showing all available.
+[REC] WARNING: Only 0 restaurants found for Ooty. Showing all available.
+[REC] WARNING: Only 0 attractions found for Ooty. Showing all available.
+OK: Final hotel count: 0
+[REC] Hotels: 0 found
+[REC] Restaurants: 0 found
+[REC] Attractions: 0 found
+OK: Final hotel count: 0
+INFO:     127.0.0.1:50426 - "POST /api/trip/plan HTTP/1.1" 201 Created

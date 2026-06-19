@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Loader2, Route } from "lucide-react";
 
+import { API_BASE_URL } from "@/lib/api";
 import { saveToken, isLoggedIn } from "@/lib/auth";
 import type { AuthResponse, LoginForm } from "@/types/auth";
 
@@ -32,7 +33,7 @@ export default function LoginPage() {
     setError("");
 
     try {
-      const response = await fetch("/api/auth/login", {
+      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

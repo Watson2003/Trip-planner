@@ -1,9 +1,13 @@
 from __future__ import annotations
 
+import asyncio
+from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import date, timedelta
 from math import asin, cos, radians, sin, sqrt
 from typing import Any
+
+import httpx
 
 
 @dataclass(frozen=True)
@@ -44,6 +48,15 @@ CITY_COORDINATES: dict[str, Coordinates] = {
     "coorg": Coordinates(12.4244, 75.7382),
     "madikeri": Coordinates(12.4244, 75.7382),
     "ooty": Coordinates(11.4102, 76.6950),
+    "coimbatore": Coordinates(11.0168, 76.9558),
+    "erode": Coordinates(11.3410, 77.7172),
+    "karur": Coordinates(10.9577, 78.0801),
+    "palani": Coordinates(10.4500, 77.5209),
+    "pollachi": Coordinates(10.6582, 77.0081),
+    "mettupalayam": Coordinates(11.2997, 76.9346),
+    "avinashi": Coordinates(11.1914, 77.2680),
+    "tiruppur": Coordinates(11.1085, 77.3411),
+    "salem": Coordinates(11.6643, 78.1460),
     "munnar": Coordinates(10.0889, 77.0595),
     "leh": Coordinates(34.1526, 77.5771),
     "rishikesh": Coordinates(30.0869, 78.2676),
@@ -109,6 +122,70 @@ def _clean_stops(origin: str, waypoints: list[str], destination: str) -> list[st
     return cleaned
 
 
+def _route_geometry_from_points(points: Sequence[Coordinates]) -> list[list[float]]:
+    polyline: list[list[float]] = []
+    for index, current in enumerate(points):
+        if index == 0:
+            polyline.append([round(current.lat, 6), round(current.lng, 6)])
+            continue
+
+        previous = points[index - 1]
+        segment = interpolate_points(previous, current, steps=6)
+        if polyline:
+            polyline.extend(segment[1:])
+        else:
+            polyline.extend(segment)
+    return polyline
+
+
+async def fallback_route_road(origin: str, destination: str, waypoints: list[str]) -> dict[str, Any] | None:
+    """Try a lightweight OSRM road route before falling back to straight-line interpolation."""
+    stops = _clean_stops(origin, waypoints, destination)
+    coordinates: list[Coordinates] = []
+    for stop in stops:
+      coord = lookup_coordinates(stop)
+      if coord is None:
+          return None
+      coordinates.append(coord)
+
+    if len(coordinates) < 2:
+        return None
+
+    try:
+        async with httpx.AsyncClient(timeout=20.0) as client:
+            coord_string = ";".join(f"{point.lng},{point.lat}" for point in coordinates)
+            response = await client.get(
+                f"https://router.project-osrm.org/route/v1/driving/{coord_string}",
+                params={
+                    "overview": "full",
+                    "geometries": "geojson",
+                    "steps": "false",
+                    "alternatives": "false",
+                },
+            )
+            response.raise_for_status()
+            payload = response.json()
+    except Exception:
+        return None
+
+    routes = payload.get("routes") or []
+    if not routes:
+        return None
+
+    route = routes[0]
+    geometry = (route.get("geometry") or {}).get("coordinates") or []
+    polyline = [[round(lat, 6), round(lng, 6)] for lng, lat in geometry if isinstance(lng, (int, float)) and isinstance(lat, (int, float))]
+    if len(polyline) < 2:
+        return None
+
+    return {
+        "distance_km": round(float(route.get("distance", 0.0)) / 1000.0, 2),
+        "duration_hours": round(float(route.get("duration", 0.0)) / 3600.0, 2),
+        "polyline": polyline,
+        "toll_roads": float(route.get("distance", 0.0)) > 250000,
+    }
+
+
 def fallback_route(origin: str, destination: str, waypoints: list[str]) -> dict[str, Any] | None:
     stops = _clean_stops(origin, waypoints, destination)
     coordinates: list[Coordinates] = []
@@ -120,20 +197,13 @@ def fallback_route(origin: str, destination: str, waypoints: list[str]) -> dict[
     if len(coordinates) < 2:
         return None
 
-    polyline: list[list[float]] = []
     distance_km = 0.0
     for index, current in enumerate(coordinates):
         if index > 0:
             previous = coordinates[index - 1]
             distance_km += haversine_km(previous, current)
-            segment = interpolate_points(previous, current, steps=5)
-            if polyline:
-                polyline.extend(segment[1:])
-            else:
-                polyline.extend(segment)
-        elif not polyline:
-            polyline.append([round(current.lat, 6), round(current.lng, 6)])
 
+    polyline = _route_geometry_from_points(coordinates)
     duration_hours = max(1.0, round(distance_km / 55.0, 2))
     return {
         "distance_km": round(distance_km, 2),
@@ -190,6 +260,52 @@ def fallback_weather(location: str, days: int = 5, start_date: date | None = Non
                     "avg": avg_temp,
                 },
                 "condition": description,
+                "alert": alert,
+            }
+        )
+
+    return forecasts
+
+
+def fallback_daily_weather(location: str, days: int = 5, start_date: date | None = None) -> list[dict[str, Any]]:
+    base_date = start_date or date.today()
+    profile = classify_location(location)
+
+    if profile == "coastal":
+        base_min, base_max, condition, icon = 25.0, 32.0, "partly cloudy", "⛅"
+    elif profile == "hill":
+        base_min, base_max, condition, icon = 11.0, 22.0, "cool and cloudy", "🌥️"
+    elif profile == "desert":
+        base_min, base_max, condition, icon = 21.0, 36.0, "clear sky", "☀️"
+    elif profile == "metro":
+        base_min, base_max, condition, icon = 23.0, 33.0, "light cloud cover", "🌤️"
+    else:
+        base_min, base_max, condition, icon = 20.0, 31.0, "scattered clouds", "⛅"
+
+    forecasts: list[dict[str, Any]] = []
+    for index in range(days):
+        forecast_date = base_date + timedelta(days=index)
+        swing = 1.2 + (index % 3)
+        temp_min = round(base_min - swing, 1)
+        temp_max = round(base_max + swing, 1)
+        temp_feels = round((temp_min + temp_max) / 2, 1)
+        humidity = int(55 + (index * 4) % 20)
+        rain_chance = 10 + ((index + 1) * 9) % 45
+        weather_condition = condition if index % 2 == 0 else f"{condition} with mild breeze"
+        alert = "Potential rain showers" if rain_chance > 45 else None
+        forecasts.append(
+            {
+                "date": forecast_date.isoformat(),
+                "day_name": forecast_date.strftime("%A"),
+                "location": location,
+                "temp_min_celsius": temp_min,
+                "temp_max_celsius": temp_max,
+                "temp_feels_like": temp_feels,
+                "humidity_percent": humidity,
+                "condition": weather_condition,
+                "weather_icon": icon,
+                "wind_speed_kmh": round(8.0 + index * 1.5, 1),
+                "rain_chance_percent": rain_chance,
                 "alert": alert,
             }
         )

@@ -1,0 +1,59 @@
+INFO:     Started server process [11716]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8100 (Press CTRL+C to quit)
+(trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+Local search failed for hotel in Ooty: 
+[REC] WARNING: No hotels found for Ooty. Showing all available.
+Local search failed for hotel in Chennai: 
+[REC] WARNING: No hotels found for Chennai. Showing all available.
+Local search failed for restaurant in Ooty: 
+[REC] WARNING: No restaurants found for Ooty. Showing all available.
+Local search failed for restaurant in Chennai: 
+[REC] WARNING: No restaurants found for Chennai. Showing all available.
+Local search failed for attraction in Ooty: 
+[REC] WARNING: No attractions found for Ooty. Showing all available.
+Geoapify place details failed for 5127f911bf62115440597e422c51ac292a40f00103f901d5edac02020000009203175069747469205468656167617261796120436865747479: 
+Local search failed for hotel in Bengaluru: 
+[REC] WARNING: No hotels found for Bengaluru. Showing all available.
+Local search failed for hotel in Chennai: 
+[REC] WARNING: No hotels found for Chennai. Showing all available.
+Local search failed for restaurant in Bengaluru: 
+[REC] WARNING: No restaurants found for Bengaluru. Showing all available.
+Local search failed for attraction in Bengaluru: 
+[REC] WARNING: No attractions found for Bengaluru. Showing all available.
+Local search failed for restaurant in Chennai: 
+[REC] WARNING: No restaurants found for Chennai. Showing all available.
+Local search failed for hotel in Bengaluru: 
+[REC] WARNING: No hotels found for Bengaluru. Showing all available.
+Local search failed for hotel in Chennai: 
+[REC] WARNING: No hotels found for Chennai. Showing all available.
+Local search failed for restaurant in Bengaluru: 
+[REC] WARNING: No restaurants found for Bengaluru. Showing all available.
+Local search failed for restaurant in Chennai: 
+[REC] WARNING: No restaurants found for Chennai. Showing all available.
+Local search failed for attraction in Bengaluru: 
+[REC] WARNING: No attractions found for Bengaluru. Showing all available.
+Local search failed for attraction in Chennai: 
+[REC] WARNING: No attractions found for Chennai. Showing all available.
+Local search failed for hotel in Bengaluru: 
+[REC] WARNING: No hotels found for Bengaluru. Showing all available.
+Local search failed for hotel in Chennai: 
+[REC] WARNING: No hotels found for Chennai. Showing all available.
+Local search failed for restaurant in Chennai: 
+[REC] WARNING: No restaurants found for Chennai. Showing all available.
+Geoapify place details failed for 51d6d86f37d2655340596fff80bd78f52940f00103f901bb7690df00000000: 
+Geoapify place details failed for 51f5f57ccdf26553405989dd2d7f74f42940f00103f901942a27f302000000: 
+Geoapify place details failed for 51cd84155dcd6553405974ce4f711cf42940f00103f90159c81c2202000000: 
+Geoapify place details failed for 51227b736ec9655340590040a951a3f32940f00103f901d70aa33802000000: 
+Geoapify place details failed for 51be4eeacbd26553405963f83e0bf8f32940f00103f901491f485b0100000092030e42656e67616c757275204c6f676f: 
+Geoapify place details failed for 51308caa155c1154405996606ab6a8292a40f00103f90123e1066002000000: 
+Geoapify place details failed for 517df8437d5c11544059f1db2bb99b292a40f00103f90122e106600200000092033747656f7267652046726564657269636b2053616d75656c20526f62696e736f6e2c20317374204d61727175657373206f66205269706f6e: 
+Geoapify place details failed for 5126f911bf621154405921942951ac292a40f00103f901d5edac02020000009203175069747469205468656167617261796120436865747479: 
+Geoapify place details failed for 51d0e2d6ee68115440590fcd2ae8bd292a40f00103f9016413076002000000: 
+Geoapify place details failed for 516b31d3516911544059dcac9821b0292a40f00103f9016313076002000000: 

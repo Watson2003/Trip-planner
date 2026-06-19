@@ -1,0 +1,279 @@
+INFO:     127.0.0.1:49952 - "POST /api/auth/register HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:65126 - "POST /api/auth/register HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:60881 - "POST /api/auth/register HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:50765 - "POST /api/auth/register HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:50769 - "POST /api/auth/register HTTP/1.1" 201 Created
+INFO:     127.0.0.1:50772 - "POST /api/auth/register HTTP/1.1" 201 Created
+INFO:     127.0.0.1:50774 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56066 - "POST /api/auth/register HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:51158 - "POST /api/auth/register HTTP/1.1" 201 Created
+INFO:     127.0.0.1:52766 - "POST /api/auth/login HTTP/1.1" 200 OK
+=== TRIP REQUEST RECEIVED ===
+origin: Chennai
+destination: Ooty
+dates: 2026-06-16 to 2026-06-18
+trip_days: 3
+budget: 17000.0
+preferences: ['scenic']
+=== TRIPSTATE BEING BUILT ===
+trip_days going into state: 3
+TripState trip_days = 3
+[BUDGET] raw trip_days from state: 3
+[BUDGET] trip_days_input: 3
+[BUDGET] FINAL days=3 nights=2
+[BUDGET] Hotel: Rs1800/night x 2 nights = Rs3600
+[FOOD] destination=Ooty
+[FOOD] is_vegetarian=False
+[FOOD] is_budget_restaurant=False
+[FOOD] price=Rs420 type=Local restaurants (Non-Veg)
+[BUDGET] Food: Rs420.0/person/day x 4 people x 3 days = Rs5040.0
+[BUDGET] Cost per person: Rs12637.6 ÷ 4 = Rs3159.4
+[BUDGET] === FINAL SUMMARY ===
+  Fuel:   Rs2786.69
+  Hotel:  Rs3600 (2 nights)
+  Food:   Rs5040.0 (3 days)
+  Toll:   Rs360.91
+  Misc:   Rs850.0
+  TOTAL:  Rs12637.6
+=== RECOMMENDATION AGENT ===
+Origin received: 'Chennai'
+Destination received: 'Ooty'
+Will fetch recommendations for: 'Ooty'
+DEBUG: coordinates cache cleared
+Target city for API calls: 'Ooty'
+DEBUG: fetching recommendations for: Ooty
+DEBUG search_places: location='Ooty' type='lodging'
+DEBUG get_coordinates called with: 'Ooty'
+DEBUG search_places: location='Chennai' type='lodging'
+DEBUG get_coordinates called with: 'Chennai'
+DEBUG search_places: location='Ooty' type='restaurant'
+DEBUG get_coordinates called with: 'Ooty'
+DEBUG search_places: location='Chennai' type='restaurant'
+DEBUG get_coordinates called with: 'Chennai'
+DEBUG geocoded 'Chennai' -> {'lat': 13.0836939, 'lng': 80.270186}
+DEBUG search_places: using coords lat=13.0836939, lng=80.270186 for 'Chennai'
+DEBUG geocoded 'Ooty' -> {'lat': 11.4126769, 'lng': 76.7030504}
+DEBUG search_places: using coords lat=11.4126769, lng=76.7030504 for 'Ooty'
+DEBUG search_places: location='Ooty' type='tourist_attraction'
+DEBUG get_coordinates called with: 'Ooty'
+DEBUG cache hit for: 'ooty' -> {'lat': 11.4126769, 'lng': 76.7030504}
+DEBUG search_places: using coords lat=11.4126769, lng=76.7030504 for 'Ooty'
+DEBUG search_places: location='Chennai' type='tourist_attraction'
+DEBUG get_coordinates called with: 'Chennai'
+DEBUG cache hit for: 'chennai' -> {'lat': 13.0836939, 'lng': 80.270186}
+DEBUG search_places: using coords lat=13.0836939, lng=80.270186 for 'Chennai'
+OK: Destination: Ooty
+OK: Hotels found: 0
+OK: Restaurants found: 0
+OK: Attractions found: 0
+[REC] Hotels: 0 found
+[REC] Restaurants: 0 found
+[REC] Attractions: 0 found
+[REC] WARNING: Only 0 hotels found for Ooty. Showing all available.
+[REC] WARNING: Only 0 restaurants found for Ooty. Showing all available.
+[REC] WARNING: Only 0 attractions found for Ooty. Showing all available.
+OK: Final hotel count: 0
+[REC] Hotels: 0 found
+[REC] Restaurants: 0 found
+[REC] Attractions: 0 found
+[REC] General Hospital Road: No photos array
+[REC] General Hospital Road: No photos array
+[REC] General Hospital Road: No photos array
+[REC] George Frederick Samuel Robinson, 1st Marquess of Ripon: No photos array
+[REC] Pitti Theagaraya Chetty: No photos array
+OK: Destination: Chennai
+OK: Hotels found: 0
+OK: Restaurants found: 0
+OK: Attractions found: 5
+[REC] Hotels: 0 found
+[REC] Restaurants: 0 found
+[REC] Attractions: 5 found
+[REC] WARNING: Only 0 hotels found for Ooty. Showing all available.
+[REC] WARNING: Only 0 restaurants found for Ooty. Showing all available.
+[REC] General Hospital Road: No photos array
+[REC] George Frederick Samuel Robinson, 1st Marquess of Ripon: No photos array
+[REC] General Hospital Road: No photos array
+[REC] General Hospital Road: No photos array
+[REC] Pitti Theagaraya Chetty: No photos array
+OK: Final hotel count: 0
+[REC] Hotels: 0 found
+[REC] Restaurants: 0 found
+[REC] Attractions: 5 found
+OK: Final hotel count: 0
+INFO:     127.0.0.1:61117 - "POST /api/auth/login HTTP/1.1" 200 OK
+=== TRIP REQUEST RECEIVED ===
+origin: Chennai
+destination: Bengaluru
+dates: 2026-06-20 to 2026-06-22
+trip_days: 3
+budget: 25000.0
+preferences: ['scenic', 'budget hotels']
+=== TRIPSTATE BEING BUILT ===
+trip_days going into state: 3
+TripState trip_days = 3
+[BUDGET] raw trip_days from state: 3
+[BUDGET] trip_days_input: 3
+[BUDGET] FINAL days=3 nights=2
+[BUDGET] Hotel: Rs1500/night x 2 nights = Rs3000
+[FOOD] destination=Bengaluru
+[FOOD] is_vegetarian=False
+[FOOD] is_budget_restaurant=False
+[FOOD] price=Rs750 type=Local restaurants (Non-Veg)
+[BUDGET] Food: Rs750.0/person/day x 2 people x 3 days = Rs4500.0
+[BUDGET] Cost per person: Rs11104.97 ÷ 2 = Rs5552.48
+[BUDGET] === FINAL SUMMARY ===
+  Fuel:   Rs2147.18
+  Hotel:  Rs3000 (2 nights)
+  Food:   Rs4500.0 (3 days)
+  Toll:   Rs207.79
+  Misc:   Rs1250.0
+  TOTAL:  Rs11104.97
+=== RECOMMENDATION AGENT ===
+Origin received: 'Chennai'
+Destination received: 'Bengaluru'
+Will fetch recommendations for: 'Bengaluru'
+DEBUG: coordinates cache cleared
+Target city for API calls: 'Bengaluru'
+DEBUG: fetching recommendations for: Bengaluru
+DEBUG search_places: location='Bengaluru' type='lodging'
+DEBUG get_coordinates called with: 'Bengaluru'
+DEBUG search_places: location='Chennai' type='lodging'
+DEBUG get_coordinates called with: 'Chennai'
+DEBUG search_places: location='Bengaluru' type='restaurant'
+DEBUG get_coordinates called with: 'Bengaluru'
+DEBUG geocoded 'Chennai' -> {'lat': 13.0836939, 'lng': 80.270186}
+DEBUG search_places: using coords lat=13.0836939, lng=80.270186 for 'Chennai'
+DEBUG search_places: location='Chennai' type='restaurant'
+DEBUG get_coordinates called with: 'Chennai'
+DEBUG cache hit for: 'chennai' -> {'lat': 13.0836939, 'lng': 80.270186}
+DEBUG search_places: using coords lat=13.0836939, lng=80.270186 for 'Chennai'
+DEBUG search_places: location='Bengaluru' type='tourist_attraction'
+DEBUG get_coordinates called with: 'Bengaluru'
+DEBUG geocoded 'Bengaluru' -> {'lat': 12.9767936, 'lng': 77.590082}
+DEBUG search_places: using coords lat=12.9767936, lng=77.590082 for 'Bengaluru'
+OK: Destination: Bengaluru
+OK: Hotels found: 0
+OK: Restaurants found: 0
+OK: Attractions found: 0
+[REC] Hotels: 0 found
+[REC] Restaurants: 0 found
+[REC] Attractions: 0 found
+[REC] WARNING: Only 0 hotels found for Bengaluru. Showing all available.
+[REC] WARNING: Only 0 restaurants found for Bengaluru. Showing all available.
+[REC] WARNING: Only 0 attractions found for Bengaluru. Showing all available.
+OK: Final hotel count: 0
+[REC] Hotels: 0 found
+[REC] Restaurants: 0 found
+[REC] Attractions: 0 found
+DEBUG search_places: location='Chennai' type='tourist_attraction'
+DEBUG get_coordinates called with: 'Chennai'
+DEBUG cache hit for: 'chennai' -> {'lat': 13.0836939, 'lng': 80.270186}
+DEBUG search_places: using coords lat=13.0836939, lng=80.270186 for 'Chennai'
+[REC] George Frederick Samuel Robinson, 1st Marquess of Ripon: No photos array
+[REC] General Hospital Road: No photos array
+[REC] General Hospital Road: No photos array
+[REC] Pitti Theagaraya Chetty: No photos array
+[REC] General Hospital Road: No photos array
+OK: Destination: Chennai
+OK: Hotels found: 0
+OK: Restaurants found: 0
+OK: Attractions found: 5
+[REC] Hotels: 0 found
+[REC] Restaurants: 0 found
+[REC] Attractions: 5 found
+[REC] WARNING: Only 0 hotels found for Bengaluru. Showing all available.
+[REC] WARNING: Only 0 restaurants found for Bengaluru. Showing all available.
+[REC] General Hospital Road: No photos array
+[REC] Pitti Theagaraya Chetty: No photos array
+[REC] General Hospital Road: No photos array
+[REC] General Hospital Road: No photos array
+[REC] George Frederick Samuel Robinson, 1st Marquess of Ripon: No photos array
+OK: Final hotel count: 0
+[REC] Hotels: 0 found
+[REC] Restaurants: 0 found
+[REC] Attractions: 5 found
+OK: Final hotel count: 0
+INFO:     127.0.0.1:61119 - "POST /api/trip/plan HTTP/1.1" 201 Created
+INFO:     127.0.0.1:59765 - "POST /api/auth/login HTTP/1.1" 200 OK
+=== TRIP REQUEST RECEIVED ===
+origin: Chennai
+destination: Bengaluru
+dates: 2026-06-20 to 2026-06-22
+trip_days: 3
+budget: 25000.0
+preferences: ['scenic', 'budget hotels']
+=== TRIPSTATE BEING BUILT ===
+trip_days going into state: 3
+TripState trip_days = 3
+[BUDGET] raw trip_days from state: 3
+[BUDGET] trip_days_input: 3
+[BUDGET] FINAL days=3 nights=2
+[BUDGET] Hotel: Rs1500/night x 2 nights = Rs3000
+[FOOD] destination=Bengaluru
+[FOOD] is_vegetarian=False
+[FOOD] is_budget_restaurant=False
+[FOOD] price=Rs750 type=Local restaurants (Non-Veg)
+[BUDGET] Food: Rs750.0/person/day x 2 people x 3 days = Rs4500.0
+[BUDGET] Cost per person: Rs11104.97 ÷ 2 = Rs5552.48
+[BUDGET] === FINAL SUMMARY ===
+  Fuel:   Rs2147.18
+  Hotel:  Rs3000 (2 nights)
+  Food:   Rs4500.0 (3 days)
+  Toll:   Rs207.79
+  Misc:   Rs1250.0
+  TOTAL:  Rs11104.97
+=== RECOMMENDATION AGENT ===
+Origin received: 'Chennai'
+Destination received: 'Bengaluru'
+Will fetch recommendations for: 'Bengaluru'
+DEBUG: coordinates cache cleared
+Target city for API calls: 'Bengaluru'
+DEBUG: fetching recommendations for: Bengaluru
+DEBUG search_places: location='Bengaluru' type='lodging'
+DEBUG get_coordinates called with: 'Bengaluru'
+DEBUG search_places: location='Chennai' type='lodging'
+DEBUG get_coordinates called with: 'Chennai'
+DEBUG search_places: location='Bengaluru' type='restaurant'
+DEBUG get_coordinates called with: 'Bengaluru'
+DEBUG search_places: location='Chennai' type='restaurant'
+DEBUG get_coordinates called with: 'Chennai'
+DEBUG geocoded 'Bengaluru' -> {'lat': 12.9767936, 'lng': 77.590082}
+DEBUG search_places: using coords lat=12.9767936, lng=77.590082 for 'Bengaluru'
+DEBUG search_places: location='Bengaluru' type='tourist_attraction'
+DEBUG get_coordinates called with: 'Bengaluru'
+DEBUG cache hit for: 'bengaluru' -> {'lat': 12.9767936, 'lng': 77.590082}
+DEBUG search_places: using coords lat=12.9767936, lng=77.590082 for 'Bengaluru'
+DEBUG search_places: location='Chennai' type='tourist_attraction'
+DEBUG get_coordinates called with: 'Chennai'
+OK: Destination: Bengaluru
+OK: Hotels found: 0
+OK: Restaurants found: 0
+OK: Attractions found: 0
+[REC] Hotels: 0 found
+[REC] Restaurants: 0 found
+[REC] Attractions: 0 found
+[REC] WARNING: Only 0 hotels found for Bengaluru. Showing all available.
+[REC] WARNING: Only 0 restaurants found for Bengaluru. Showing all available.
+[REC] WARNING: Only 0 attractions found for Bengaluru. Showing all available.
+OK: Final hotel count: 0
+[REC] Hotels: 0 found
+[REC] Restaurants: 0 found
+[REC] Attractions: 0 found
+DEBUG geocoded 'Chennai' -> {'lat': 13.0836939, 'lng': 80.270186}
+DEBUG search_places: using coords lat=13.0836939, lng=80.270186 for 'Chennai'
+OK: Destination: Chennai
+OK: Hotels found: 0
+OK: Restaurants found: 0
+OK: Attractions found: 0
+[REC] Hotels: 0 found
+[REC] Restaurants: 0 found
+[REC] Attractions: 0 found
+[REC] WARNING: Only 0 hotels found for Bengaluru. Showing all available.
+[REC] WARNING: Only 0 restaurants found for Bengaluru. Showing all available.
+[REC] WARNING: Only 0 attractions found for Bengaluru. Showing all available.
+OK: Final hotel count: 0
+[REC] Hotels: 0 found
+[REC] Restaurants: 0 found
+[REC] Attractions: 0 found
+OK: Final hotel count: 0
+INFO:     127.0.0.1:59767 - "POST /api/trip/plan HTTP/1.1" 201 Created

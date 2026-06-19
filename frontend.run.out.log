@@ -1,22 +1,103 @@
-
-> ai-road-trip-planner@1.0.0 dev
-> next dev
-
   ▲ Next.js 14.2.35
   - Local:        http://localhost:3000
   - Environments: .env
 
  ✓ Starting...
- ✓ Ready in 10.9s
+ ✓ Ready in 7s
  ○ Compiling / ...
- ✓ Compiled / in 5.7s (601 modules)
- GET / 200 in 6043ms
- GET / 200 in 57ms
+ ✓ Compiled / in 15.1s (803 modules)
+ GET / 200 in 16981ms
+ ✓ Compiled in 1746ms (786 modules)
+ ✓ Compiled in 480ms (339 modules)
+ ✓ Compiled in 196ms (339 modules)
+ GET / 200 in 886ms
  ○ Compiling /trip-result ...
- ✓ Compiled /trip-result in 6.8s (1734 modules)
- ○ Compiling /my-trips ...
- ✓ Compiled /my-trips in 2.3s (1740 modules)
- ✓ Compiled in 965ms (1754 modules)
- GET / 200 in 194ms
+ ✓ Compiled /trip-result in 15.3s (1942 modules)
+ ✓ Compiled in 813ms (923 modules)
+ ○ Compiling /trip-result/itinerary ...
+ ✓ Compiled /trip-result/itinerary in 3.1s (1970 modules)
+ ✓ Compiled in 259ms (936 modules)
  ○ Compiling /_error ...
- ✓ Compiled /_error in 2.6s (1974 modules)
+ ✓ Compiled /_error in 6.4s (2203 modules)
+ ✓ Compiled in 1646ms (1129 modules)
+ ✓ Compiled in 921ms (1129 modules)
+ ✓ Compiled in 1098ms (1129 modules)
+ ✓ Compiled in 268ms (1129 modules)
+ ✓ Compiled in 5.2s (2215 modules)
+ ✓ Compiled in 544ms (1128 modules)
+ ✓ Compiled in 3.6s (2215 modules)
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 3.5s (2203 modules)
+ ✓ Compiled in 983ms (1129 modules)
+ ✓ Compiled in 758ms (1129 modules)
+ ✓ Compiled in 867ms (1129 modules)
+ ✓ Compiled in 1150ms (1129 modules)
+ ✓ Compiled in 766ms (1129 modules)
+ ✓ Compiled in 847ms (1129 modules)
+ ✓ Compiled in 791ms (1129 modules)
+ ✓ Compiled in 808ms (1129 modules)
+ ✓ Compiled in 701ms (1129 modules)
+ ✓ Compiled in 1282ms (1129 modules)
+ ✓ Compiled in 823ms (1129 modules)
+ ✓ Compiled in 360ms (1129 modules)
+ GET /trip-result/itinerary 200 in 2646ms
+ GET /trip-result/itinerary 200 in 5977ms
+ GET / 200 in 612ms
+ GET /trip-result 200 in 1226ms
+ GET / 200 in 208ms
+ ✓ Compiled in 5.4s (2215 modules)
+ ✓ Compiled in 1055ms (1128 modules)
+ ✓ Compiled in 926ms (1128 modules)
+ ✓ Compiled in 2.8s (1128 modules)
+ ✓ Compiled in 828ms (1128 modules)
+ ✓ Compiled in 425ms (1128 modules)
+ ✓ Compiled in 3.3s (2215 modules)
+ ✓ Compiled in 1335ms (1128 modules)
+ ✓ Compiled in 794ms (1128 modules)
+ ✓ Compiled in 1038ms (1128 modules)
+ ✓ Compiled in 738ms (1128 modules)
+ ✓ Compiled in 935ms (1128 modules)
+ ✓ Compiled in 2.5s (1128 modules)
+ ✓ Compiled in 459ms (1128 modules)
+ ✓ Compiled in 197ms (1128 modules)
+ ✓ Compiled in 3.1s (2215 modules)
+ ✓ Compiled in 282ms (1128 modules)
+ GET /trip-result/itinerary 200 in 2924ms
+ GET /trip-result/itinerary 200 in 179ms
+ ○ Compiling /login ...
+ ✓ Compiled /login in 3.1s (2213 modules)
+ ✓ Compiled in 367ms (1133 modules)
+ ✓ Compiled in 180ms (1133 modules)
+ ✓ Compiled in 4.1s (2227 modules)
+ ✓ Compiled in 663ms (1133 modules)
+ ✓ Compiled in 228ms (1133 modules)
+ ✓ Compiled in 10.3s (2227 modules)
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 12.3s (2229 modules)
+ ✓ Compiled in 3.8s (1134 modules)
+ ✓ Compiled in 4s (1134 modules)
+ ✓ Compiled in 53.8s (2215 modules)
+ ✓ Compiled in 704ms (2215 modules)
+ GET /trip-result 500 in 36ms
+ GET /trip-result 500 in 116ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 2.6s (2218 modules)
+ GET /_next/static/chunks/fallback/webpack.js 404 in 3638ms
+ GET /_next/static/chunks/fallback/react-refresh.js 404 in 3652ms
+ GET /_next/static/chunks/fallback/main.js 404 in 3656ms
+ GET /_next/static/chunks/fallback/pages/_app.js 404 in 3658ms
+ GET /_next/static/chunks/fallback/pages/_error.js 404 in 3657ms
+ GET /trip-result 200 in 783ms
+ GET /_next/static/css/app/layout.css?v=1781858088689 404 in 111ms
+ GET /_next/static/chunks/main-app.js?v=1781858088689 404 in 598ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 650ms
+ GET /_next/static/chunks/app/not-found.js 404 in 657ms
+ GET /_next/static/chunks/app/trip-result/page.js 404 in 660ms
+ GET /_next/static/chunks/app/global-error.js 404 in 655ms
+ GET /trip-result 200 in 223ms
+ GET /_next/static/css/app/layout.css?v=1781858094755 404 in 113ms
+ GET /_next/static/chunks/main-app.js?v=1781858094755 404 in 137ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 135ms
+ GET /_next/static/chunks/app/trip-result/page.js 404 in 134ms
+ GET /_next/static/chunks/app/not-found.js 404 in 125ms
+ GET /_next/static/chunks/app/global-error.js 404 in 119ms

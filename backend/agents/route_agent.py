@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio
 from typing import Any
 
-from agents.fallbacks import fallback_route
+from agents.fallbacks import fallback_route, fallback_route_road
 from agents.state import TripState
 from utils.mcp_bridge import mcp_get_route
 
@@ -11,7 +11,7 @@ from utils.mcp_bridge import mcp_get_route
 async def _fetch_route(origin: str, destination: str, waypoints: list[str]) -> dict[str, Any]:
     payload = await asyncio.wait_for(
         mcp_get_route(origin=origin, destination=destination, waypoints=waypoints[:2]),
-        timeout=30.0,
+        timeout=10.0,
     )
 
     feature = payload["features"][0]
@@ -42,7 +42,9 @@ async def route_agent(state: TripState) -> TripState:
     try:
         route = await _fetch_route(origin, destination, waypoints)
     except Exception:
-        route = fallback_route(origin, destination, waypoints)
+        route = await fallback_route_road(origin, destination, waypoints)
+        if route is None:
+            route = fallback_route(origin, destination, waypoints)
         if route is None:
             state.setdefault("errors", []).append(f"Could not build a route for {origin} to {destination}.")
             return state

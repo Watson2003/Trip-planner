@@ -9,8 +9,11 @@ from typing import Any
 from urllib.parse import quote_plus
 
 from agents.state import TripState
+from tools.osm_places import normalize_place_name
 from utils.mcp_bridge import mcp_generate_pdf_report, mcp_search_places
 from utils.config import settings
+from utils.destination_places import validate_destination_places
+from utils.recommendations import build_destination_recommendations
 from utils.places import (
     clear_cache,
     get_place_details,
@@ -165,14 +168,21 @@ def _extract_summary(details: dict[str, Any], fallback: str) -> str:
 
 
 def _first_photo_url(details: dict[str, Any]) -> str | None:
-    photos = details.get("photos") or []
-    if not isinstance(photos, list) or len(photos) == 0:
+    print(f"[PLACES] Getting details for: {details.get('place_id', '')}")
+
+    photos_list = details.get("photos", [])
+    print(f"[PLACES] Photos found: {len(photos_list) if isinstance(photos_list, list) else 0}")
+    if photos_list and len(photos_list) > 0:
+        first_photo = photos_list[0] if isinstance(photos_list[0], dict) else {}
+        photo_reference = first_photo.get("photo_reference", "")
+        print(f"[PLACES] First photo_reference: {str(photo_reference)[:30]}...")
+        if photo_reference:
+            return get_photo_url(str(photo_reference), max_width=600)
+        print(f"[PLACES] No photos available for '{details.get('name', 'unknown')}'")
         return None
-    first_photo = photos[0] if isinstance(photos[0], dict) else {}
-    photo_reference = first_photo.get("photo_reference")
-    if not photo_reference:
-        return None
-    return get_photo_url(str(photo_reference), max_width=600)
+
+    print(f"[PLACES] No photos available for '{details.get('name', 'unknown')}'")
+    return None
 
 
 def _categories_list(payload: dict[str, Any]) -> list[str]:
@@ -331,7 +341,18 @@ def _build_common_fields(
     rating = float(merged.get("rating") or raw_place.get("rating") or 0.0)
     total_reviews = int(merged.get("total_reviews") or raw_place.get("total_reviews") or 0)
     price_level = int(merged.get("price_level") or raw_place.get("price_level") or 0)
-    photo_url = _first_photo_url(details)
+    photos_list = details.get("photos", [])
+    if photos_list and len(photos_list) > 0:
+        photo_ref = photos_list[0].get("photo_reference", "")
+        if photo_ref:
+            photo_url = get_photo_url(photo_ref, max_width=600)
+            print(f"[REC] {details.get('name')}: Photo found ✅")
+        else:
+            photo_url = None
+            print(f"[REC] {details.get('name')}: Empty photo_reference")
+    else:
+        photo_url = None
+        print(f"[REC] {details.get('name')}: No photos array")
     lat, lng = _detail_location(details, raw_place)
     maps_url = f"https://www.google.com/maps/search/?api=1&query={quote_plus(name + ' ' + address)}" if name or address else ""
     website = str(details.get("website") or merged.get("website") or "").strip() or None
@@ -444,9 +465,6 @@ def _build_fallback_places(location: str, kind: str) -> list[dict[str, Any]]:
 
 async def _enrich_place(location: str, raw_place: dict[str, Any], kind: str) -> dict[str, Any]:
     """Fetch place details and return a structured recommendation object."""
-    # Avoid an extra network round-trip per place. The raw place payload already contains enough
-    # information to build a stable recommendation card, and skipping detail fetches keeps trip
-    # planning fast enough for the browser proxy.
     place_id = str(raw_place.get("place_id") or "").strip()
     if place_id.startswith("fallback-"):
         return raw_place
@@ -466,6 +484,21 @@ async def _enrich_place(location: str, raw_place: dict[str, Any], kind: str) -> 
         "phone": raw_place.get("phone"),
         "place_id": place_id,
     }
+
+    try:
+        detail_query = " ".join(
+            part
+            for part in [
+                str(raw_place.get("name") or "").strip(),
+                str(raw_place.get("formatted") or raw_place.get("display_name") or raw_place.get("address_line1") or location or "").strip(),
+            ]
+            if part
+        ).strip()
+        place_details = await get_place_details(place_id, query=detail_query)
+        if isinstance(place_details, dict) and place_details:
+            details.update(place_details)
+    except Exception as exc:
+        logger.warning("Failed to fetch place details for %s: %s", place_id, exc)
 
     common = _build_common_fields(location=location, raw_place=raw_place, details=details, kind=kind)
     if kind == "hotel":
@@ -527,37 +560,26 @@ def _normalize_mcp_place_result(place: dict[str, Any], kind: str, index: int) ->
 
 async def _search_and_build(location: str, kind: str, keyword: str = "") -> tuple[list[dict[str, Any]], bool]:
     place_type = {"hotel": "lodging", "restaurant": "restaurant", "attraction": "tourist_attraction"}[kind]
+    limit = 5
     try:
-        payload = await asyncio.wait_for(
-            mcp_search_places(query=keyword or location, location=location, category=place_type),
-            timeout=6.0,
+        raw_places = await asyncio.wait_for(
+            local_search_places(location=location, place_type=place_type, keyword=keyword, max_results=limit),
+            timeout=2.5,
         )
-        raw_places = [
-            _normalize_mcp_place_result(place, kind, index)
-            for index, place in enumerate((payload.get("results") or [])[:10])
-            if isinstance(place, dict)
-        ]
-    except asyncio.TimeoutError:
-        logger.warning("Timed out searching %s places in %s", kind, location)
-        raw_places = []
     except Exception as exc:
-        logger.warning("MCP search failed for %s in %s, falling back locally: %s", kind, location, exc)
-        try:
-            raw_places = await asyncio.wait_for(
-                local_search_places(location=location, place_type=place_type, keyword=keyword),
-                timeout=3.5,
-            )
-        except Exception as fallback_exc:
-            logger.warning("Local search failed for %s in %s: %s", kind, location, fallback_exc)
-            raw_places = []
+        logger.warning("Local search failed for %s in %s: %s", kind, location, exc)
+        raw_places = []
 
-    raw_places = [place for place in raw_places if place.get("place_id")]
+    raw_places = [
+        place
+        for place in raw_places
+        if place.get("place_id")
+    ]
     if not raw_places:
-        fallback_places = _build_fallback_places(location, kind)
-        logger.info("Using fallback %s recommendations for %s because live place search returned no results.", kind, location)
-        return fallback_places, False
+        logger.warning("[REC] WARNING: No %s found for %s. Returning empty recommendations.", kind + "s", location)
+        return [], False
 
-    limited_places = raw_places[:10]
+    limited_places = raw_places[:limit]
     enriched = await asyncio.gather(*[_enrich_place(location, place, kind) for place in limited_places])
     return enriched, False
 
@@ -623,42 +645,51 @@ def _make_pdf(
 
 async def recommendation_agent(state: TripState) -> TripState:
     origin = _normalize_location(state.get("origin"))
-    destination = _destination_from_user_input(state.get("user_input")) or _normalize_location(state.get("destination"))
+    requested_destination = _normalize_location(state.get("destination")) or _destination_from_user_input(state.get("user_input"))
+    destination = requested_destination
+    normalized_destination = normalize_place_name(destination)
 
     print("=== RECOMMENDATION AGENT ===")
     print(f"Origin received: '{origin}'")
     print(f"Destination received: '{destination}'")
+    print(f"requested_origin = {origin}")
+    print(f"requested_destination = {destination}")
+    print(f"normalized_destination = {normalized_destination}")
     print(f"Will fetch recommendations for: '{destination}'")
 
     clear_cache()
     print("DEBUG: coordinates cache cleared")
     target_city = destination.strip()
+    print(f"destination_used_for_osm = {target_city}")
+    print(f"destination_used_for_llm = {target_city}")
     print(f"Target city for API calls: '{target_city}'")
     print(f"DEBUG: fetching recommendations for: {target_city}")
 
-    route_locations = _route_locations(state)
+    seeded_catalog = state.get("recommendation_catalog")
+    destination_catalog: dict[str, Any]
+    if isinstance(seeded_catalog, dict) and any(
+        isinstance(seeded_catalog.get(key), list) and seeded_catalog.get(key)
+        for key in ("hotels", "restaurants", "attractions")
+    ):
+        destination_catalog = {
+            "destination": _normalize_location(seeded_catalog.get("destination")) or target_city or destination,
+            "hotels": list(seeded_catalog.get("hotels", [])),
+            "restaurants": list(seeded_catalog.get("restaurants", [])),
+            "attractions": list(seeded_catalog.get("attractions", [])),
+            "fallback_generated": bool(seeded_catalog.get("fallback_generated", False)),
+        }
+        print("DEBUG: using pre-discovered destination catalog from trip state")
+    else:
+        destination_catalog = await build_destination_recommendations(target_city or destination)
 
     async def build_for_location(location: str) -> dict[str, Any]:
-        hotels_bundle, restaurants_bundle, attractions_bundle = await asyncio.gather(
-            _search_and_build(location, "hotel"),
-            _search_and_build(location, "restaurant"),
-            _search_and_build(location, "attraction"),
-        )
-        hotels_raw = hotels_bundle[0][:5]
-        restaurants_raw = restaurants_bundle[0][:5]
-        attractions_raw = attractions_bundle[0][:5]
-
+        hotels = validate_destination_places(location, list(destination_catalog.get("hotels", [])))
+        restaurants = validate_destination_places(location, list(destination_catalog.get("restaurants", [])))
+        attractions = validate_destination_places(location, list(destination_catalog.get("attractions", [])))
         print(f"OK: Destination: {location}")
-        print(f"OK: Hotels found: {len(hotels_raw)}")
-        print(f"OK: Restaurants found: {len(restaurants_raw)}")
-        print(f"OK: Attractions found: {len(attractions_raw)}")
-
-        hotels, restaurants, attractions = await asyncio.gather(
-            asyncio.gather(*[_enrich_place(location, place, "hotel") for place in hotels_raw[:3]]),
-            asyncio.gather(*[_enrich_place(location, place, "restaurant") for place in restaurants_raw[:3]]),
-            asyncio.gather(*[_enrich_place(location, place, "attraction") for place in attractions_raw[:3]]),
-        )
-        print(f"OK: Final hotel count: {len(hotels)}")
+        print(f"OK: Hotels found: {len(hotels)}")
+        print(f"OK: Restaurants found: {len(restaurants)}")
+        print(f"OK: Attractions found: {len(attractions)}")
         return {
             "location": location,
             "hotels": hotels,
@@ -671,7 +702,7 @@ async def recommendation_agent(state: TripState) -> TripState:
             },
         }
 
-    recommendation_blocks = await asyncio.gather(*(build_for_location(location) for location in route_locations))
+    recommendation_blocks = [await build_for_location(target_city or destination)]
 
     hotels, restaurants, attractions = _flatten_location_recommendations(recommendation_blocks)
 
@@ -682,9 +713,15 @@ async def recommendation_agent(state: TripState) -> TripState:
         state.setdefault("warnings", []).append(f"PDF report generation failed: {exc}")
 
     state["recommendations"] = recommendation_blocks
+    state["recommendation_catalog"] = destination_catalog
     state["hotels"] = hotels
     state["restaurants"] = restaurants
     state["attractions"] = attractions
+    state["osm_places"] = [
+        place
+        for place in [*hotels, *restaurants, *attractions]
+        if isinstance(place, dict)
+    ]
     state["rag_context"] = []
     state["pdf_path"] = pdf_path
     state["report_summary"] = (
@@ -703,5 +740,6 @@ async def recommendation_agent(state: TripState) -> TripState:
         "rag_context": [],
         "recommendations": recommendation_blocks,
     }
+    print(f"first_5_selected_places = {[item.get('name') for item in (hotels + restaurants + attractions)[:5]]}")
 
     return state

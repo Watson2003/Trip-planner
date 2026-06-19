@@ -1,0 +1,56 @@
+INFO:     Started server process [9308]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+OSM recommendation fetch failed for Ooty: 
+Local search failed for hotel in Ooty: 
+[REC] WARNING: No hotels found for Ooty. Returning empty recommendations.
+Local search failed for restaurant in Ooty: 
+[REC] WARNING: No restaurants found for Ooty. Returning empty recommendations.
+Local search failed for attraction in Ooty: 
+[REC] WARNING: No attractions found for Ooty. Returning empty recommendations.
+Overpass fetch failed for Trichy via https://overpass-api.de/api/interpreter: Server error '504 Gateway Timeout' for url 'https://overpass-api.de/api/interpreter'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/504
+Overpass fetch failed for Trichy via https://overpass.kumi.systems/api/interpreter: 
+Overpass fetch failed for Trichy via https://lz4.overpass-api.de/api/interpreter: 
+All Overpass endpoints failed for Trichy: 
+[REC] WARNING: No hotels found for Trichy. Returning empty recommendations.
+Local search failed for restaurant in Trichy: 
+[REC] WARNING: No restaurants found for Trichy. Returning empty recommendations.
+Local search failed for attraction in Trichy: 
+[REC] WARNING: No attractions found for Trichy. Returning empty recommendations.
+NVIDIA LLM ranking failed: The read operation timed out
+OSM recommendation fetch failed for Goa: 
+Local search failed for hotel in Goa: 
+[REC] WARNING: No hotels found for Goa. Returning empty recommendations.
+Local search failed for hotel in Trichy: 
+[REC] WARNING: No hotels found for Trichy. Returning empty recommendations.
+Local search failed for restaurant in Goa: 
+[REC] WARNING: No restaurants found for Goa. Returning empty recommendations.
+Local search failed for restaurant in Trichy: 
+[REC] WARNING: No restaurants found for Trichy. Returning empty recommendations.
+Local search failed for attraction in Trichy: 
+[REC] WARNING: No attractions found for Trichy. Returning empty recommendations.
+Overpass fetch failed for Goa via https://overpass-api.de/api/interpreter: 
+Overpass fetch failed for Goa via https://overpass.kumi.systems/api/interpreter: 
+Geoapify place details failed for osm-way-1408882771: Client error '400 Bad Request' for url 'https://api.geoapify.com/v2/place-details?id=osm-way-1408882771&features=details&apiKey=e8890f71d34d480bb43cd1b983b28af4'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+Geoapify place details failed for osm-way-1459313559: Client error '400 Bad Request' for url 'https://api.geoapify.com/v2/place-details?id=osm-way-1459313559&features=details&apiKey=e8890f71d34d480bb43cd1b983b28af4'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+Geoapify place details failed for osm-way-1408882770: Client error '400 Bad Request' for url 'https://api.geoapify.com/v2/place-details?id=osm-way-1408882770&features=details&apiKey=e8890f71d34d480bb43cd1b983b28af4'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+Geoapify place details failed for osm-node-2614415019: Client error '400 Bad Request' for url 'https://api.geoapify.com/v2/place-details?id=osm-node-2614415019&features=details&apiKey=e8890f71d34d480bb43cd1b983b28af4'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+Geoapify place details failed for osm-way-1408882772: Client error '400 Bad Request' for url 'https://api.geoapify.com/v2/place-details?id=osm-way-1408882772&features=details&apiKey=e8890f71d34d480bb43cd1b983b28af4'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+Geoapify place details failed for osm-way-1408882770: Client error '400 Bad Request' for url 'https://api.geoapify.com/v2/place-details?id=osm-way-1408882770&features=details&apiKey=e8890f71d34d480bb43cd1b983b28af4'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+Geoapify place details failed for osm-node-2614415019: Client error '400 Bad Request' for url 'https://api.geoapify.com/v2/place-details?id=osm-node-2614415019&features=details&apiKey=e8890f71d34d480bb43cd1b983b28af4'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+Geoapify place details failed for osm-way-1408882772: Client error '400 Bad Request' for url 'https://api.geoapify.com/v2/place-details?id=osm-way-1408882772&features=details&apiKey=e8890f71d34d480bb43cd1b983b28af4'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+Geoapify place details failed for osm-way-1408882771: Client error '400 Bad Request' for url 'https://api.geoapify.com/v2/place-details?id=osm-way-1408882771&features=details&apiKey=e8890f71d34d480bb43cd1b983b28af4'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+Geoapify place details failed for osm-way-1459313559: Client error '400 Bad Request' for url 'https://api.geoapify.com/v2/place-details?id=osm-way-1459313559&features=details&apiKey=e8890f71d34d480bb43cd1b983b28af4'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+NVIDIA LLM ranking failed: The read operation timed out

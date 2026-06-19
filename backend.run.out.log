@@ -1,0 +1,218 @@
+INFO:     127.0.0.1:64591 - "POST /api/auth/login HTTP/1.1" 200 OK
+=== TRIP REQUEST RECEIVED ===
+requested_origin = Mumbai
+requested_destination = Goa
+normalized_destination = goa
+dates: 2026-06-19 to 2026-06-22
+trip_days: 4
+budget: 25000.0
+preferences: ['beaches', 'food']
+trip_plan_destination = Goa
+discovered_attractions_count = 10
+discovered_restaurants_count = 8
+discovered_hotels_count = 5
+=== TRIPSTATE BEING BUILT ===
+trip_days going into state: 4
+TripState trip_days = 4
+destination_used_for_osm = Goa
+destination_used_for_llm = Goa
+[BUDGET] raw trip_days from state: 4
+[BUDGET] trip_days_input: 4
+[BUDGET] FINAL days=4 nights=3
+[BUDGET] Hotel: Rs3000/night x 3 nights = Rs9000
+[FOOD] destination=Goa
+[FOOD] is_vegetarian=False
+[FOOD] is_budget_restaurant=False
+[FOOD] price=Rs750 type=Local restaurants (Non-Veg)
+[BUDGET] Food: Rs750.0/person/day x 2 people x 4 days = Rs6000.0
+[BUDGET] Cost per person: Rs20519.55 ÷ 2 = Rs10259.77
+[BUDGET] === FINAL SUMMARY ===
+  Fuel:   Rs3889.09
+  Hotel:  Rs9000 (3 nights)
+  Food:   Rs6000.0 (4 days)
+  Toll:   Rs380.46
+  Misc:   Rs1250.0
+  TOTAL:  Rs20519.55
+=== RECOMMENDATION AGENT ===
+Origin received: 'Mumbai'
+Destination received: 'Goa'
+requested_origin = Mumbai
+requested_destination = Goa
+normalized_destination = goa
+Will fetch recommendations for: 'Goa'
+DEBUG: coordinates cache cleared
+destination_used_for_osm = Goa
+destination_used_for_llm = Goa
+Target city for API calls: 'Goa'
+DEBUG: fetching recommendations for: Goa
+DEBUG: using pre-discovered destination catalog from trip state
+OK: Destination: Goa
+OK: Hotels found: 5
+OK: Restaurants found: 8
+OK: Attractions found: 10
+OK: Final hotel count: 5
+first_5_selected_places = ['Taj Fort Aguada Resort', 'Cidade de Goa', 'Aldeia Santa Rita', 'Le Meridien Goa', 'The LaLiT Golf & Spa Resort']
+=== DESTINATION EXPLORER ===
+requested_destination = Goa
+normalized_destination = goa
+destination_used_for_llm = Goa
+=== ITINERARY AGENT START ===
+requested_origin = Mumbai
+requested_destination = Goa
+normalized_destination = goa
+destination_used_for_llm = Goa
+[BUDGET] raw trip_days from state: 4
+[BUDGET] trip_days_input: 4
+[BUDGET] FINAL days=4 nights=3
+[BUDGET] Hotel: Rs3000/night x 3 nights = Rs9000
+[FOOD] destination=Goa
+[FOOD] is_vegetarian=False
+[FOOD] is_budget_restaurant=False
+[FOOD] price=Rs750 type=Local restaurants (Non-Veg)
+[BUDGET] Food: Rs750.0/person/day x 2 people x 4 days = Rs6000.0
+[BUDGET] Cost per person: Rs16250.0 ÷ 2 = Rs8125.0
+[BUDGET] === FINAL SUMMARY ===
+  Fuel:   Rs0.0
+  Hotel:  Rs9000 (3 nights)
+  Food:   Rs6000.0 (4 days)
+  Toll:   Rs0.0
+  Misc:   Rs1250.0
+  TOTAL:  Rs16250.0
+final_itinerary_destination = Goa
+recommendations_returned_count = 23
+INFO:     127.0.0.1:64593 - "POST /api/trip/plan HTTP/1.1" 201 Created
+final_itinerary_destination = Goa
+first_5_selected_places = ['mumbai spice house', 'mumbai toward goa', 'mumbai goa highway stop', 'pousada by the beach', 'cidade de goa']
+[ITINERARY] Sightseeing-focused complete!
+INFO:     127.0.0.1:56898 - "OPTIONS /api/itinerary/generate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51815 - "OPTIONS /api/itinerary/generate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56898 - "POST /api/itinerary/generate HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:51815 - "POST /api/itinerary/generate HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:56547 - "OPTIONS /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58880 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54861 - "OPTIONS /api/trip/plan HTTP/1.1" 200 OK
+=== TRIP REQUEST RECEIVED ===
+requested_origin = Trichy
+requested_destination = Pondicherry
+normalized_destination = pondicherry
+dates: 2026-06-19 to 2026-06-21
+trip_days: 3
+budget: 25000.0
+preferences: ['scenic']
+trip_plan_destination = Pondicherry
+discovered_attractions_count = 10
+discovered_restaurants_count = 8
+discovered_hotels_count = 5
+=== TRIPSTATE BEING BUILT ===
+trip_days going into state: 3
+TripState trip_days = 3
+destination_used_for_osm = Pondicherry
+destination_used_for_llm = Pondicherry
+[BUDGET] raw trip_days from state: 3
+[BUDGET] trip_days_input: 3
+[BUDGET] FINAL days=3 nights=2
+[BUDGET] Hotel: Rs2000/night x 2 nights = Rs4000
+[FOOD] destination=Pondicherry
+[FOOD] is_vegetarian=False
+[FOOD] is_budget_restaurant=False
+[FOOD] price=Rs600 type=Local restaurants (Non-Veg)
+[BUDGET] Food: Rs600.0/person/day x 3 people x 3 days = Rs5400.0
+[BUDGET] Cost per person: Rs11439.06 ÷ 3 = Rs3813.02
+[BUDGET] === FINAL SUMMARY ===
+  Fuel:   Rs697.94
+  Hotel:  Rs4000 (2 nights)
+  Food:   Rs5400.0 (3 days)
+  Toll:   Rs91.12
+  Misc:   Rs1250.0
+  TOTAL:  Rs11439.06
+=== RECOMMENDATION AGENT ===
+Origin received: 'Trichy'
+Destination received: 'Pondicherry'
+requested_origin = Trichy
+requested_destination = Pondicherry
+normalized_destination = pondicherry
+Will fetch recommendations for: 'Pondicherry'
+DEBUG: coordinates cache cleared
+destination_used_for_osm = Pondicherry
+destination_used_for_llm = Pondicherry
+Target city for API calls: 'Pondicherry'
+DEBUG: fetching recommendations for: Pondicherry
+DEBUG: using pre-discovered destination catalog from trip state
+OK: Destination: Pondicherry
+OK: Hotels found: 5
+OK: Restaurants found: 8
+OK: Attractions found: 10
+OK: Final hotel count: 5
+first_5_selected_places = ['Palais de Mahe', 'La Villa', 'Accord Puducherry', 'The Residency', 'The Promenade']
+=== DESTINATION EXPLORER ===
+requested_destination = Pondicherry
+normalized_destination = pondicherry
+destination_used_for_llm = Pondicherry
+[BUDGET] raw trip_days from state: 3
+[BUDGET] trip_days_input: 3
+[BUDGET] FINAL days=3 nights=2
+[BUDGET] Hotel: Rs2000/night x 2 nights = Rs4000
+[FOOD] destination=Pondicherry
+[FOOD] is_vegetarian=False
+[FOOD] is_budget_restaurant=False
+[FOOD] price=Rs600 type=Local restaurants (Non-Veg)
+[BUDGET] Food: Rs600.0/person/day x 3 people x 3 days = Rs5400.0
+[BUDGET] Cost per person: Rs10650.0 ÷ 3 = Rs3550.0
+[BUDGET] === FINAL SUMMARY ===
+  Fuel:   Rs0.0
+  Hotel:  Rs4000 (2 nights)
+  Food:   Rs5400.0 (3 days)
+  Toll:   Rs0.0
+  Misc:   Rs1250.0
+  TOTAL:  Rs10650.0
+final_itinerary_destination = Pondicherry
+recommendations_returned_count = 23
+INFO:     127.0.0.1:54861 - "POST /api/trip/plan HTTP/1.1" 201 Created
+=== ITINERARY AGENT START ===
+requested_origin = Trichy
+requested_destination = Pondicherry
+normalized_destination = pondicherry
+destination_used_for_llm = Pondicherry
+INFO:     127.0.0.1:58026 - "OPTIONS /api/itinerary/generate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61618 - "OPTIONS /api/itinerary/generate HTTP/1.1" 200 OK
+=== ITINERARY AGENT START ===
+requested_origin = Trichy
+requested_destination = Pondicherry
+normalized_destination = pondicherry
+destination_used_for_llm = Pondicherry
+final_itinerary_destination = Pondicherry
+first_5_selected_places = ['trichy spice house', 'trichy toward pondicherry', 'trichy pondicherry highway stop', 'baker street', 'palais de mahe']
+[ITINERARY] Sightseeing-focused complete!
+final_itinerary_destination = Pondicherry
+first_5_selected_places = ['trichy spice house', 'trichy toward pondicherry', 'trichy pondicherry highway stop', 'baker street', 'palais de mahe']
+[ITINERARY] Sightseeing-focused complete!
+INFO:     127.0.0.1:58026 - "POST /api/itinerary/generate HTTP/1.1" 200 OK
+=== ITINERARY AGENT START ===
+requested_origin = Trichy
+requested_destination = Pondicherry
+normalized_destination = pondicherry
+destination_used_for_llm = Pondicherry
+final_itinerary_destination = Pondicherry
+first_5_selected_places = ['trichy spice house', 'trichy toward pondicherry', 'trichy pondicherry highway stop', 'baker street', 'palais de mahe']
+[ITINERARY] Sightseeing-focused complete!
+INFO:     127.0.0.1:61618 - "POST /api/itinerary/generate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62911 - "OPTIONS /api/itinerary/generate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56583 - "OPTIONS /api/itinerary/generate HTTP/1.1" 200 OK
+=== ITINERARY AGENT START ===
+requested_origin = Trichy
+requested_destination = Pondicherry
+normalized_destination = pondicherry
+destination_used_for_llm = Pondicherry
+final_itinerary_destination = Pondicherry
+first_5_selected_places = ['trichy spice house', 'trichy toward pondicherry', 'trichy pondicherry highway stop', 'baker street', 'palais de mahe']
+[ITINERARY] Sightseeing-focused complete!
+INFO:     127.0.0.1:56583 - "POST /api/itinerary/generate HTTP/1.1" 200 OK
+=== ITINERARY AGENT START ===
+requested_origin = Trichy
+requested_destination = Pondicherry
+normalized_destination = pondicherry
+destination_used_for_llm = Pondicherry
+final_itinerary_destination = Pondicherry
+first_5_selected_places = ['trichy spice house', 'trichy toward pondicherry', 'trichy pondicherry highway stop', 'baker street', 'palais de mahe']
+[ITINERARY] Sightseeing-focused complete!
+INFO:     127.0.0.1:62911 - "POST /api/itinerary/generate HTTP/1.1" 200 OK

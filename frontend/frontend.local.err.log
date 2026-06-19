@@ -1,5 +1,411 @@
-(node:10768) [DEP0060] DeprecationWarning: The `util._extend` API is deprecated. Please use Object.assign() instead.
+(node:1752) [DEP0060] DeprecationWarning: The `util._extend` API is deprecated. Please use Object.assign() instead.
 (Use `node --trace-deprecation ...` to show where the warning was created)
+Failed to proxy http://localhost:8100/api/auth/login AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8100
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8100
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8100
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8100
+    }
+  ]
+}
+Failed to proxy http://localhost:8100/api/auth/register AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8100
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8100
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8100
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8100
+    }
+  ]
+}
+Failed to proxy http://localhost:8100/api/auth/register AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8100
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8100
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8100
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8100
+    }
+  ]
+}
+Failed to proxy http://localhost:8100/api/auth/register AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8100
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8100
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8100
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8100
+    }
+  ]
+}
+Failed to proxy http://localhost:8100/api/auth/register AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8100
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8100
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8100
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8100
+    }
+  ]
+}
+Failed to proxy http://localhost:8100/api/auth/register AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8100
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8100
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8100
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8100
+    }
+  ]
+}
+Failed to proxy http://localhost:8100/api/auth/register AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8100
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8100
+    }
+  ]
+}
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7)
+    at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 8100
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:8100
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16)
+        at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 8100
+    }
+  ]
+}
+Failed to proxy http://localhost:8100/api/trip/plan Error: socket hang up
+    at Socket.socketCloseListener (node:_http_client:491:27)
+    at Socket.emit (node:events:519:35)
+    at TCP.<anonymous> (node:net:351:12)
+    at TCP.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNRESET'
+}
+Error: socket hang up
+    at Socket.socketCloseListener (node:_http_client:491:27)
+    at Socket.emit (node:events:519:35)
+    at TCP.<anonymous> (node:net:351:12)
+    at TCP.callbackTrampoline (node:internal/async_hooks:130:17) {
+  code: 'ECONNRESET'
+}
 Failed to proxy http://localhost:8100/api/trip/plan Error: socket hang up
     at Socket.socketCloseListener (node:_http_client:491:27)
     at Socket.emit (node:events:519:35)
@@ -17,21 +423,4 @@ Error: socket hang up
 
 [1m[33mwarn[39m[22m - As of Tailwind CSS v3.3, the `@tailwindcss/line-clamp` plugin is now included by default.
 [1m[33mwarn[39m[22m - Remove it from the `plugins` array in your configuration to eliminate this warning.
-(node:10768) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
-Failed to proxy http://localhost:8100/api/trip/plan Error: socket hang up
-    at Socket.socketCloseListener (node:_http_client:491:27)
-    at Socket.emit (node:events:519:35)
-    at TCP.<anonymous> (node:net:351:12)
-    at TCP.callbackTrampoline (node:internal/async_hooks:130:17) {
-  code: 'ECONNRESET'
-}
-Error: socket hang up
-    at Socket.socketCloseListener (node:_http_client:491:27)
-    at Socket.emit (node:events:519:35)
-    at TCP.<anonymous> (node:net:351:12)
-    at TCP.callbackTrampoline (node:internal/async_hooks:130:17) {
-  code: 'ECONNRESET'
-}
- ⚠ Fast Refresh had to perform a full reload due to a runtime error.
- ⚠ Fast Refresh had to perform a full reload due to a runtime error.
- ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+(node:1752) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time

@@ -1,0 +1,120 @@
+
+[1m[33mwarn[39m[22m - As of Tailwind CSS v3.3, the `@tailwindcss/line-clamp` plugin is now included by default.
+[1m[33mwarn[39m[22m - Remove it from the `plugins` array in your configuration to eliminate this warning.
+(node:8328) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ TypeError: Cannot read properties of undefined (reading 'call')
+    at Object.__webpack_require__ [as require] (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:33:43)
+digest: "2032132705"
+TypeError: Cannot read properties of undefined (reading 'call')
+    at Object.__webpack_require__ [as require] (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:33:43)
+    at require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:40:20064)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:108376
+    at ea (D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:108583)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:110813
+    at Object._fromJSON (D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:111370)
+    at JSON.parse (<anonymous>)
+    at ec (D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:109078)
+    at eo (D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:108123)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:115291
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:115308
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:115341
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:115358
+    at t (D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:115581)
+ ⨯ TypeError: Cannot read properties of undefined (reading 'call')
+    at Object.__webpack_require__ [as require] (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:33:43)
+    at require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:40:20064)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:108376
+    at ea (D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:108583)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:110813
+    at Object._fromJSON (D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:111370)
+    at JSON.parse (<anonymous>)
+    at ec (D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:109078)
+    at eo (D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:108123)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:115291
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:115308
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:115341
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:115358
+    at t (D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\next-server\app-page.runtime.dev.js:35:115581) {
+  page: '/trip-result'
+}
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\eventemitter3.js'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/eventemitter3' in D:\ROOT\Trip planner\frontend\.next\server for build dependencies doesn't lead to expected result 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\eventemitter3.js', but to 'Error: Can't resolve './vendor-chunks/eventemitter3' in 'D:\ROOT\Trip planner\frontend\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/eventemitter3 (expected D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\eventemitter3.js)
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\app\page.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\app\page.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at resolve commonjs D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/object-assign' in D:\ROOT\Trip planner\frontend\.next\server for build dependencies doesn't lead to expected result 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\object-assign.js', but to 'Error: Can't resolve './vendor-chunks/object-assign' in 'D:\ROOT\Trip planner\frontend\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/object-assign (expected D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\object-assign.js)
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\app\page.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\app\page.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at resolve commonjs D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/clsx' in D:\ROOT\Trip planner\frontend\.next\server for build dependencies doesn't lead to expected result 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\clsx.js', but to 'Error: Can't resolve './vendor-chunks/clsx' in 'D:\ROOT\Trip planner\frontend\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/clsx (expected D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\clsx.js)
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\app\page.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\app\page.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at resolve commonjs D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/d3-path' in D:\ROOT\Trip planner\frontend\.next\server for build dependencies doesn't lead to expected result 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\d3-path.js', but to 'Error: Can't resolve './vendor-chunks/d3-path' in 'D:\ROOT\Trip planner\frontend\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/d3-path (expected D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\d3-path.js)
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\app\page.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\app\page.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at resolve commonjs D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\leaflet.js'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/leaflet' in D:\ROOT\Trip planner\frontend\.next\server for build dependencies doesn't lead to expected result 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\leaflet.js', but to 'Error: Can't resolve './vendor-chunks/leaflet' in 'D:\ROOT\Trip planner\frontend\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/leaflet (expected D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\leaflet.js)
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at resolve commonjs D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js

@@ -8,7 +8,16 @@ import AuthGuard from "@/components/auth/AuthGuard";
 import Navbar from "@/components/auth/Navbar";
 import VehicleForm from "@/components/trip/VehicleForm";
 import { getAuthHeaders } from "@/lib/auth";
-import type { BudgetBreakdown as BudgetBreakdownType, PlannedTripResponse, TripMarker, VehicleDetails } from "@/types";
+import { API_BASE_URL } from "@/lib/api";
+import { storeTripResult, normalizeDestinationKey } from "@/lib/trip-result";
+import type { TripResultStorage as StoredTripResultStorage } from "@/lib/trip-result";
+import type {
+  BudgetBreakdown as BudgetBreakdownType,
+  FullItinerary,
+  PlannedTripResponse,
+  TripMarker,
+  VehicleDetails,
+} from "@/types";
 
 type FormState = {
   origin: string;
@@ -24,15 +33,17 @@ type TripResultStorage = {
   trip_id: number;
   origin: string;
   destination: string;
+  destination_key: string;
   distance_km: number;
   duration_hours: number;
   route: GeoJSON.FeatureCollection;
   weather: PlannedTripResponse["weather"];
-  weather_status: PlannedTripResponse["weather_status"];
+  weather_status: NonNullable<PlannedTripResponse["weather_status"]>;
   weather_message: string | null;
   budget: BudgetBreakdownType;
   fuel_calculation: PlannedTripResponse["fuel_calculation"];
   recommendations: PlannedTripResponse["recommendations"];
+  itinerary: FullItinerary | null;
   vehicle: VehicleDetails;
   startDate: string;
   endDate: string;
@@ -299,6 +310,7 @@ export default function HomePage() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [tripDays, setTripDays] = useState<number>(1);
+  const [tripDaysManuallyEdited, setTripDaysManuallyEdited] = useState(false);
   const [dateError, setDateError] = useState<string | null>(null);
   const [dateWarning, setDateWarning] = useState<string | null>(null);
   const [vehicle, setVehicle] = useState<VehicleDetails>({
@@ -327,6 +339,10 @@ export default function HomePage() {
   }, [theme]);
 
   useEffect(() => {
+    if (tripDaysManuallyEdited) {
+      return;
+    }
+
     if (startDate && endDate) {
       try {
         const start = new Date(startDate);
@@ -340,7 +356,7 @@ export default function HomePage() {
         // Keep the manually entered tripDays value if parsing fails.
       }
     }
-  }, [startDate, endDate]);
+  }, [startDate, endDate, tripDaysManuallyEdited]);
 
   const selectedPreferences = useMemo(() => {
     const preferences: string[] = [];
@@ -417,8 +433,9 @@ export default function HomePage() {
       console.log("Sending dates:", requestBody.dates);
       console.log("Trip days being sent:", tripDays);
 
-      const planResponse = await fetch("/api/trip/plan", {
+      const planResponse = await fetch(`${API_BASE_URL}/api/trip/plan`, {
         method: "POST",
+        cache: "no-store",
         headers: {
           "Content-Type": "application/json",
           ...getAuthHeaders(),
@@ -432,7 +449,7 @@ export default function HomePage() {
       }
 
       const plan = (await planResponse.json()) as PlannedTripResponse;
-      const tripResult: TripResultStorage = {
+      const tripResult = {
         trip_id: plan.trip_id,
         origin: plan.origin,
         destination: plan.destination,
@@ -443,20 +460,22 @@ export default function HomePage() {
           features: [],
         },
         weather: plan.weather,
-        weather_status: plan.weather_status,
+        weather_status: plan.weather_status ?? "success",
         weather_message: plan.weather_message ?? null,
         budget: buildBudget(plan),
         fuel_calculation: plan.fuel_calculation,
         recommendations: plan.recommendations,
+        itinerary: plan.itinerary ?? null,
         vehicle,
         startDate: trimmedStartDate,
         endDate: trimmedEndDate,
         userBudget: form.budget,
         markers: buildMarkers(plan),
         report_summary: plan.report_summary,
-      };
+        destination_key: normalizeDestinationKey(plan.destination),
+      } as StoredTripResultStorage;
 
-      sessionStorage.setItem("tripResult", JSON.stringify(tripResult));
+      storeTripResult(tripResult);
       router.push("/trip-result");
     } catch (submitError) {
       const message = normalizeErrorMessage(submitError);
@@ -559,7 +578,10 @@ export default function HomePage() {
                   <div className="flex items-center gap-3 rounded-xl border border-[#2a2a2a] bg-[#111111] px-4 py-3">
                     <button
                       type="button"
-                      onClick={() => setTripDays((prev) => Math.max(1, prev - 1))}
+                      onClick={() => {
+                        setTripDaysManuallyEdited(true);
+                        setTripDays((prev) => Math.max(1, prev - 1));
+                      }}
                       className="flex h-8 w-8 items-center justify-center rounded-full bg-[#1a1a1a] text-lg font-bold text-white transition-colors hover:bg-[#2a2a2a]"
                     >
                       -
@@ -571,6 +593,7 @@ export default function HomePage() {
                       max={30}
                       value={tripDays}
                       onChange={(event) => {
+                        setTripDaysManuallyEdited(true);
                         const val = parseInt(event.target.value, 10);
                         if (!Number.isNaN(val) && val >= 1 && val <= 30) {
                           setTripDays(val);
@@ -581,7 +604,10 @@ export default function HomePage() {
 
                     <button
                       type="button"
-                      onClick={() => setTripDays((prev) => Math.min(30, prev + 1))}
+                      onClick={() => {
+                        setTripDaysManuallyEdited(true);
+                        setTripDays((prev) => Math.min(30, prev + 1));
+                      }}
                       className="flex h-8 w-8 items-center justify-center rounded-full bg-[#1a1a1a] text-lg font-bold text-white transition-colors hover:bg-[#2a2a2a]"
                     >
                       +

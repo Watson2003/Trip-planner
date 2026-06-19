@@ -1,0 +1,59 @@
+INFO:     Started server process [13560]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+(trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+OSM discovery failed for Goa: 
+Llama request timed out after 4.5s
+NVIDIA LLM ranking failed: 
+Trip planning timed out for Mumbai -> Goa; returning fallback result.
+OSM discovery failed for Mumbai-Goa Highway Stop: 
+Llama discovery failed for Mumbai-Goa Highway Stop: Client error '429 Too Many Requests' for url 'https://integrate.api.nvidia.com/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+OSM discovery failed for Pondicherry: 
+Llama request timed out after 4.5s
+Trip planning timed out for Trichy -> Pondicherry; returning fallback result.
+NVIDIA LLM ranking failed: 
+OSM discovery failed for Trichy-Pondicherry Highway Stop: 
+Llama request timed out after 4.5s
+OSM discovery failed for Pondicherry: 
+Llama discovery failed for Pondicherry: Client error '429 Too Many Requests' for url 'https://integrate.api.nvidia.com/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+OSM discovery failed for Trichy-Pondicherry Highway Stop: 
+Llama request timed out after 4.5s
+OSM discovery failed for Pondicherry: 
+Llama discovery failed for Pondicherry: Client error '429 Too Many Requests' for url 'https://integrate.api.nvidia.com/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+OSM discovery failed for Pondicherry: 
+Llama request timed out after 4.5s
+OSM discovery failed for Pondicherry: 
+Llama discovery failed for Pondicherry: Client error '429 Too Many Requests' for url 'https://integrate.api.nvidia.com/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+OSM discovery failed for Trichy-Pondicherry Highway Stop: 
+Llama request timed out after 4.5s
+OSM discovery failed for Pondicherry: 
+Llama request timed out after 4.5s
+OSM discovery failed for Pondicherry: 
+Llama discovery failed for Pondicherry: Client error '429 Too Many Requests' for url 'https://integrate.api.nvidia.com/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+OSM discovery failed for Pondicherry: 
+Llama request timed out after 4.5s
+OSM discovery failed for Trichy-Pondicherry Highway Stop: 
+Llama request timed out after 4.5s
+OSM discovery failed for Pondicherry: 
+Llama request timed out after 4.5s
+OSM discovery failed for Pondicherry: 
+Llama request timed out after 4.5s
+OSM discovery failed for Pondicherry: 
+Llama request timed out after 4.5s
+OSM discovery failed for Trichy-Pondicherry Highway Stop: 
+Llama request timed out after 4.5s
+OSM discovery failed for Pondicherry: 
+Llama request timed out after 4.5s
+OSM discovery failed for Pondicherry: 
+Llama request timed out after 4.5s
