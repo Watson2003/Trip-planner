@@ -1,19 +1,15 @@
 from __future__ import annotations
 
 from datetime import date, datetime, timedelta
-from typing import Any, Optional
+from typing import Optional
 
-import httpx
 from fastapi import APIRouter, HTTPException, Query, status
 from pydantic import BaseModel, ConfigDict, Field
 
-from agents.fallbacks import fallback_weather_forecast_response
-from agents.weather_agent import filter_openweather_forecast_by_date_range
+from agents.weather_agent import fetch_weather_forecast
 from models.schemas import DailyWeather
-from utils.config import settings
 
 router = APIRouter(tags=["weather"])
-OPENWEATHER_URL = "https://api.openweathermap.org/data/2.5/forecast"
 
 
 class WeatherRangeResponse(BaseModel):
@@ -38,19 +34,6 @@ def _parse_iso_date(value: str, field_name: str) -> date:
         ) from exc
 
 
-async def _fetch_openweather_payload(location: str) -> dict[str, Any]:
-    if not settings.openweathermap_api_key:
-        return fallback_weather_forecast_response(location)
-
-    async with httpx.AsyncClient(timeout=25.0) as client:
-        response = await client.get(
-            OPENWEATHER_URL,
-            params={"q": location, "appid": settings.openweathermap_api_key, "units": "metric"},
-        )
-        response.raise_for_status()
-        return response.json()
-
-
 @router.get(
     "/weather/{location}",
     response_model=WeatherRangeResponse,
@@ -62,7 +45,6 @@ async def get_weather(
     end_date: Optional[str] = Query(default=None, description="Travel end date in YYYY-MM-DD format"),
 ) -> WeatherRangeResponse:
     location_name = location.strip() or location
-    payload = await _fetch_openweather_payload(location_name)
 
     # If only one date is provided, treat it as an invalid date-range request.
     if bool(start_date) != bool(end_date):
@@ -74,15 +56,10 @@ async def get_weather(
     if not start_date and not end_date:
         # Fallback to the legacy 5-day forecast behavior when no travel dates are supplied.
         today = date.today()
-        weather = filter_openweather_forecast_by_date_range(
-            payload,
-            location_name,
-            today,
-            today + timedelta(days=4),
-        )
+        weather = await fetch_weather_forecast(location_name, today, today + timedelta(days=4))
         return WeatherRangeResponse(
             status="success",
-            location=payload.get("city", {}).get("name", location_name),
+            location=location_name,
             total_days=len(weather),
             weather=weather,
         )
@@ -114,10 +91,10 @@ async def get_weather(
             weather=[],
         )
 
-    weather = filter_openweather_forecast_by_date_range(payload, location_name, parsed_start, parsed_end)
+    weather = await fetch_weather_forecast(location_name, parsed_start, parsed_end)
     return WeatherRangeResponse(
         status="success",
-        location=payload.get("city", {}).get("name", location_name),
+        location=location_name,
         start_date=parsed_start.isoformat(),
         end_date=parsed_end.isoformat(),
         total_days=len({item["date"] for item in weather}),

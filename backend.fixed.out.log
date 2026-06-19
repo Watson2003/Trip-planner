@@ -1,0 +1,293 @@
+INFO:     127.0.0.1:58610 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63734 - "OPTIONS /api/trip/plan HTTP/1.1" 200 OK
+=== TRIP REQUEST RECEIVED ===
+requested_origin = Trichy
+requested_destination = Kodaikanal
+normalized_destination = kodaikanal
+dates: 2026-06-20 to 2026-06-23
+trip_days: 4
+budget: 25000.0
+preferences: ['scenic']
+trip_plan_destination = Kodaikanal
+discovered_attractions_count = 10
+discovered_restaurants_count = 8
+discovered_hotels_count = 5
+=== TRIPSTATE BEING BUILT ===
+trip_days going into state: 4
+TripState trip_days = 4
+destination_used_for_osm = Kodaikanal
+destination_used_for_llm = Kodaikanal
+DEBUG get_coordinates called with: 'Trichy'
+DEBUG get_coordinates called with: 'Kodaikanal'
+DEBUG geocoded 'Trichy' via OSM -> {'lat': 10.8071144, 'lng': 78.6880939}
+DEBUG geocoded 'Kodaikanal' via OSM -> {'lat': 10.233712, 'lng': 77.4919719}
+origin_name = Trichy
+destination_name = Kodaikanal
+origin_lat = 10.8071144
+origin_lon = 78.6880939
+destination_lat = 10.233712
+destination_lon = 77.4919719
+weather_city = Trichy
+weather_source = city_query:Trichy
+weather_city = Kodaikanal
+weather_source = city_query:Kodaikanal
+[BUDGET] raw trip_days from state: 4
+[BUDGET] trip_days_input: 4
+[BUDGET] FINAL days=4 nights=3
+[FUEL] distance_km=0.0
+[FUEL] fuel_type=diesel
+[FUEL] mileage=15.0
+[FUEL] fuel_price=95.0
+[FUEL] fuel_needed=0.0
+[FUEL] fuel_cost=0.0
+[BUDGET] Hotel: Rs1500/night x 3 nights = Rs4500
+[FOOD] destination=Kodaikanal
+[FOOD] is_vegetarian=False
+[FOOD] is_budget_restaurant=False
+[FOOD] price=Rs400 type=Local restaurants (Non-Veg)
+[BUDGET] Food: Rs400.0/person/day x 4 people x 4 days = Rs6400.0
+[TOLL] distance=0.0
+[TOLL] estimated_toll=0.0
+[TOLL] toll_estimation_used=false
+[BUDGET] Cost per person: Rs12150.0 ÷ 4 = Rs3037.5
+[BUDGET] === FINAL SUMMARY ===
+  Fuel:   Rs0.0
+  Hotel:  Rs4500 (3 nights)
+  Food:   Rs6400.0 (4 days)
+  Toll:   Rs0.0
+  Misc:   Rs1250.0
+  TOTAL:  Rs12150.0
+final_itinerary_destination = Kodaikanal
+recommendations_returned_count = 23
+INFO:     127.0.0.1:63734 - "POST /api/trip/plan HTTP/1.1" 201 Created
+weather_api_status = success
+weather_api_status = success
+[BUDGET] raw trip_days from state: 4
+[BUDGET] trip_days_input: 4
+[BUDGET] FINAL days=4 nights=3
+[FUEL] distance_km=187.8
+[FUEL] fuel_type=diesel
+[FUEL] mileage=15.0
+[FUEL] fuel_price=95.0
+[FUEL] fuel_needed=12.52
+[FUEL] fuel_cost=1189.4
+[BUDGET] Hotel: Rs1500/night x 3 nights = Rs4500
+[FOOD] destination=Kodaikanal
+[FOOD] is_vegetarian=False
+[FOOD] is_budget_restaurant=False
+[FOOD] price=Rs400 type=Local restaurants (Non-Veg)
+[BUDGET] Food: Rs400.0/person/day x 4 people x 4 days = Rs6400.0
+[TOLL] distance=187.8
+[TOLL] estimated_toll=230.0
+[TOLL] toll_estimation_used=true
+[BUDGET] Cost per person: Rs13569.4 ÷ 4 = Rs3392.35
+[BUDGET] === FINAL SUMMARY ===
+  Fuel:   Rs1189.4
+  Hotel:  Rs4500 (3 nights)
+  Food:   Rs6400.0 (4 days)
+  Toll:   Rs230.0
+  Misc:   Rs1250.0
+  TOTAL:  Rs13569.4
+=== RECOMMENDATION AGENT ===
+Origin received: 'Trichy'
+Destination received: 'Kodaikanal'
+requested_origin = Trichy
+requested_destination = Kodaikanal
+normalized_destination = kodaikanal
+Will fetch recommendations for: 'Kodaikanal'
+DEBUG: coordinates cache cleared
+destination_used_for_osm = Kodaikanal
+destination_used_for_llm = Kodaikanal
+Target city for API calls: 'Kodaikanal'
+DEBUG: fetching recommendations for: Kodaikanal
+DEBUG: using pre-discovered destination catalog from trip state
+OK: Destination: Kodaikanal
+OK: Hotels found: 5
+OK: Restaurants found: 8
+OK: Attractions found: 10
+OK: Final hotel count: 5
+first_5_selected_places = ['Villa Retreat', 'Kodai Resort Hotel', 'Sterling Kodai Valley', 'Lemontree Kodaikanal', 'The Carlton']
+=== DESTINATION EXPLORER ===
+requested_destination = Kodaikanal
+normalized_destination = kodaikanal
+destination_used_for_llm = Kodaikanal
+=== ITINERARY AGENT START ===
+INFO:     127.0.0.1:50990 - "OPTIONS /api/itinerary/generate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62895 - "OPTIONS /api/itinerary/generate HTTP/1.1" 200 OK
+=== ITINERARY AGENT START ===
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=06:30 AM current_location_before=Trichy current_location_after=Trichy route_progress_percent=5.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=07:15 AM current_location_before=Trichy current_location_after=Trichy route_progress_percent=25.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=10:45 AM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Trichy-Kodaikanal Highway Stop route_progress_percent=35.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=01:00 PM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Trichy-Kodaikanal Highway Stop route_progress_percent=55.00000000000001 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=05:30 PM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Kodaikanal route_progress_percent=92.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=06:30 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=96.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=07:15 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=98.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=08:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=08:00 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=09:30 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=12:30 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=03:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=05:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=06:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=07:30 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=09:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=08:00 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=09:30 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=12:30 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=03:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=05:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=06:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=07:30 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=09:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=08:00 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=09:30 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=10:15 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=10:55 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=11:30 AM current_location_before=Kodaikanal current_location_after=Trichy route_progress_percent=45.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=02:00 PM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Trichy-Kodaikanal Highway Stop route_progress_percent=65.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=04:30 PM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Trichy-Kodaikanal Highway Stop route_progress_percent=80.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=07:30 PM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Trichy route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY] Route-aware complete!
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=06:30 AM current_location_before=Trichy current_location_after=Trichy route_progress_percent=5.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=07:15 AM current_location_before=Trichy current_location_after=Trichy route_progress_percent=25.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=10:45 AM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Trichy-Kodaikanal Highway Stop route_progress_percent=35.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=01:00 PM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Trichy-Kodaikanal Highway Stop route_progress_percent=55.00000000000001 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=05:30 PM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Kodaikanal route_progress_percent=92.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=06:30 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=96.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=07:15 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=98.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=08:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=08:00 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=09:30 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=12:30 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=03:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=05:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=06:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=07:30 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=09:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=08:00 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=09:30 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=12:30 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=03:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=05:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=06:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=07:30 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=09:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=08:00 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=09:30 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=10:15 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=10:55 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=11:30 AM current_location_before=Kodaikanal current_location_after=Trichy route_progress_percent=45.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=02:00 PM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Trichy-Kodaikanal Highway Stop route_progress_percent=65.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=04:30 PM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Trichy-Kodaikanal Highway Stop route_progress_percent=80.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=07:30 PM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Trichy route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY] Route-aware complete!
+INFO:     127.0.0.1:50990 - "POST /api/itinerary/generate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59011 - "OPTIONS /api/itinerary/generate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63622 - "OPTIONS /api/itinerary/generate HTTP/1.1" 200 OK
+=== ITINERARY AGENT START ===
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=06:30 AM current_location_before=Trichy current_location_after=Trichy route_progress_percent=5.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=07:15 AM current_location_before=Trichy current_location_after=Trichy route_progress_percent=25.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=10:45 AM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Trichy-Kodaikanal Highway Stop route_progress_percent=35.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=01:00 PM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Trichy-Kodaikanal Highway Stop route_progress_percent=55.00000000000001 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=05:30 PM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Kodaikanal route_progress_percent=92.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=06:30 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=96.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=07:15 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=98.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=08:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=08:00 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=09:30 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=12:30 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=03:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=05:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=06:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=07:30 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=09:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=08:00 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=09:30 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=12:30 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=03:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=05:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=06:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=07:30 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=09:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=08:00 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=09:30 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=10:15 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=10:55 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=11:30 AM current_location_before=Kodaikanal current_location_after=Trichy route_progress_percent=45.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=02:00 PM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Trichy-Kodaikanal Highway Stop route_progress_percent=65.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=04:30 PM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Trichy-Kodaikanal Highway Stop route_progress_percent=80.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=07:30 PM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Trichy route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY] Route-aware complete!
+INFO:     127.0.0.1:62895 - "POST /api/itinerary/generate HTTP/1.1" 200 OK
+=== ITINERARY AGENT START ===
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=06:30 AM current_location_before=Trichy current_location_after=Trichy route_progress_percent=5.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=07:15 AM current_location_before=Trichy current_location_after=Trichy route_progress_percent=25.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=10:45 AM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Trichy-Kodaikanal Highway Stop route_progress_percent=35.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=01:00 PM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Trichy-Kodaikanal Highway Stop route_progress_percent=55.00000000000001 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=05:30 PM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Kodaikanal route_progress_percent=92.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=06:30 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=96.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=07:15 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=98.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=08:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=08:00 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=09:30 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=12:30 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=03:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=05:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=06:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=07:30 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=09:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=08:00 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=09:30 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=12:30 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=03:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=05:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=06:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=07:30 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=09:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=08:00 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=09:30 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=10:15 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=10:55 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=11:30 AM current_location_before=Kodaikanal current_location_after=Trichy route_progress_percent=45.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=02:00 PM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Trichy-Kodaikanal Highway Stop route_progress_percent=65.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=04:30 PM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Trichy-Kodaikanal Highway Stop route_progress_percent=80.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=07:30 PM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Trichy route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY] Route-aware complete!
+INFO:     127.0.0.1:50990 - "POST /api/itinerary/generate HTTP/1.1" 200 OK
+=== ITINERARY AGENT START ===
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=06:30 AM current_location_before=Trichy current_location_after=Trichy route_progress_percent=5.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=07:15 AM current_location_before=Trichy current_location_after=Trichy route_progress_percent=25.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=10:45 AM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Trichy-Kodaikanal Highway Stop route_progress_percent=35.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=01:00 PM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Trichy-Kodaikanal Highway Stop route_progress_percent=55.00000000000001 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=05:30 PM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Kodaikanal route_progress_percent=92.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=06:30 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=96.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=07:15 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=98.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=08:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=08:00 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=09:30 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=12:30 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=03:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=05:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=06:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=07:30 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=09:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=08:00 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=09:30 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=12:30 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=03:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=05:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=06:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=07:30 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=09:00 PM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=08:00 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=False
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=09:30 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=10:15 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=10:55 AM current_location_before=Kodaikanal current_location_after=Kodaikanal route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=11:30 AM current_location_before=Kodaikanal current_location_after=Trichy route_progress_percent=45.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=02:00 PM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Trichy-Kodaikanal Highway Stop route_progress_percent=65.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=04:30 PM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Trichy-Kodaikanal Highway Stop route_progress_percent=80.0 has_arrived_destination=True
+[ITINERARY][ROUTE] origin=Trichy destination=Kodaikanal current_time=07:30 PM current_location_before=Trichy-Kodaikanal Highway Stop current_location_after=Trichy route_progress_percent=100.0 has_arrived_destination=True
+[ITINERARY] Route-aware complete!
+INFO:     127.0.0.1:59011 - "POST /api/itinerary/generate HTTP/1.1" 200 OK
+ INFO:     127.0.0.1:59462 - "GET /api/debug/weather?origin=Trichy&destination=Ooty HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59463 - "GET /api/debug/route?origin=Trichy&destination=Ooty HTTP/1.1" 404 Not Found

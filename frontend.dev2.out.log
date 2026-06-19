@@ -1,0 +1,56 @@
+
+> ai-road-trip-planner@1.0.0 dev
+> next dev
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
+  - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 6.3s
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 16.4s (830 modules)
+ GET /_next/static/css/app/layout.css 404 in 16817ms
+ GET / 200 in 16884ms
+ GET / 200 in 16899ms
+ GET / 200 in 52ms
+ GET / 200 in 72ms
+ GET / 200 in 324ms
+ ○ Compiling /trip-result/itinerary ...
+ ✓ Compiled /trip-result/itinerary in 1473ms (838 modules)
+ ○ Compiling /trip-result ...
+ ✓ Compiled /trip-result in 8.2s (1996 modules)
+ ✓ Compiled in 432ms (951 modules)
+ ✓ Compiled in 145ms (951 modules)
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 1134ms (1978 modules)
+ GET /trip-result/itinerary 404 in 140ms
+ ✓ Compiled in 1390ms (1992 modules)
+ ○ Compiling /trip-result/itinerary ...
+ ✓ Compiled /trip-result/itinerary in 868ms (1998 modules)
+ ✓ Compiled in 1440ms (2010 modules)
+ GET /trip-result/itinerary 200 in 637ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 858ms (1047 modules)
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 10.2s (2231 modules)
+ GET /_next/static/chunks/main-app.js?v=1781884429845 500 in 25654ms
+ GET /_next/static/chunks/app/trip-result/itinerary/page.js 500 in 25653ms
+ GET /_next/static/chunks/webpack.js?v=1781884429845 500 in 25658ms
+ GET /_next/static/css/app/layout.css?v=1781884429845 500 in 25662ms
+ GET /_next/static/chunks/app/not-found.js 500 in 25654ms
+ GET /_next/static/chunks/app-pages-internals.js 500 in 25658ms
+ GET /_next/static/chunks/app/global-error.js 404 in 3119ms
+ ✓ Compiled in 13.5s (1144 modules)
+ ✓ Compiled in 160ms (1144 modules)
+ ✓ Compiled in 276ms (1144 modules)
+ GET /trip-result/itinerary 200 in 160ms
+ GET /trip-result/itinerary 200 in 25ms
+ GET /trip-result/itinerary 200 in 28ms
+ GET /trip-result/itinerary 200 in 73ms
+ GET /_next/static/css/app/layout.css?v=1781884489555 404 in 54ms
+ GET /_next/static/chunks/app/trip-result/itinerary/page.js 404 in 59ms
+ GET /_next/static/chunks/main-app.js?v=1781884489533 404 in 62ms
+ GET /trip-result/itinerary 200 in 27ms
+ GET /trip-result/itinerary 200 in 27ms
+ GET /_next/static/chunks/app/trip-result/itinerary/page.js 404 in 182ms

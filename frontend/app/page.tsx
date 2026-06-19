@@ -1,23 +1,38 @@
 "use client";
 
-import { useEffect, useMemo, useState, type FormEvent } from "react";
-import { Compass, Loader2, Sparkles } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } from "react";
+import Link from "next/link";
+import {
+  ArrowRight,
+  CloudSun,
+  Compass,
+  FileDown,
+  Globe2,
+  Hotel,
+  Loader2,
+  MapPinned,
+  MessageSquareMore,
+  ShieldCheck,
+  Sparkles,
+  Star,
+  TrendingUp,
+  Wallet,
+} from "lucide-react";
 
-import AuthGuard from "@/components/auth/AuthGuard";
 import Navbar from "@/components/auth/Navbar";
 import VehicleForm from "@/components/trip/VehicleForm";
-import { getAuthHeaders } from "@/lib/auth";
+import ItineraryPreview from "@/components/trip/ItineraryPreview";
+import TripSummaryCard from "@/components/trip/TripSummaryCard";
 import { API_BASE_URL } from "@/lib/api";
-import { storeTripResult, normalizeDestinationKey } from "@/lib/trip-result";
-import type { TripResultStorage as StoredTripResultStorage } from "@/lib/trip-result";
-import type {
-  BudgetBreakdown as BudgetBreakdownType,
-  FullItinerary,
-  PlannedTripResponse,
-  TripMarker,
-  VehicleDetails,
-} from "@/types";
+import { getAuthHeaders } from "@/lib/auth";
+import {
+  loadStoredTripResult,
+  normalizeDestinationKey,
+  normalizeRecommendations,
+  storeTripResult,
+  type TripResultStorage,
+} from "@/lib/trip-result";
+import type { BudgetBreakdown as BudgetBreakdownType, PlannedTripResponse, TripMarker, VehicleDetails } from "@/types";
 
 type FormState = {
   origin: string;
@@ -27,29 +42,6 @@ type FormState = {
   budgetHotels: boolean;
   vegetarianFood: boolean;
   budgetRestaurants: boolean;
-};
-
-type TripResultStorage = {
-  trip_id: number;
-  origin: string;
-  destination: string;
-  destination_key: string;
-  distance_km: number;
-  duration_hours: number;
-  route: GeoJSON.FeatureCollection;
-  weather: PlannedTripResponse["weather"];
-  weather_status: NonNullable<PlannedTripResponse["weather_status"]>;
-  weather_message: string | null;
-  budget: BudgetBreakdownType;
-  fuel_calculation: PlannedTripResponse["fuel_calculation"];
-  recommendations: PlannedTripResponse["recommendations"];
-  itinerary: FullItinerary | null;
-  vehicle: VehicleDetails;
-  startDate: string;
-  endDate: string;
-  userBudget: number;
-  markers: TripMarker[];
-  report_summary: string;
 };
 
 const INR_PER_USD = 83.5;
@@ -89,9 +81,7 @@ function formatApiDetail(detail: unknown) {
       })
       .join("; ");
   }
-  if (detail && typeof detail === "object") {
-    return JSON.stringify(detail);
-  }
+  if (detail && typeof detail === "object") return JSON.stringify(detail);
   return "Trip planning failed";
 }
 
@@ -103,29 +93,20 @@ function getTodayIsoDate() {
 
 function isMissingKeyMessage(message: string) {
   const lowered = message.toLowerCase();
-  return (
-    lowered.includes("api key") ||
-    lowered.includes("is not set in the environment") ||
-    (lowered.includes("missing") && lowered.includes("key"))
-  );
+  return lowered.includes("api key") || lowered.includes("is not set in the environment") || (lowered.includes("missing") && lowered.includes("key"));
 }
 
 function isValidIsoDate(value: string) {
   return /^\d{4}-\d{2}-\d{2}$/.test(value);
 }
 
-function formatDateForAPI(dateStr: string): string {
+function formatDateForAPI(dateStr: string) {
   if (!dateStr) return "";
-
-  if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
-    return dateStr;
-  }
-
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return dateStr;
   if (/^\d{2}-\d{2}-\d{4}$/.test(dateStr)) {
     const [dd, mm, yyyy] = dateStr.split("-");
     return `${yyyy}-${mm}-${dd}`;
   }
-
   return dateStr;
 }
 
@@ -146,26 +127,64 @@ function buildRouteGeoJSON(polyline: Array<[number, number]> | undefined | null)
   } satisfies GeoJSON.FeatureCollection;
 }
 
+function normalizeRoutePoint(point: unknown): [number, number] | null {
+  if (!Array.isArray(point) || point.length < 2) return null;
+  const [lat, lng] = point;
+  if (typeof lat !== "number" || typeof lng !== "number") return null;
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+  return [lat, lng];
+}
+
+function haversineDistanceKm(lat1: number, lon1: number, lat2: number, lon2: number) {
+  const toRad = (value: number) => (value * Math.PI) / 180;
+  const earthRadiusKm = 6371;
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+  return 2 * earthRadiusKm * Math.asin(Math.sqrt(a));
+}
+
+function estimateRouteDistanceKm(polyline: Array<[number, number]> | undefined | null) {
+  if (!polyline?.length) return 0;
+  let total = 0;
+  for (let index = 1; index < polyline.length; index += 1) {
+    const previous = polyline[index - 1];
+    const current = polyline[index];
+    if (!previous || !current) continue;
+    total += haversineDistanceKm(previous[0], previous[1], current[0], current[1]);
+  }
+  return Math.round(total * 100) / 100;
+}
+
+function estimateRouteDurationHours(distanceKm: number) {
+  if (!Number.isFinite(distanceKm) || distanceKm <= 0) return 0;
+  const averageSpeedKmh = 45;
+  return Math.round((distanceKm / averageSpeedKmh) * 100) / 100;
+}
+
 function buildMarkers(plan: PlannedTripResponse): TripMarker[] {
-  const polyline = plan.route.polyline ?? [];
+  const route = plan.route as PlannedTripResponse["route"] & {
+    origin_coords?: [number, number] | null;
+    destination_coords?: [number, number] | null;
+  };
+  const polyline = route.polyline ?? [];
   const stops = [plan.origin, ...(plan.waypoints ?? []), plan.destination].filter(Boolean);
   const markerCount = stops.length || 2;
 
   return stops.map((label, index) => {
-    const type: TripMarker["type"] =
-      index === 0 ? "origin" : index === markerCount - 1 ? "destination" : "waypoint";
+    const type: TripMarker["type"] = index === 0 ? "origin" : index === markerCount - 1 ? "destination" : "waypoint";
     const routeIndex =
       polyline.length > 1
-        ? Math.min(
-            polyline.length - 1,
-            Math.round((index / Math.max(1, markerCount - 1)) * (polyline.length - 1)),
-          )
+        ? Math.min(polyline.length - 1, Math.round((index / Math.max(1, markerCount - 1)) * (polyline.length - 1)))
         : 0;
-    const point = polyline[routeIndex] ?? polyline[0] ?? [20.5937, 78.9629];
+    const sampledPoint = polyline[routeIndex] ?? polyline[0] ?? [20.5937, 78.9629];
+    const originPoint = normalizeRoutePoint(route.origin_coords) ?? sampledPoint;
+    const destinationPoint = normalizeRoutePoint(route.destination_coords) ?? sampledPoint;
+    const point = index === 0 ? originPoint : index === markerCount - 1 ? destinationPoint : sampledPoint;
     const eta =
-      index === 0
-        ? "Start of trip"
-        : formatEta((plan.route.duration_hours ?? 0) * (index / Math.max(1, markerCount - 1)));
+      index === 0 ? "Start of trip" : formatEta((plan.route.duration_hours ?? 0) * (index / Math.max(1, markerCount - 1)));
 
     return {
       lat: point[0],
@@ -225,14 +244,57 @@ function buildBudget(plan: PlannedTripResponse): BudgetBreakdownType {
   };
 }
 
-function FeaturePill({ title, text }: { title: string; text: string }) {
+function SectionCard({
+  eyebrow,
+  title,
+  description,
+  action,
+  children,
+}: {
+  eyebrow: string;
+  title: string;
+  description: string;
+  action?: ReactNode;
+  children: ReactNode;
+}) {
   return (
-    <div className="rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a] p-4 shadow-lg shadow-black/10">
-      <div className="text-sm font-semibold text-white">{title}</div>
-      <div className="mt-1 text-sm text-[#a0a0a0]">{text}</div>
-    </div>
+    <section className="roadmind-panel overflow-hidden rounded-[2.25rem] border border-slate-200 bg-white">
+      <div className="flex flex-col gap-3 border-b border-slate-200 px-5 py-5 sm:flex-row sm:items-end sm:justify-between sm:px-6">
+        <div className="space-y-2">
+          <p className="text-caption text-xs uppercase tracking-[0.28em]">{eyebrow}</p>
+          <h2 className="text-heading text-2xl font-black tracking-tight">{title}</h2>
+          <p className="text-body max-w-2xl text-sm leading-6">{description}</p>
+        </div>
+        {action ? <div>{action}</div> : null}
+      </div>
+      <div className="p-5 sm:p-6">{children}</div>
+    </section>
   );
 }
+
+const POPULAR_DESTINATIONS = [
+  { name: "Ooty", tone: "from-blue-50 to-white", icon: "🏞️" },
+  { name: "Goa", tone: "from-cyan-50 to-white", icon: "🏖️" },
+  { name: "Munnar", tone: "from-emerald-50 to-white", icon: "🌿" },
+  { name: "Kodaikanal", tone: "from-violet-50 to-white", icon: "⛰️" },
+  { name: "Pondicherry", tone: "from-amber-50 to-white", icon: "🌊" },
+];
+
+const WHY_ROADMIND = [
+  { title: "AI Route Intelligence", description: "Smarter paths with destination-aware planning.", icon: MapPinned, accent: "text-blue-600", bg: "bg-blue-50" },
+  { title: "Weather Insights", description: "Forecast-aware trips with safer travel timing.", icon: CloudSun, accent: "text-cyan-600", bg: "bg-cyan-50" },
+  { title: "Budget Planning", description: "Clear costs with fuel, hotel, food, and tolls.", icon: Wallet, accent: "text-emerald-600", bg: "bg-emerald-50" },
+  { title: "Smart Hotels", description: "Destination-fit stays with practical recommendations.", icon: Hotel, accent: "text-purple-600", bg: "bg-purple-50" },
+  { title: "PDF Export", description: "Save and share a polished trip plan instantly.", icon: FileDown, accent: "text-blue-600", bg: "bg-blue-50" },
+  { title: "AI Chat Assistant", description: "Ask follow-up questions inside the trip workspace.", icon: MessageSquareMore, accent: "text-rose-600", bg: "bg-rose-50" },
+];
+
+const DASHBOARD_STATS = [
+  { value: "1000+", label: "Trips Planned", icon: TrendingUp },
+  { value: "50+", label: "Destinations", icon: Globe2 },
+  { value: "AI Powered", label: "Always On", icon: Sparkles },
+  { value: "Real-time", label: "Recommendations", icon: ShieldCheck },
+];
 
 function TextField({
   label,
@@ -247,12 +309,12 @@ function TextField({
 }) {
   return (
     <label className="grid gap-2">
-      <span className="text-sm font-medium text-[#a0a0a0]">{label}</span>
+      <span className="text-sm font-medium text-slate-700">{label}</span>
       <input
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="rounded-2xl border border-[#2a2a2a] bg-[#111111] px-4 py-3 text-white outline-none ring-0 placeholder:text-[#444444] focus:border-white"
+        className="roadmind-input px-4 py-3 text-[15px]"
       />
     </label>
   );
@@ -262,27 +324,25 @@ function DateField({
   label,
   value,
   onChange,
-  className = "",
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
-  className?: string;
 }) {
   return (
-    <label className={`grid gap-2 ${className}`}>
-      <span className="text-sm font-medium text-[#a0a0a0]">{label}</span>
+    <label className="grid gap-2">
+      <span className="text-sm font-medium text-slate-700">{label}</span>
       <input
         type="date"
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="w-full rounded-2xl border border-[#2a2a2a] bg-[#111111] px-4 py-3 text-white outline-none focus:border-white"
+        className="roadmind-input px-4 py-3 text-[15px]"
       />
     </label>
   );
 }
 
-function PreferenceCheck({
+function ToggleChip({
   label,
   checked,
   onChange,
@@ -292,24 +352,39 @@ function PreferenceCheck({
   onChange: (checked: boolean) => void;
 }) {
   return (
-    <label className="flex min-w-[180px] flex-1 items-center justify-between gap-3 rounded-2xl border border-[#1a1a1a] bg-[#111111] px-4 py-3">
-      <span className="text-sm text-[#a0a0a0]">{label}</span>
+    <label
+      className={[
+        "flex items-center justify-between gap-3 rounded-2xl border px-4 py-3 transition duration-300",
+        checked
+          ? "border-blue-200 bg-blue-50 text-blue-700 shadow-sm"
+          : "border-slate-200 bg-white text-slate-700 shadow-sm hover:border-blue-400 hover:shadow-md",
+      ].join(" ")}
+    >
+      <span className="text-sm font-medium">{label}</span>
       <input
         type="checkbox"
         checked={checked}
         onChange={(event) => onChange(event.target.checked)}
-        className="h-4 w-4 rounded border-[#2a2a2a] bg-[#111111] text-white accent-white"
+        className="h-4 w-4 rounded border-slate-300 bg-transparent text-blue-600 accent-blue-600"
       />
     </label>
   );
 }
 
+function FloatingStat({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+      <div className="text-[11px] uppercase tracking-[0.24em] text-slate-400">{label}</div>
+      <div className="mt-2 text-lg font-bold text-slate-950">{value}</div>
+    </div>
+  );
+}
+
 export default function HomePage() {
-  const router = useRouter();
   const [form, setForm] = useState<FormState>(DEFAULT_FORM);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [tripDays, setTripDays] = useState<number>(1);
+  const [tripDays, setTripDays] = useState(1);
   const [tripDaysManuallyEdited, setTripDaysManuallyEdited] = useState(false);
   const [dateError, setDateError] = useState<string | null>(null);
   const [dateWarning, setDateWarning] = useState<string | null>(null);
@@ -324,6 +399,9 @@ export default function HomePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [tripResult, setTripResult] = useState<TripResultStorage | null>(null);
+  const formRef = useRef<HTMLDivElement | null>(null);
+  const previewRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const savedTheme = window.localStorage.getItem("roadmind-theme") as "light" | "dark" | null;
@@ -333,27 +411,28 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    const root = document.documentElement;
-    root.classList.toggle("dark", theme === "dark");
+    document.documentElement.classList.toggle("dark", theme === "dark");
     window.localStorage.setItem("roadmind-theme", theme);
   }, [theme]);
 
   useEffect(() => {
-    if (tripDaysManuallyEdited) {
-      return;
+    const stored = loadStoredTripResult();
+    if (stored) {
+      setTripResult(stored);
     }
+  }, []);
 
+  useEffect(() => {
+    if (tripDaysManuallyEdited) return;
     if (startDate && endDate) {
       try {
         const start = new Date(startDate);
         const end = new Date(endDate);
         const diffMs = end.getTime() - start.getTime();
         const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24)) + 1;
-        if (diffDays >= 1) {
-          setTripDays(diffDays);
-        }
+        if (diffDays >= 1) setTripDays(diffDays);
       } catch {
-        // Keep the manually entered tripDays value if parsing fails.
+        // Leave manual input intact.
       }
     }
   }, [startDate, endDate, tripDaysManuallyEdited]);
@@ -384,35 +463,36 @@ export default function HomePage() {
     const trimmedEndDate = endDate.trim();
 
     if (!trimmedStartDate) {
-      setDateError("Please select start date");
+      setDateError("Please select a start date.");
       return;
     }
     if (!trimmedEndDate) {
-      setDateError("Please select end date");
+      setDateError("Please select an end date.");
       return;
     }
     if (!isValidIsoDate(trimmedStartDate) || !isValidIsoDate(trimmedEndDate) || trimmedEndDate < trimmedStartDate) {
-      setDateError("End date must be after start date");
+      setDateError("End date must be after start date.");
       return;
     }
     if (tripDays < 1) {
-      setError("Please enter at least 1 day");
+      setError("Please enter at least 1 day.");
       return;
     }
+
     const todayIso = getTodayIsoDate();
     if (trimmedStartDate < todayIso) {
-      setDateWarning("Start date is in the past. Weather forecast may not be available.");
+      setDateWarning("Start date is in the past. Weather forecast may be limited.");
     }
     if (!vehicle.vehicle_name.trim()) {
-      setError("Please enter your vehicle name");
+      setError("Please enter your vehicle name.");
       return;
     }
     if (!Number.isFinite(vehicle.mileage_kmpl) || vehicle.mileage_kmpl <= 0) {
-      setError("Please enter your vehicle mileage");
+      setError("Please enter your vehicle mileage.");
       return;
     }
     if (!Number.isFinite(vehicle.tank_capacity_litres) || vehicle.tank_capacity_litres <= 0) {
-      setError("Please enter your tank capacity");
+      setError("Please enter your tank capacity.");
       return;
     }
 
@@ -427,11 +507,6 @@ export default function HomePage() {
         preferences: selectedPreferences,
         vehicle,
       };
-      console.log("=== SENDING TO API ===");
-      console.log("trip_days:", tripDays);
-      console.log("Full request body:", JSON.stringify(requestBody));
-      console.log("Sending dates:", requestBody.dates);
-      console.log("Trip days being sent:", tripDays);
 
       const planResponse = await fetch(`${API_BASE_URL}/api/trip/plan`, {
         method: "POST",
@@ -449,22 +524,21 @@ export default function HomePage() {
       }
 
       const plan = (await planResponse.json()) as PlannedTripResponse;
-      const tripResult = {
+      const routeDistanceKm = Math.max(plan.route.distance_km ?? 0, estimateRouteDistanceKm(plan.route.polyline));
+      const routeDurationHours = Math.max(plan.route.duration_hours ?? 0, estimateRouteDurationHours(routeDistanceKm));
+      const trip = {
         trip_id: plan.trip_id,
         origin: plan.origin,
         destination: plan.destination,
-        distance_km: plan.route.distance_km,
-        duration_hours: plan.route.duration_hours,
-        route: buildRouteGeoJSON(plan.route.polyline) ?? {
-          type: "FeatureCollection",
-          features: [],
-        },
+        distance_km: routeDistanceKm,
+        duration_hours: routeDurationHours,
+        route: buildRouteGeoJSON(plan.route.polyline) ?? { type: "FeatureCollection", features: [] },
         weather: plan.weather,
         weather_status: plan.weather_status ?? "success",
         weather_message: plan.weather_message ?? null,
         budget: buildBudget(plan),
-        fuel_calculation: plan.fuel_calculation,
-        recommendations: plan.recommendations,
+        fuel_calculation: plan.fuel_calculation ?? null,
+        recommendations: normalizeRecommendations(plan.recommendations, plan.destination),
         itinerary: plan.itinerary ?? null,
         vehicle,
         startDate: trimmedStartDate,
@@ -473,10 +547,11 @@ export default function HomePage() {
         markers: buildMarkers(plan),
         report_summary: plan.report_summary,
         destination_key: normalizeDestinationKey(plan.destination),
-      } as StoredTripResultStorage;
+      } satisfies TripResultStorage;
 
-      storeTripResult(tripResult);
-      router.push("/trip-result");
+      storeTripResult(trip);
+      setTripResult(trip);
+      previewRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     } catch (submitError) {
       const message = normalizeErrorMessage(submitError);
       setError(isMissingKeyMessage(message) ? `${message} Check backend/.env, restart the backend, and try again.` : message);
@@ -485,45 +560,183 @@ export default function HomePage() {
     }
   }
 
+  const topFeatureCards = [
+    { label: "Route insight", value: "Smart driving paths" },
+    { label: "Destination quality", value: "Curated attractions" },
+    { label: "Planning clarity", value: "Budget and weather ready" },
+  ];
+
   return (
-    <AuthGuard>
+    <>
       <Navbar theme={theme} onToggleTheme={() => setTheme((current) => (current === "dark" ? "light" : "dark"))} />
-      <main className="min-h-screen overflow-x-hidden bg-black text-white transition-colors">
+      <main className="min-h-screen overflow-x-hidden text-slate-950">
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-          <section className="grid gap-8 rounded-[2rem] border border-[#1a1a1a] bg-[#0a0a0a] p-5 shadow-2xl backdrop-blur-xl lg:grid-cols-[1.08fr_0.92fr] lg:p-8">
-            <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm font-semibold text-white">
-                <Sparkles className="h-4 w-4" />
-                AI Road Trip Planner
+          <section className="grid gap-6 lg:grid-cols-[1.06fr_0.94fr]">
+            <div className="roadmind-panel overflow-hidden rounded-[2.5rem] border border-slate-200 bg-white p-6 shadow-xl sm:p-8">
+              <div className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-2 text-xs font-bold uppercase tracking-[0.26em] text-blue-700">
+                <Sparkles className="h-4 w-4 text-blue-600" />
+                AI-powered road trip planner
               </div>
 
-              <div className="space-y-3">
-                <h1 className="max-w-3xl text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
-                  Plan the route, tune the budget, and keep every stop in view.
+              <div className="mt-6 space-y-4">
+                <h1 className="text-heading max-w-3xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">
+                  RoadMind AI
                 </h1>
-                <p className="max-w-2xl text-base leading-7 text-[#a0a0a0] sm:text-lg">
-                  Enter your trip details, generate an AI-planned road trip, and review the route map, weather
-                  outlook, recommendations, and detailed budget breakdown in one responsive dashboard.
+                <p className="text-lg font-medium text-blue-700 sm:text-xl">AI-powered road trip planner</p>
+                <p className="text-body max-w-2xl text-sm leading-7 sm:text-base">
+                  Build premium road trips with destination-specific attractions, realistic routes, weather, budget
+                  intelligence, and a polished itinerary preview. Everything stays in one beautiful travel workspace.
                 </p>
               </div>
 
-              <div className="grid gap-3 sm:grid-cols-3">
-                <FeaturePill title="Scenic" text="Coastal and hill routes" />
-                <FeaturePill title="Budget" text="Stay within spending limits" />
-                <FeaturePill title="Weather" text="Spot risky conditions early" />
+              <div className="mt-8 grid gap-3 sm:grid-cols-3">
+                {topFeatureCards.map((item) => (
+                  <FloatingStat key={item.label} label={item.label} value={item.value} />
+                ))}
+              </div>
+
+              <div className="mt-8 flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  onClick={() => formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })}
+                  className="roadmind-primary-button inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm font-bold"
+                >
+                  Plan My Trip
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+                <Link
+                  href="/trip-result"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition duration-300 hover:border-blue-400 hover:bg-slate-50 hover:text-slate-950 hover:shadow-md"
+                >
+                  View Last Trip
+                </Link>
+              </div>
+
+              <div className="mt-8 grid gap-3 sm:grid-cols-2">
+                <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+                  <p className="text-caption text-xs uppercase tracking-[0.24em]">Why it feels premium</p>
+                  <p className="text-body mt-2 text-sm leading-6">
+                    Elegant route planning, curated places, and day-by-day itinerary intelligence without clutter.
+                  </p>
+                </div>
+                <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5 shadow-sm">
+                  <p className="text-caption text-xs uppercase tracking-[0.24em]">Built for travel</p>
+                  <p className="text-body mt-2 text-sm leading-6">
+                    Map, weather, budget, PDF export, and AI chat all stay connected to the same saved trip result.
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-8 space-y-5">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-caption text-xs uppercase tracking-[0.26em]">Travel Intelligence</p>
+                    <h2 className="text-heading mt-1 text-2xl font-black tracking-tight">Explore smarter trip planning</h2>
+                  </div>
+                  <div className="hidden rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 sm:inline-flex">
+                    Premium dashboard
+                  </div>
+                </div>
+
+                <div className="grid gap-4 xl:grid-cols-2">
+                  <div className="roadmind-glass rounded-[1.75rem] p-5 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:shadow-xl">
+                    <div className="mb-4 flex items-center justify-between gap-3">
+                      <div>
+                        <p className="text-caption text-xs uppercase tracking-[0.24em]">Popular Destinations</p>
+                        <h3 className="text-heading mt-1 text-lg font-bold">Where travelers are going</h3>
+                      </div>
+                      <MapPinned className="h-5 w-5 text-blue-600" />
+                    </div>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      {POPULAR_DESTINATIONS.map((item) => (
+                        <button
+                          key={item.name}
+                          type="button"
+                          className={`group rounded-2xl border border-slate-200 bg-gradient-to-br ${item.tone} p-4 text-left shadow-sm transition duration-300 hover:-translate-y-0.5 hover:border-blue-400 hover:shadow-md`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-lg shadow-sm transition group-hover:scale-105">
+                              {item.icon}
+                            </span>
+                            <div>
+                              <div className="text-heading text-sm font-bold">{item.name}</div>
+                              <div className="text-caption text-xs">Curated travel quality</div>
+                            </div>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="roadmind-glass rounded-[1.75rem] p-5 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:shadow-xl">
+                    <div className="mb-4 flex items-center justify-between gap-3">
+                      <div>
+                        <p className="text-caption text-xs uppercase tracking-[0.24em]">Why RoadMind AI</p>
+                        <h3 className="text-heading mt-1 text-lg font-bold">Intelligence built for road trips</h3>
+                      </div>
+                      <Sparkles className="h-5 w-5 text-blue-600" />
+                    </div>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      {WHY_ROADMIND.map((item) => {
+                        const Icon = item.icon;
+                        return (
+                          <div
+                            key={item.title}
+                            className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:border-blue-400 hover:shadow-md"
+                          >
+                            <div className={`mb-3 flex h-10 w-10 items-center justify-center rounded-2xl ${item.bg} ${item.accent}`}>
+                              <Icon className="h-5 w-5" />
+                            </div>
+                            <div className="text-heading text-sm font-bold">{item.title}</div>
+                            <p className="text-body mt-2 text-sm leading-6">{item.description}</p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="roadmind-glass rounded-[1.75rem] p-5 shadow-sm transition duration-300 hover:shadow-xl">
+                  <div className="mb-4 flex items-center justify-between gap-3">
+                    <div>
+                      <p className="text-caption text-xs uppercase tracking-[0.24em]">Stats</p>
+                      <h3 className="text-heading mt-1 text-lg font-bold">RoadMind AI in numbers</h3>
+                    </div>
+                    <TrendingUp className="h-5 w-5 text-emerald-600" />
+                  </div>
+                  <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                    {DASHBOARD_STATS.map((item) => {
+                      const Icon = item.icon;
+                      return (
+                        <div
+                          key={item.label}
+                          className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:border-blue-400 hover:shadow-md"
+                        >
+                          <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-50 text-blue-600">
+                            <Icon className="h-5 w-5" />
+                          </div>
+                          <div className="text-heading text-2xl font-black tracking-tight">{item.value}</div>
+                          <div className="text-caption mt-1 text-sm">{item.label}</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
             </div>
 
-            <form
-              onSubmit={handleSubmit}
-              className="sticky top-20 mx-auto w-full max-w-2xl rounded-[1.75rem] border border-[#1a1a1a] bg-[#0a0a0a] p-5 text-white shadow-2xl"
-            >
-              <div className="flex items-center gap-2 text-sm text-[#a0a0a0]">
-                <Compass className="h-4 w-4 text-white" />
-                Trip details
+            <div ref={formRef} className="roadmind-form-card rounded-[2.5rem] p-5 sm:p-6">
+              <div className="mb-5 flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
+                  <Compass className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="text-caption text-xs uppercase tracking-[0.24em]">Trip planner</p>
+                  <h2 className="text-heading text-xl font-bold">Start your road trip</h2>
+                </div>
               </div>
 
-              <div className="mt-4 grid gap-4">
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <TextField
                   label="Origin"
                   value={form.origin}
@@ -537,7 +750,7 @@ export default function HomePage() {
                   placeholder="e.g. Goa"
                 />
 
-                <div className="flex flex-col gap-3 md:flex-row">
+                <div className="grid gap-3 sm:grid-cols-2">
                   <DateField
                     label="Start date"
                     value={startDate}
@@ -545,7 +758,6 @@ export default function HomePage() {
                       setStartDate(value);
                       setDateError(null);
                     }}
-                    className="w-full flex-1"
                   />
                   <DateField
                     label="End date"
@@ -554,35 +766,34 @@ export default function HomePage() {
                       setEndDate(value);
                       setDateError(null);
                     }}
-                    className="w-full flex-1"
                   />
                 </div>
 
-                {(dateError || dateWarning) && (
+                {dateError || dateWarning ? (
                   <div className="space-y-2">
                     {dateError ? (
-                      <div className="rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm font-medium text-red-200">
+                      <div className="rounded-2xl border border-rose-400/20 bg-rose-400/10 px-4 py-3 text-sm text-rose-100">
                         {dateError}
                       </div>
                     ) : null}
                     {dateWarning ? (
-                      <div className="rounded-2xl border border-yellow-500/30 bg-yellow-500/10 px-4 py-3 text-sm font-medium text-yellow-200">
+                      <div className="rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-blue-700">
                         {dateWarning}
                       </div>
                     ) : null}
                   </div>
-                )}
+                ) : null}
 
-                <div className="mt-3">
-                  <label className="mb-1 block text-sm text-[#888888]">Number of Days</label>
-                  <div className="flex items-center gap-3 rounded-xl border border-[#2a2a2a] bg-[#111111] px-4 py-3">
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-slate-700">Number of Days</label>
+                  <div className="roadmind-counter flex items-center gap-3 rounded-2xl px-4 py-3">
                     <button
                       type="button"
                       onClick={() => {
                         setTripDaysManuallyEdited(true);
                         setTripDays((prev) => Math.max(1, prev - 1));
                       }}
-                      className="flex h-8 w-8 items-center justify-center rounded-full bg-[#1a1a1a] text-lg font-bold text-white transition-colors hover:bg-[#2a2a2a]"
+                      className="roadmind-counter-button h-9 w-9 text-lg font-bold"
                     >
                       -
                     </button>
@@ -594,12 +805,10 @@ export default function HomePage() {
                       value={tripDays}
                       onChange={(event) => {
                         setTripDaysManuallyEdited(true);
-                        const val = parseInt(event.target.value, 10);
-                        if (!Number.isNaN(val) && val >= 1 && val <= 30) {
-                          setTripDays(val);
-                        }
+                        const value = Number.parseInt(event.target.value, 10);
+                        if (!Number.isNaN(value) && value >= 1 && value <= 30) setTripDays(value);
                       }}
-                      className="w-16 border-none bg-transparent text-center text-lg font-semibold text-white outline-none"
+                      className="w-16 border-none bg-transparent text-center text-lg font-semibold text-slate-950 outline-none"
                     />
 
                     <button
@@ -608,32 +817,22 @@ export default function HomePage() {
                         setTripDaysManuallyEdited(true);
                         setTripDays((prev) => Math.min(30, prev + 1));
                       }}
-                      className="flex h-8 w-8 items-center justify-center rounded-full bg-[#1a1a1a] text-lg font-bold text-white transition-colors hover:bg-[#2a2a2a]"
+                      className="roadmind-counter-button h-9 w-9 text-lg font-bold"
                     >
                       +
                     </button>
 
-                    <span className="ml-1 text-sm text-[#888888]">
-                      {tripDays === 1 ? "day" : "days"}
-                      {tripDays > 1 && (
-                        <span className="ml-2 text-[#555555]">
-                          ({tripDays - 1} night{tripDays - 1 > 1 ? "s" : ""})
-                        </span>
-                      )}
+                    <span className="ml-1 text-sm text-slate-700">
+                      {tripDays} day{tripDays === 1 ? "" : "s"}
                     </span>
                   </div>
-
-                  <p className="mt-1 text-xs text-[#555555]">
-                    Hotel cost = ₹price/night × {tripDays - 1 || 1} night{tripDays - 1 > 1 ? "s" : ""}
-                  </p>
                 </div>
 
-                <div className="space-y-3 rounded-2xl border border-[#1a1a1a] bg-[#111111] p-4">
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <label className="text-sm font-medium text-[#a0a0a0]">Budget</label>
-                    <span className="rounded-full bg-white px-3 py-1 text-sm font-bold text-black">
-                      {"\u20b9"}
-                      {form.budget.toLocaleString("en-IN")}
+                <div className="space-y-3 rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
+                  <div className="flex items-center justify-between gap-3">
+                    <label className="text-sm font-medium text-slate-700">Budget</label>
+                  <span className="rounded-full bg-blue-50 px-3 py-1 text-sm font-bold text-blue-700">
+                      ₹{form.budget.toLocaleString("en-IN")}
                     </span>
                   </div>
                   <input
@@ -643,76 +842,108 @@ export default function HomePage() {
                     step={500}
                     value={form.budget}
                     onChange={(event) => setForm((current) => ({ ...current, budget: Number(event.target.value) }))}
-                    className="h-2 w-full cursor-pointer appearance-none rounded-full bg-transparent accent-[#D4AF37]"
+                    className="h-2 w-full cursor-pointer appearance-none rounded-full bg-transparent accent-blue-500"
                     style={{
-                      background: `linear-gradient(to right, #D4AF37 0%, #D4AF37 ${Math.max(
+                      background: `linear-gradient(to right, #2563EB 0%, #2563EB ${Math.max(
                         0,
                         Math.min(100, ((form.budget - 5000) / (100000 - 5000)) * 100),
-                      )}%, #2a2a2a ${Math.max(0, Math.min(100, ((form.budget - 5000) / (100000 - 5000)) * 100))}%, #2a2a2a 100%)`,
+                      )}%, rgba(255,255,255,0.12) ${Math.max(
+                        0,
+                        Math.min(100, ((form.budget - 5000) / (100000 - 5000)) * 100),
+                      )}%, rgba(255,255,255,0.12) 100%)`,
                     }}
                   />
-                  <div className="flex justify-between text-xs text-[#888888]">
-                    <span>{"\u20b95,000"}</span>
-                    <span>{"\u20b9100,000"}</span>
+                  <div className="flex justify-between text-xs text-slate-500">
+                    <span>₹5,000</span>
+                    <span>₹1,00,000</span>
                   </div>
                 </div>
 
-                <div className="grid gap-2 rounded-2xl border border-[#1a1a1a] bg-[#111111] p-4 sm:grid-cols-2">
-                  <PreferenceCheck
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <ToggleChip
                     label="Scenic route"
                     checked={form.scenicRoute}
                     onChange={(checked) => setForm((current) => ({ ...current, scenicRoute: checked }))}
                   />
-                  <PreferenceCheck
+                  <ToggleChip
                     label="Budget hotels"
                     checked={form.budgetHotels}
                     onChange={(checked) => setForm((current) => ({ ...current, budgetHotels: checked }))}
                   />
-                  <PreferenceCheck
+                  <ToggleChip
                     label="Vegetarian food"
                     checked={form.vegetarianFood}
                     onChange={(checked) => setForm((current) => ({ ...current, vegetarianFood: checked }))}
                   />
-                  <PreferenceCheck
+                  <ToggleChip
                     label="Budget restaurants"
                     checked={form.budgetRestaurants}
                     onChange={(checked) => setForm((current) => ({ ...current, budgetRestaurants: checked }))}
                   />
                 </div>
 
-                <div className="flex items-center gap-3 pt-1">
-                  <div className="h-px flex-1 bg-white/10" />
-                  <span className="text-xs font-bold uppercase tracking-[0.24em] text-white">
-                    Your Vehicle
-                  </span>
-                  <div className="h-px flex-1 bg-white/10" />
+                <div className="pt-1">
+                  <div className="mb-3 flex items-center gap-3">
+                    <div className="h-px flex-1 bg-white/8" />
+                    <span className="text-xs font-bold uppercase tracking-[0.24em] text-slate-400">Your vehicle</span>
+                    <div className="h-px flex-1 bg-white/8" />
+                  </div>
+                  <VehicleForm
+                    initialValues={vehicle}
+                    onChange={(nextVehicle) => setVehicle(nextVehicle)}
+                    showFuelPreview={false}
+                  />
                 </div>
 
-                <VehicleForm
-                  initialValues={vehicle}
-                  onChange={(nextVehicle) => setVehicle(nextVehicle)}
-                  showFuelPreview={false}
-                />
-
-                {error && (
-                  <div className="rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm font-medium text-red-200">
+                {error ? (
+                  <div className="rounded-2xl border border-rose-400/20 bg-rose-400/10 px-4 py-3 text-sm text-rose-100">
                     {error}
                   </div>
-                )}
+                ) : null}
 
                 <button
                   type="submit"
                   disabled={loading}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-white px-5 py-3 text-sm font-bold text-black transition hover:bg-[#e0e0e0] disabled:cursor-not-allowed disabled:opacity-70"
+                  className="roadmind-primary-button inline-flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-3.5 text-sm font-bold disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
                   {loading ? "Planning trip..." : "Plan trip"}
                 </button>
-              </div>
-            </form>
+              </form>
+            </div>
           </section>
+
+          <div className="mt-6" ref={previewRef}>
+            {tripResult ? (
+              <div className="space-y-6">
+                <TripSummaryCard trip={tripResult} />
+                <ItineraryPreview trip={tripResult} />
+              </div>
+            ) : (
+              <SectionCard
+                eyebrow="After planning"
+                title="Your trip preview will appear here"
+                description="Once the route is generated, this home screen will show a clean snapshot with destination, budget, top attractions, and a Day 1 summary."
+              >
+                <div className="grid gap-3 sm:grid-cols-3">
+                  <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+                    <MapPinned className="mb-3 h-5 w-5 text-blue-600" />
+                    Destination and route summary
+                  </div>
+                  <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+                    <Star className="mb-3 h-5 w-5 text-emerald-600" />
+                    Top 3 attractions
+                  </div>
+                  <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+                    <Sparkles className="mb-3 h-5 w-5 text-purple-600" />
+                    Day 1 itinerary preview
+                  </div>
+                </div>
+              </SectionCard>
+            )}
+          </div>
         </div>
       </main>
-    </AuthGuard>
+    </>
   );
 }

@@ -14,6 +14,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from agents.graph import trip_planner_graph
 from agents.budget_agent import run_budget_agent
 from agents.fallbacks import fallback_daily_weather, fallback_route, fallback_route_road
+from agents.route_agent import _fallback_route_from_geocodes, _fetch_route
+from agents.weather_agent import fetch_weather_forecast
+from tools import generate_pdf_report
 from tools.osm_places import normalize_place_name
 from models.database import async_session_maker
 from models.schemas import LocationRecommendation, RecommendationCatalog, TripDetailResponse, TripPlanResponse, TripRequest, TripSummaryResponse
@@ -364,6 +367,13 @@ def _normalize_plan_state(state: dict) -> dict:
         "duration_hours": route_data.get("duration_hours", state.get("route_duration_hours")),
         "polyline": route_data.get("polyline", state.get("polyline", [])),
         "toll_roads": route_data.get("toll_roads", state.get("toll_roads", False)),
+        "coordinates": route_data.get("coordinates", state.get("polyline", [])),
+        "origin_coords": route_data.get("origin_coords"),
+        "destination_coords": route_data.get("destination_coords"),
+        "direction_valid": route_data.get("direction_valid", True),
+        "coordinate_order_fixed": route_data.get("coordinate_order_fixed", False),
+        "route_direction_fixed": route_data.get("route_direction_fixed", False),
+        "route_points_count": route_data.get("route_points_count", len(route_data.get("polyline", state.get("polyline", [])) or [])),
     }
     recommendation_catalog = _parse_recommendation_catalog(state.get("recommendation_catalog"), state.get("destination", ""))
     recommendation_blocks = _parse_recommendation_blocks(state.get("recommendations"))
@@ -662,12 +672,113 @@ async def get_trip(trip_id: int, session: AsyncSession = Depends(get_session)) -
 
 @router.get("/trip/{trip_id}/pdf")
 async def get_trip_pdf(trip_id: int, session: AsyncSession = Depends(get_session)) -> FileResponse:
+    def _filename_part(value: str) -> str:
+        text = "".join(char if str(char).isalnum() else "_" for char in str(value or "").strip())
+        text = "_".join(part for part in text.split("_") if part)
+        return text or "Trip"
+
+    def _trip_day_count(start_value: str | None, end_value: str | None) -> int:
+        if not start_value or not end_value:
+            return 1
+        try:
+            start_date = date.fromisoformat(start_value)
+            end_date = date.fromisoformat(end_value)
+        except ValueError:
+            return 1
+        return max(1, (end_date - start_date).days + 1)
+
+    trip_result = await session.execute(select(Trip).where(Trip.id == trip_id))
+    trip = trip_result.scalar_one_or_none()
     report_result = await session.execute(
         select(TripReport).where(TripReport.trip_id == trip_id).order_by(TripReport.created_at.desc())
     )
     report = report_result.scalars().first()
-    if report is None:
+
+    if trip is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="PDF report not found")
+
+    fallback_report_dir = Path(__file__).resolve().parents[1] / "reports"
+    fallback_report_dir.mkdir(parents=True, exist_ok=True)
+    pdf_path = fallback_report_dir / f"RoadMind_{_filename_part(trip.origin)}_{_filename_part(trip.destination)}.pdf"
+
+    route_data = None
+    try:
+        route_data = await _fetch_route(trip.origin, trip.destination, list(trip.waypoints or []))
+    except Exception:
+        route_data = None
+    if route_data is None:
+        route_data = await fallback_route_road(trip.origin, trip.destination, list(trip.waypoints or []))
+    if route_data is None:
+        route_data = fallback_route(trip.origin, trip.destination, list(trip.waypoints or [])) or {}
+    if not route_data:
+        route_data = await _fallback_route_from_geocodes(trip.origin, trip.destination, list(trip.waypoints or [])) or {}
+
+    recommendation_payload = _parse_recommendation_catalog(trip.recommendations_json, trip.destination)
+    travel_dates = {
+        "start": trip.travel_start_date or "",
+        "end": trip.travel_end_date or "",
+    }
+    try:
+        trip_days = _trip_day_count(trip.travel_start_date, trip.travel_end_date)
+    except Exception:
+        trip_days = 1
+    try:
+        parsed_start = date.fromisoformat(trip.travel_start_date) if trip.travel_start_date else date.today()
+    except ValueError:
+        parsed_start = date.today()
+    try:
+        parsed_end = date.fromisoformat(trip.travel_end_date) if trip.travel_end_date else parsed_start
+    except ValueError:
+        parsed_end = parsed_start
+    try:
+        weather_days = await fetch_weather_forecast(trip.destination, parsed_start, parsed_end)
+    except Exception:
+        weather_days = []
+
+    if report is not None:
+        existing_pdf_path = Path(report.pdf_path)
+        if not existing_pdf_path.is_absolute():
+            existing_pdf_path = Path(__file__).resolve().parents[1] / existing_pdf_path
+        if existing_pdf_path.exists():
+            return FileResponse(
+                path=str(existing_pdf_path),
+                media_type="application/pdf",
+                filename=existing_pdf_path.name,
+            )
+
+    try:
+        generate_pdf_report(
+            {
+                "origin": trip.origin,
+                "destination": trip.destination,
+                "travel_dates": travel_dates,
+                "budget": {"total": trip.budget or 0},
+                "route": {
+                    "distance_km": route_data.get("distance_km", 0),
+                    "duration_hours": route_data.get("duration_hours", 0),
+                    "polyline": route_data.get("polyline", []),
+                    "coordinates": route_data.get("polyline", []),
+                },
+                "weather": weather_days,
+                "itinerary": None,
+                "recommendations": recommendation_payload.model_dump() if hasattr(recommendation_payload, "model_dump") else recommendation_payload,
+                "report_summary": f"{trip.destination} road trip report.",
+                "trip_days": trip_days,
+                "number_of_people": 1,
+            },
+            str(pdf_path),
+        )
+    except Exception as exc:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"PDF report regeneration failed: {exc}") from exc
+
+    if report is None:
+        report = TripReport(trip_id=trip.id, pdf_path=str(pdf_path))
+        session.add(report)
+    else:
+        report.pdf_path = str(pdf_path)
+        session.add(report)
+    await session.commit()
+    await session.refresh(report)
 
     pdf_path = Path(report.pdf_path)
     if not pdf_path.is_absolute():

@@ -608,7 +608,14 @@ def _make_pdf(
     # Keep generated reports inside the backend tree so download endpoints can resolve them consistently.
     report_dir = Path(settings.reports_dir)
     report_dir.mkdir(parents=True, exist_ok=True)
-    pdf_path = report_dir / f"trip_report_{state.get('user_id', 'guest')}.pdf"
+    def _slug(value: Any) -> str:
+        text = "".join(char if str(char).isalnum() else "_" for char in str(value or "").strip())
+        text = "_".join(part for part in text.split("_") if part)
+        return text or "Trip"
+
+    origin = _slug(state.get("origin", "Trip"))
+    destination = _slug(state.get("destination", "Trip"))
+    pdf_path = report_dir / f"RoadMind_{origin}_{destination}.pdf"
 
     mcp_generate_pdf_report(
         {
@@ -616,9 +623,11 @@ def _make_pdf(
             "destination": state.get("destination", ""),
             "travel_dates": state.get("travel_dates", {}),
             "route": {
-                "distance_km": state.get("route_distance_km", 0),
-                "duration_hours": state.get("route_duration_hours", 0),
+                "distance_km": state.get("route", {}).get("distance_km", state.get("route_distance_km", 0)),
+                "duration_hours": state.get("route", {}).get("duration_hours", state.get("route_duration_hours", 0)),
                 "toll_roads": state.get("toll_roads", False),
+                "polyline": state.get("route", {}).get("polyline", state.get("polyline", [])),
+                "coordinates": state.get("route", {}).get("coordinates", state.get("polyline", [])),
             },
             "weather": state.get("weather", []),
             "budget": {
@@ -630,8 +639,13 @@ def _make_pdf(
                 "total_inr": state.get("total_inr", 0),
                 "total_usd": state.get("total_usd", 0),
             },
+            "vehicle": state.get("vehicle", {}),
+            "fuel_calculation": state.get("fuel_calculation", {}),
+            "trip_days": state.get("trip_days") or len(state.get("itinerary", {}).get("days", [])) or 1,
+            "number_of_people": state.get("number_of_people", 1),
             "waypoints": state.get("waypoints", []),
             "report_summary": state.get("report_summary", ""),
+            "itinerary": state.get("itinerary", {}),
             "recommendations": {
                 "hotels": hotels,
                 "restaurants": restaurants,

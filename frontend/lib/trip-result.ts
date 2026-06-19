@@ -115,6 +115,118 @@ function safeBudgetTotal(budget: unknown) {
   return typeof total === "number" && Number.isFinite(total) ? total : undefined;
 }
 
+function haversineDistanceKm(lat1: number, lon1: number, lat2: number, lon2: number) {
+  const toRad = (value: number) => (value * Math.PI) / 180;
+  const earthRadiusKm = 6371;
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+  return 2 * earthRadiusKm * Math.asin(Math.sqrt(a));
+}
+
+function estimateRouteDistanceKm(route: unknown): number {
+  if (!route || typeof route !== "object") return 0;
+  const featureCollection = route as GeoJSON.FeatureCollection;
+  let total = 0;
+
+  for (const feature of featureCollection.features ?? []) {
+    if (!feature || feature.type !== "Feature" || !feature.geometry || feature.geometry.type !== "LineString") continue;
+    const coordinates = feature.geometry.coordinates;
+    for (let index = 1; index < coordinates.length; index += 1) {
+      const previous = coordinates[index - 1];
+      const current = coordinates[index];
+      if (!Array.isArray(previous) || !Array.isArray(current)) continue;
+      const [prevLon, prevLat] = previous;
+      const [currLon, currLat] = current;
+      if (
+        typeof prevLat !== "number" ||
+        typeof prevLon !== "number" ||
+        typeof currLat !== "number" ||
+        typeof currLon !== "number" ||
+        !Number.isFinite(prevLat) ||
+        !Number.isFinite(prevLon) ||
+        !Number.isFinite(currLat) ||
+        !Number.isFinite(currLon)
+      ) {
+        continue;
+      }
+      total += haversineDistanceKm(prevLat, prevLon, currLat, currLon);
+    }
+  }
+
+  return Math.round(total * 100) / 100;
+}
+
+function estimateRouteDurationHours(distanceKm: number): number {
+  if (!Number.isFinite(distanceKm) || distanceKm <= 0) return 0;
+  const averageSpeedKmh = 45;
+  return Math.round((distanceKm / averageSpeedKmh) * 100) / 100;
+}
+
+function normalizeRoutePoint(point: unknown): [number, number] | null {
+  if (!Array.isArray(point) || point.length < 2) return null;
+  const [lat, lng] = point;
+  if (typeof lat !== "number" || typeof lng !== "number") return null;
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+  return [lat, lng];
+}
+
+function normalizeMarkersFromRoute(
+  markers: unknown,
+  routeSource: Record<string, unknown> | undefined,
+  origin: string,
+  destination: string,
+): TripMarker[] {
+  const parsedMarkers = Array.isArray(markers) ? (markers as TripMarker[]) : [];
+  const routePolyline = Array.isArray(routeSource?.polyline) ? (routeSource?.polyline as Array<[number, number]>) : [];
+  const fallbackOrigin = normalizeRoutePoint(routeSource?.origin_coords) ?? routePolyline[0] ?? null;
+  const fallbackDestination = normalizeRoutePoint(routeSource?.destination_coords) ?? routePolyline[routePolyline.length - 1] ?? null;
+
+  if (!fallbackOrigin && !fallbackDestination) {
+    return parsedMarkers;
+  }
+
+  const nextMarkers = [...parsedMarkers];
+  if (nextMarkers.length === 0) {
+    if (fallbackOrigin) {
+      nextMarkers.push({ lat: fallbackOrigin[0], lng: fallbackOrigin[1], label: origin, type: "origin" });
+    }
+    if (fallbackDestination) {
+      nextMarkers.push({ lat: fallbackDestination[0], lng: fallbackDestination[1], label: destination, type: "destination" });
+    }
+    return nextMarkers;
+  }
+
+  if (fallbackOrigin) {
+    const originIndex = nextMarkers.findIndex((marker) => marker.type === "origin");
+    const originMarker = { lat: fallbackOrigin[0], lng: fallbackOrigin[1], label: origin, type: "origin" as const };
+    if (originIndex >= 0) {
+      nextMarkers[originIndex] = originMarker;
+    } else {
+      nextMarkers.unshift(originMarker);
+    }
+  }
+
+  if (fallbackDestination) {
+    const destinationIndex = [...nextMarkers].reverse().findIndex((marker) => marker.type === "destination");
+    const destinationMarker = {
+      lat: fallbackDestination[0],
+      lng: fallbackDestination[1],
+      label: destination,
+      type: "destination" as const,
+    };
+    if (destinationIndex >= 0) {
+      nextMarkers[nextMarkers.length - 1 - destinationIndex] = destinationMarker;
+    } else {
+      nextMarkers.push(destinationMarker);
+    }
+  }
+
+  return nextMarkers;
+}
+
 export function normalizeDestinationKey(value: string) {
   return value
     .trim()
@@ -263,8 +375,18 @@ export function normalizeTripData(raw: unknown): TripResultStorage | null {
     origin: safeString(value.origin),
     destination: safeString(value.destination),
     destination_key: safeString(value.destination_key),
-    distance_km: safeNumber(value.distance_km ?? routeSource?.distance_km ?? value.distanceKm, 0),
-    duration_hours: safeNumber(value.duration_hours ?? routeSource?.duration_hours ?? value.durationHours, 0),
+    distance_km: (() => {
+      const directDistance = safeNumber(value.distance_km ?? routeSource?.distance_km ?? value.distanceKm, 0);
+      if (directDistance > 0) return directDistance;
+      const routeDistance = estimateRouteDistanceKm(value.route);
+      return routeDistance > 0 ? routeDistance : 0;
+    })(),
+    duration_hours: (() => {
+      const directDuration = safeNumber(value.duration_hours ?? routeSource?.duration_hours ?? value.durationHours, 0);
+      if (directDuration > 0) return directDuration;
+      const routeDistance = safeNumber(value.distance_km, 0) || estimateRouteDistanceKm(value.route);
+      return estimateRouteDurationHours(routeDistance);
+    })(),
     route:
       value.route && typeof value.route === "object"
         ? (value.route as GeoJSON.FeatureCollection)
@@ -280,7 +402,7 @@ export function normalizeTripData(raw: unknown): TripResultStorage | null {
     startDate: safeString(value.startDate ?? travelDates.start),
     endDate: safeString(value.endDate ?? travelDates.end),
     userBudget: safeNumber(value.userBudget ?? safeBudgetTotal(value.budget) ?? value.total_inr, 0),
-    markers: Array.isArray(value.markers) ? (value.markers as TripMarker[]) : [],
+    markers: normalizeMarkersFromRoute(value.markers, routeSource, safeString(value.origin), safeString(value.destination)),
     report_summary: safeString(value.report_summary),
   };
 }

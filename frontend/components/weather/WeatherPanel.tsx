@@ -16,6 +16,14 @@ const LOCATION_ALIASES: Record<string, string> = {
   bangalore: "bengaluru",
   bengaluru: "bengaluru",
   kodaikanal: "kodaikanal",
+  ooty: "udhagamandalam",
+  udhagamandalam: "udhagamandalam",
+  pondicherry: "puducherry",
+  puducherry: "puducherry",
+  trichy: "tiruchirappalli",
+  tiruchirappalli: "tiruchirappalli",
+  mysore: "mysuru",
+  mysuru: "mysuru",
 };
 
 function formatWeatherDate(dateString: string, dayName: string) {
@@ -31,8 +39,32 @@ function formatWeatherDate(dateString: string, dayName: string) {
 }
 
 function normalizeLocation(value: string) {
-  const normalized = value.trim().toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  const normalized = value
+    .trim()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
   return LOCATION_ALIASES[normalized] ?? normalized;
+}
+
+function getWeatherLocationCandidates(item: DailyWeather) {
+  const source = item as DailyWeather & {
+    requested_weather_city?: string;
+    normalized_weather_city?: string;
+    weather_source_used?: string;
+    city?: string;
+    location_name?: string;
+  };
+
+  return [
+    source.requested_weather_city,
+    source.normalized_weather_city,
+    source.location,
+    source.city,
+    source.location_name,
+  ].filter((value): value is string => typeof value === "string" && value.trim().length > 0);
 }
 
 function splitWeatherByLocation(weatherData: DailyWeather[], origin: string, destination: string) {
@@ -40,26 +72,32 @@ function splitWeatherByLocation(weatherData: DailyWeather[], origin: string, des
   const normalizedDestination = normalizeLocation(destination);
 
   return {
-    originWeather: weatherData.filter((item) => normalizeLocation(item.location) === normalizedOrigin),
-    destinationWeather: weatherData.filter((item) => normalizeLocation(item.location) === normalizedDestination),
+    originWeather: weatherData.filter((item) =>
+      getWeatherLocationCandidates(item).some((candidate) => normalizeLocation(candidate) === normalizedOrigin),
+    ),
+    destinationWeather: weatherData.filter((item) =>
+      getWeatherLocationCandidates(item).some((candidate) => normalizeLocation(candidate) === normalizedDestination),
+    ),
   };
 }
 
 function WeatherDayCard({ item }: { item: DailyWeather }) {
   return (
-    <article className="min-w-[130px] rounded-xl border border-[#1a1a1a] bg-[#111111] p-3 text-center text-white">
-      <div className="text-xs text-[#888888]">{formatWeatherDate(item.date, item.day_name)}</div>
+    <article className="min-w-[130px] rounded-2xl border border-slate-200 bg-slate-50 p-3 text-center text-slate-950">
+      <div className="text-xs text-slate-500">{formatWeatherDate(item.date, item.day_name)}</div>
       <div className="my-2 text-3xl">{item.weather_icon}</div>
-      <div className="mb-2 text-xs text-[#a0a0a0]">{item.condition}</div>
-      <div className="space-y-1 text-left text-xs text-[#a0a0a0]">
-        <div className="flex items-center gap-1">🌡️ {Math.round(item.temp_min_celsius)}° ~ {Math.round(item.temp_max_celsius)}°C</div>
+      <div className="mb-2 text-xs text-slate-500">{item.condition}</div>
+      <div className="space-y-1 text-left text-xs text-slate-500">
+        <div className="flex items-center gap-1">
+          🌡️ {Math.round(item.temp_min_celsius)}° ~ {Math.round(item.temp_max_celsius)}°C
+        </div>
         <div className="flex items-center gap-1">🤔 Feels {Math.round(item.temp_feels_like)}°C</div>
         <div className="flex items-center gap-1">💧 {item.humidity_percent}%</div>
         <div className="flex items-center gap-1">💨 {item.wind_speed_kmh.toFixed(1)} km/h</div>
-        <div className="flex items-center gap-1">🌂 {item.rain_chance_percent}% rain</div>
+        <div className="flex items-center gap-1">🌧 {item.rain_chance_percent}% rain</div>
       </div>
       {item.alert ? (
-        <div className="mt-2 rounded-lg bg-red-500/20 px-2 py-1 text-center text-xs text-red-400">{item.alert}</div>
+        <div className="mt-2 rounded-lg bg-cyan-50 px-2 py-1 text-center text-xs text-cyan-700">{item.alert}</div>
       ) : null}
     </article>
   );
@@ -67,9 +105,9 @@ function WeatherDayCard({ item }: { item: DailyWeather }) {
 
 function WeatherLocationSection({ title, weather }: { title: string; weather: DailyWeather[] }) {
   return (
-    <section className="overflow-hidden rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a]">
-      <div className="border-b border-[#1a1a1a] px-4 py-3">
-        <h3 className="text-sm font-semibold text-white">{title}</h3>
+    <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+      <div className="border-b border-slate-200 px-4 py-3">
+        <h3 className="text-sm font-semibold text-slate-950">{title}</h3>
       </div>
       <div className="p-4">
         {weather.length ? (
@@ -79,7 +117,7 @@ function WeatherLocationSection({ title, weather }: { title: string; weather: Da
             ))}
           </div>
         ) : (
-          <div className="rounded-xl border border-dashed border-[#2a2a2a] px-4 py-8 text-center text-sm text-[#888888]">
+          <div className="rounded-xl border border-dashed border-slate-200 px-4 py-8 text-center text-sm text-slate-500">
             No weather data available for selected dates.
           </div>
         )}
@@ -99,20 +137,22 @@ export default function WeatherPanel({
 }: WeatherPanelProps) {
   if (status === "unavailable") {
     return (
-      <section className="w-full rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a] p-6 text-center text-white">
+      <section className="w-full rounded-2xl border border-slate-200 bg-white p-6 text-center text-slate-950">
         <div className="text-5xl">📅</div>
         <h2 className="mt-4 text-2xl font-bold">Forecast Unavailable</h2>
-        <p className="mt-3 text-sm text-[#a0a0a0]">{message ?? "Forecast not available yet. Check back closer to your travel date."}</p>
+        <p className="mt-3 text-sm text-slate-500">
+          {message ?? "Forecast not available yet. Check back closer to your travel date."}
+        </p>
       </section>
     );
   }
 
   if (status === "past_dates") {
     return (
-      <section className="w-full rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a] p-6 text-center text-white">
+      <section className="w-full rounded-2xl border border-slate-200 bg-white p-6 text-center text-slate-950">
         <div className="text-5xl">⚠️</div>
         <h2 className="mt-4 text-2xl font-bold">Past Travel Dates</h2>
-        <p className="mt-3 text-sm text-[#a0a0a0]">These travel dates have already passed. No forecast available.</p>
+        <p className="mt-3 text-sm text-slate-500">These travel dates have already passed. No forecast available.</p>
       </section>
     );
   }
@@ -121,13 +161,13 @@ export default function WeatherPanel({
   const hasWeather = weatherData.length > 0;
 
   return (
-    <section className="w-full overflow-hidden rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a] text-white">
-      <div className="flex items-center justify-between gap-3 border-b border-[#1a1a1a] px-4 pt-4 pb-2">
+    <section className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white text-slate-950">
+      <div className="flex items-center justify-between gap-3 border-b border-slate-200 px-4 pt-4 pb-2">
         <div>
-          <p className="text-xs uppercase tracking-[0.24em] text-[#888888]">Weather</p>
+          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Weather</p>
           <h2 className="text-lg font-bold">Forecast for exact travel dates</h2>
         </div>
-        <div className="text-sm text-[#888888]">
+        <div className="text-sm text-slate-500">
           {startDate} to {endDate}
         </div>
       </div>
@@ -139,7 +179,7 @@ export default function WeatherPanel({
             <WeatherLocationSection title={`📍 Destination Weather — ${destination}`} weather={destinationWeather} />
           </>
         ) : (
-          <div className="rounded-xl border border-dashed border-[#2a2a2a] px-4 py-8 text-center text-sm text-[#888888] md:col-span-2">
+          <div className="rounded-xl border border-dashed border-slate-200 px-4 py-8 text-center text-sm text-slate-500 md:col-span-2">
             No weather data available for selected dates.
           </div>
         )}

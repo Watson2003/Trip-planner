@@ -1,0 +1,21 @@
+INFO:     Will watch for changes in these directories: ['D:\\ROOT\\Trip planner\\backend']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [1844] using WatchFiles
+INFO:     Started server process [14500]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+OSM discovery failed for Kodaikanal: 
+Llama request timed out after 4.5s
+Trip planning timed out for Trichy -> Kodaikanal; returning fallback result.
+NVIDIA LLM ranking failed: 
+OSM discovery failed for Trichy-Kodaikanal Highway Stop: 
+Llama request timed out after 4.5s
+OSM discovery failed for Trichy-Kodaikanal Highway Stop: 
+Llama request timed out after 4.5s
+OSM discovery failed for Trichy-Kodaikanal Highway Stop: 
+Llama request timed out after 4.5s
+OSM discovery failed for Trichy-Kodaikanal Highway Stop: 
+Llama request timed out after 4.5s
+OSM discovery failed for Trichy-Kodaikanal Highway Stop: 
+Llama request timed out after 4.5s
+WARNING:  WatchFiles detected changes in 'agents\route_agent.py'. Reloading...

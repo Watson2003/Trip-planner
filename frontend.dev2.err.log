@@ -1,0 +1,778 @@
+(node:7100) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+[1m[33mwarn[39m[22m - As of Tailwind CSS v3.3, the `@tailwindcss/line-clamp` plugin is now included by default.
+[1m[33mwarn[39m[22m - Remove it from the `plugins` array in your configuration to eliminate this warning.
+(node:7100) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+ ⨯ ./components/itinerary/ItineraryPlanner.tsx
+Error: Failed to read source code from D:\ROOT\Trip planner\frontend\components\itinerary\ItineraryPlanner.tsx
+
+Caused by:
+    The system cannot find the file specified. (os error 2)
+
+Import trace for requested module:
+./components/itinerary/ItineraryPlanner.tsx
+./app/trip-result/itinerary/page.tsx
+ ⨯ ./components/itinerary/ItineraryPlanner.tsx
+Error: Failed to read source code from D:\ROOT\Trip planner\frontend\components\itinerary\ItineraryPlanner.tsx
+
+Caused by:
+    The system cannot find the file specified. (os error 2)
+
+Import trace for requested module:
+./components/itinerary/ItineraryPlanner.tsx
+./app/trip-result/itinerary/page.tsx
+ ⨯ Error: Cannot find module './2.js'
+Require stack:
+- D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+- D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-middleware.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-reloader-webpack.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-utils\setup-dev-bundler.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1409:15)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1060:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1065:22)
+    at Function._load (node:internal/modules/cjs/loader:1214:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at __webpack_require__.f.require (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:198:28)
+    at D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:162:22)
+    at D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js:1:7045
+    at Object.<anonymous> (D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js:1:7085)
+    at Module._compile (node:internal/modules/cjs/loader:1739:14)
+    at Object..js (node:internal/modules/cjs/loader:1904:10)
+    at Module.load (node:internal/modules/cjs/loader:1473:32)
+    at Function._load (node:internal/modules/cjs/loader:1285:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js:109:84)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:103:84
+    at async loadComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:103:26)
+    at async DevServer.findPageComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:714:36)
+    at async DevServer.findPageComponents (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:577:20)
+    at async DevServer.renderErrorToResponseImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2090:30)
+    at async pipe.req.req (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2056:30)
+    at async DevServer.pipeImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:922:25)
+    at async D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:339:20
+    at async Span.traceAsyncFn (D:\ROOT\Trip planner\frontend\node_modules\next\dist\trace\trace.js:154:20)
+    at async DevServer.handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:336:24)
+    at async invokeRender (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:179:21)
+    at async handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:374:24)
+    at async requestHandlerImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:383:13)
+    at async Server.requestListener (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js:141:13) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\webpack-runtime.js',
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\app\\_not-found\\page.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\load-components.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\build\\utils.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-middleware.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-reloader-webpack.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-utils\\setup-dev-bundler.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-server.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\start-server.js'
+  ]
+}
+ ⨯ Error: Cannot find module './2.js'
+Require stack:
+- D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+- D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-middleware.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-reloader-webpack.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-utils\setup-dev-bundler.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1409:15)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1060:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1065:22)
+    at Function._load (node:internal/modules/cjs/loader:1214:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at __webpack_require__.f.require (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:198:28)
+    at D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:162:22)
+    at D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js:1:7045
+    at Object.<anonymous> (D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js:1:7085)
+    at Module._compile (node:internal/modules/cjs/loader:1739:14)
+    at Object..js (node:internal/modules/cjs/loader:1904:10)
+    at Module.load (node:internal/modules/cjs/loader:1473:32)
+    at Function._load (node:internal/modules/cjs/loader:1285:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js:109:84)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:103:84
+    at async loadComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:103:26)
+    at async DevServer.findPageComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:714:36)
+    at async DevServer.findPageComponents (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:577:20)
+    at async DevServer.renderErrorToResponseImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2090:30)
+    at async pipe.req.req (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2056:30)
+    at async DevServer.pipeImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:922:25)
+    at async D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:339:20
+    at async Span.traceAsyncFn (D:\ROOT\Trip planner\frontend\node_modules\next\dist\trace\trace.js:154:20)
+    at async DevServer.handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:336:24)
+    at async invokeRender (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:179:21)
+    at async handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:374:24)
+    at async requestHandlerImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:383:13)
+    at async Server.requestListener (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js:141:13) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\webpack-runtime.js',
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\app\\_not-found\\page.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\load-components.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\build\\utils.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-middleware.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-reloader-webpack.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-utils\\setup-dev-bundler.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-server.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\start-server.js'
+  ]
+}
+ ⨯ Error: Cannot find module './2.js'
+Require stack:
+- D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+- D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-middleware.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-reloader-webpack.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-utils\setup-dev-bundler.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1409:15)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1060:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1065:22)
+    at Function._load (node:internal/modules/cjs/loader:1214:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at __webpack_require__.f.require (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:198:28)
+    at D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:162:22)
+    at D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js:1:7045
+    at Object.<anonymous> (D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js:1:7085)
+    at Module._compile (node:internal/modules/cjs/loader:1739:14)
+    at Object..js (node:internal/modules/cjs/loader:1904:10)
+    at Module.load (node:internal/modules/cjs/loader:1473:32)
+    at Function._load (node:internal/modules/cjs/loader:1285:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js:109:84)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:103:84
+    at async loadComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:103:26)
+    at async DevServer.findPageComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:714:36)
+    at async DevServer.findPageComponents (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:577:20)
+    at async DevServer.renderErrorToResponseImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2090:30)
+    at async pipe.req.req (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2056:30)
+    at async DevServer.pipeImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:922:25)
+    at async D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:339:20
+    at async Span.traceAsyncFn (D:\ROOT\Trip planner\frontend\node_modules\next\dist\trace\trace.js:154:20)
+    at async DevServer.handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:336:24)
+    at async invokeRender (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:179:21)
+    at async handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:374:24)
+    at async requestHandlerImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:383:13)
+    at async Server.requestListener (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js:141:13) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\webpack-runtime.js',
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\app\\_not-found\\page.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\load-components.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\build\\utils.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-middleware.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-reloader-webpack.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-utils\\setup-dev-bundler.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-server.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\start-server.js'
+  ]
+}
+ ⨯ Error: Cannot find module './2.js'
+Require stack:
+- D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+- D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-middleware.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-reloader-webpack.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-utils\setup-dev-bundler.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1409:15)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1060:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1065:22)
+    at Function._load (node:internal/modules/cjs/loader:1214:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at __webpack_require__.f.require (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:198:28)
+    at D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:162:22)
+    at D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js:1:7045
+    at Object.<anonymous> (D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js:1:7085)
+    at Module._compile (node:internal/modules/cjs/loader:1739:14)
+    at Object..js (node:internal/modules/cjs/loader:1904:10)
+    at Module.load (node:internal/modules/cjs/loader:1473:32)
+    at Function._load (node:internal/modules/cjs/loader:1285:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js:109:84)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:103:84
+    at async loadComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:103:26)
+    at async DevServer.findPageComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:714:36)
+    at async DevServer.findPageComponents (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:577:20)
+    at async DevServer.renderErrorToResponseImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2090:30)
+    at async pipe.req.req (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2056:30)
+    at async DevServer.pipeImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:922:25)
+    at async D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:339:20
+    at async Span.traceAsyncFn (D:\ROOT\Trip planner\frontend\node_modules\next\dist\trace\trace.js:154:20)
+    at async DevServer.handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:336:24)
+    at async invokeRender (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:179:21)
+    at async handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:374:24)
+    at async requestHandlerImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:383:13)
+    at async Server.requestListener (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js:141:13) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\webpack-runtime.js',
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\app\\_not-found\\page.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\load-components.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\build\\utils.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-middleware.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-reloader-webpack.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-utils\\setup-dev-bundler.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-server.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\start-server.js'
+  ]
+}
+ ⨯ Error: Cannot find module './2.js'
+Require stack:
+- D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+- D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-middleware.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-reloader-webpack.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-utils\setup-dev-bundler.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1409:15)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1060:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1065:22)
+    at Function._load (node:internal/modules/cjs/loader:1214:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at __webpack_require__.f.require (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:198:28)
+    at D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:162:22)
+    at D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js:1:7045
+    at Object.<anonymous> (D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js:1:7085)
+    at Module._compile (node:internal/modules/cjs/loader:1739:14)
+    at Object..js (node:internal/modules/cjs/loader:1904:10)
+    at Module.load (node:internal/modules/cjs/loader:1473:32)
+    at Function._load (node:internal/modules/cjs/loader:1285:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js:109:84)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:103:84
+    at async loadComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:103:26)
+    at async DevServer.findPageComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:714:36)
+    at async DevServer.findPageComponents (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:577:20)
+    at async DevServer.renderErrorToResponseImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2090:30)
+    at async pipe.req.req (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2056:30)
+    at async DevServer.pipeImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:922:25)
+    at async D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:339:20
+    at async Span.traceAsyncFn (D:\ROOT\Trip planner\frontend\node_modules\next\dist\trace\trace.js:154:20)
+    at async DevServer.handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:336:24)
+    at async invokeRender (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:179:21)
+    at async handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:374:24)
+    at async requestHandlerImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:383:13)
+    at async Server.requestListener (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js:141:13) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\webpack-runtime.js',
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\app\\_not-found\\page.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\load-components.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\build\\utils.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-middleware.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-reloader-webpack.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-utils\\setup-dev-bundler.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-server.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\start-server.js'
+  ]
+}
+ ⨯ Error: Cannot find module './2.js'
+Require stack:
+- D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+- D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-middleware.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\hot-reloader-webpack.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-utils\setup-dev-bundler.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1409:15)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1060:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1065:22)
+    at Function._load (node:internal/modules/cjs/loader:1214:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at __webpack_require__.f.require (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:198:28)
+    at D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js:162:22)
+    at D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js:1:7045
+    at Object.<anonymous> (D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js:1:7085)
+    at Module._compile (node:internal/modules/cjs/loader:1739:14)
+    at Object..js (node:internal/modules/cjs/loader:1904:10)
+    at Module.load (node:internal/modules/cjs/loader:1473:32)
+    at Function._load (node:internal/modules/cjs/loader:1285:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16)
+    at requirePage (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js:109:84)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:103:84
+    at async loadComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js:103:26)
+    at async DevServer.findPageComponentsImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js:714:36)
+    at async DevServer.findPageComponents (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:577:20)
+    at async DevServer.renderErrorToResponseImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2090:30)
+    at async pipe.req.req (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:2056:30)
+    at async DevServer.pipeImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\base-server.js:922:25)
+    at async D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:339:20
+    at async Span.traceAsyncFn (D:\ROOT\Trip planner\frontend\node_modules\next\dist\trace\trace.js:154:20)
+    at async DevServer.handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\dev\next-dev-server.js:336:24)
+    at async invokeRender (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:179:21)
+    at async handleRequest (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:374:24)
+    at async requestHandlerImpl (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\router-server.js:383:13)
+    at async Server.requestListener (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js:141:13) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\webpack-runtime.js',
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\app\\_not-found\\page.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\load-components.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\build\\utils.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-middleware.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\dev\\hot-reloader-webpack.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-utils\\setup-dev-bundler.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\router-server.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\start-server.js'
+  ]
+}
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\leaflet.js'
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\leaflet.js'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/leaflet' in D:\ROOT\Trip planner\frontend\.next\server for build dependencies doesn't lead to expected result 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\leaflet.js', but to 'Error: Can't resolve './vendor-chunks/leaflet' in 'D:\ROOT\Trip planner\frontend\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/leaflet (expected D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\leaflet.js)
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\loader-runner\LoaderRunner.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\loader-runner\LoaderRunner.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\webpack\bundle5.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\webpack\bundle5.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\webpack\webpack.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\webpack\webpack.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\plugins\define-env-plugin.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\plugins\define-env-plugin.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\swc\index.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\swc\index.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at resolve commonjs D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/lucide-react' in D:\ROOT\Trip planner\frontend\.next\server for build dependencies doesn't lead to expected result 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\lucide-react.js', but to 'Error: Can't resolve './vendor-chunks/lucide-react' in 'D:\ROOT\Trip planner\frontend\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/lucide-react (expected D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\lucide-react.js)
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\loader-runner\LoaderRunner.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\loader-runner\LoaderRunner.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\webpack\bundle5.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\webpack\bundle5.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\webpack\webpack.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\webpack\webpack.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\plugins\define-env-plugin.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\plugins\define-env-plugin.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\swc\index.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\swc\index.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at resolve commonjs D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/leaflet' in D:\ROOT\Trip planner\frontend\.next\server for build dependencies doesn't lead to expected result 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\leaflet.js', but to 'Error: Can't resolve './vendor-chunks/leaflet' in 'D:\ROOT\Trip planner\frontend\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/leaflet (expected D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\leaflet.js)
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\loader-runner\LoaderRunner.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\loader-runner\LoaderRunner.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\webpack\bundle5.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\webpack\bundle5.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\webpack\webpack.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\webpack\webpack.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\plugins\define-env-plugin.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\plugins\define-env-plugin.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\swc\index.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\swc\index.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at resolve commonjs D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/lucide-react' in D:\ROOT\Trip planner\frontend\.next\server for build dependencies doesn't lead to expected result 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\lucide-react.js', but to 'Error: Can't resolve './vendor-chunks/lucide-react' in 'D:\ROOT\Trip planner\frontend\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/lucide-react (expected D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\lucide-react.js)
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\loader-runner\LoaderRunner.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\loader-runner\LoaderRunner.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\webpack\bundle5.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\webpack\bundle5.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\webpack\webpack.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\webpack\webpack.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\plugins\define-env-plugin.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\plugins\define-env-plugin.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\swc\index.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\swc\index.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at resolve commonjs D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\leaflet.js'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/leaflet' in D:\ROOT\Trip planner\frontend\.next\server for build dependencies doesn't lead to expected result 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\leaflet.js', but to 'Error: Can't resolve './vendor-chunks/leaflet' in 'D:\ROOT\Trip planner\frontend\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/leaflet (expected D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\leaflet.js)
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\loader-runner\LoaderRunner.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\loader-runner\LoaderRunner.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\webpack\bundle5.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\webpack\bundle5.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\webpack\webpack.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\webpack\webpack.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\plugins\define-env-plugin.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\plugins\define-env-plugin.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\swc\index.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\swc\index.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at resolve commonjs D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/lucide-react' in D:\ROOT\Trip planner\frontend\.next\server for build dependencies doesn't lead to expected result 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\lucide-react.js', but to 'Error: Can't resolve './vendor-chunks/lucide-react' in 'D:\ROOT\Trip planner\frontend\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/lucide-react (expected D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\lucide-react.js)
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\loader-runner\LoaderRunner.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\loader-runner\LoaderRunner.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\webpack\bundle5.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\webpack\bundle5.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\webpack\webpack.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\compiled\webpack\webpack.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\plugins\define-env-plugin.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\plugins\define-env-plugin.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\swc\index.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\swc\index.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at resolve commonjs D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\leaflet.js'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/leaflet' in D:\ROOT\Trip planner\frontend\.next\server for build dependencies doesn't lead to expected result 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\leaflet.js', but to 'Error: Can't resolve './vendor-chunks/leaflet' in 'D:\ROOT\Trip planner\frontend\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/leaflet (expected D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\leaflet.js)
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\handle-externals.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\handle-externals.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at resolve commonjs D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/lucide-react' in D:\ROOT\Trip planner\frontend\.next\server for build dependencies doesn't lead to expected result 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\lucide-react.js', but to 'Error: Can't resolve './vendor-chunks/lucide-react' in 'D:\ROOT\Trip planner\frontend\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/lucide-react (expected D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\lucide-react.js)
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\handle-externals.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\handle-externals.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at resolve commonjs D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\leaflet.js'
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\leaflet.js'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/leaflet' in D:\ROOT\Trip planner\frontend\.next\server for build dependencies doesn't lead to expected result 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\leaflet.js', but to 'Error: Can't resolve './vendor-chunks/leaflet' in 'D:\ROOT\Trip planner\frontend\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/leaflet (expected D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\leaflet.js)
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\handle-externals.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\handle-externals.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at resolve commonjs D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/leaflet' in D:\ROOT\Trip planner\frontend\.next\server for build dependencies doesn't lead to expected result 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\leaflet.js', but to 'Error: Can't resolve './vendor-chunks/leaflet' in 'D:\ROOT\Trip planner\frontend\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/leaflet (expected D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\leaflet.js)
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\handle-externals.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\handle-externals.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at resolve commonjs D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/lucide-react' in D:\ROOT\Trip planner\frontend\.next\server for build dependencies doesn't lead to expected result 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\lucide-react.js', but to 'Error: Can't resolve './vendor-chunks/lucide-react' in 'D:\ROOT\Trip planner\frontend\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/lucide-react (expected D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\lucide-react.js)
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\handle-externals.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\handle-externals.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at resolve commonjs D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/lucide-react' in D:\ROOT\Trip planner\frontend\.next\server for build dependencies doesn't lead to expected result 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\lucide-react.js', but to 'Error: Can't resolve './vendor-chunks/lucide-react' in 'D:\ROOT\Trip planner\frontend\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/lucide-react (expected D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\lucide-react.js)
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\handle-externals.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\handle-externals.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w>  at resolve commonjs D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\es-object-atoms.js'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/es-object-atoms' in D:\ROOT\Trip planner\frontend\.next\server for build dependencies doesn't lead to expected result 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\es-object-atoms.js', but to 'Error: Can't resolve './vendor-chunks/es-object-atoms' in 'D:\ROOT\Trip planner\frontend\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/es-object-atoms (expected D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\es-object-atoms.js)
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at resolve commonjs D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/has-tostringtag' in D:\ROOT\Trip planner\frontend\.next\server for build dependencies doesn't lead to expected result 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\has-tostringtag.js', but to 'Error: Can't resolve './vendor-chunks/has-tostringtag' in 'D:\ROOT\Trip planner\frontend\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/has-tostringtag (expected D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\has-tostringtag.js)
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at resolve commonjs D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/hasown' in D:\ROOT\Trip planner\frontend\.next\server for build dependencies doesn't lead to expected result 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\hasown.js', but to 'Error: Can't resolve './vendor-chunks/hasown' in 'D:\ROOT\Trip planner\frontend\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/hasown (expected D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\hasown.js)
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at resolve commonjs D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/es-define-property' in D:\ROOT\Trip planner\frontend\.next\server for build dependencies doesn't lead to expected result 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\es-define-property.js', but to 'Error: Can't resolve './vendor-chunks/es-define-property' in 'D:\ROOT\Trip planner\frontend\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/es-define-property (expected D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\es-define-property.js)
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at resolve commonjs D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/gopd' in D:\ROOT\Trip planner\frontend\.next\server for build dependencies doesn't lead to expected result 'D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\gopd.js', but to 'Error: Can't resolve './vendor-chunks/gopd' in 'D:\ROOT\Trip planner\frontend\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/gopd (expected D:\ROOT\Trip planner\frontend\.next\server\vendor-chunks\gopd.js)
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file D:\ROOT\Trip planner\frontend\.next\server\app\_not-found\page.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at resolve commonjs D:\ROOT\Trip planner\frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js

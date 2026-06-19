@@ -182,6 +182,9 @@ async def fallback_route_road(origin: str, destination: str, waypoints: list[str
         "distance_km": round(float(route.get("distance", 0.0)) / 1000.0, 2),
         "duration_hours": round(float(route.get("duration", 0.0)) / 3600.0, 2),
         "polyline": polyline,
+        "coordinates": polyline,
+        "origin_coords": polyline[0],
+        "destination_coords": polyline[-1],
         "toll_roads": float(route.get("distance", 0.0)) > 250000,
     }
 
@@ -209,6 +212,9 @@ def fallback_route(origin: str, destination: str, waypoints: list[str]) -> dict[
         "distance_km": round(distance_km, 2),
         "duration_hours": duration_hours,
         "polyline": polyline,
+        "coordinates": polyline,
+        "origin_coords": polyline[0],
+        "destination_coords": polyline[-1],
         "toll_roads": distance_km > 250,
     }
 

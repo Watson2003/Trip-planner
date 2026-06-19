@@ -30,10 +30,15 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 
   if (checking) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-black text-white">
-        <div className="flex items-center gap-3 rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a] px-5 py-4 shadow-2xl shadow-black/30 backdrop-blur">
-          <Loader2 className="h-5 w-5 animate-spin text-[#D4AF37]" />
-          <span className="text-sm font-medium text-[#a0a0a0]">Checking your session...</span>
+      <main className="flex min-h-screen items-center justify-center bg-slate-50 px-4 text-slate-950">
+        <div className="roadmind-panel flex w-full max-w-md items-center gap-4 rounded-[2rem] px-6 py-5">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-700">
+            <Loader2 className="h-5 w-5 animate-spin" />
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-slate-950">Checking your session</p>
+            <p className="text-sm text-slate-500">Restoring your RoadMind workspace...</p>
+          </div>
         </div>
       </main>
     );
@@ -41,10 +46,15 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 
   if (!authenticated) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-black text-white">
-        <div className="flex items-center gap-3 rounded-2xl border border-[#1a1a1a] bg-[#0a0a0a] px-5 py-4 shadow-2xl shadow-black/30 backdrop-blur">
-          <Loader2 className="h-5 w-5 animate-spin text-[#D4AF37]" />
-          <span className="text-sm font-medium text-[#a0a0a0]">Redirecting to login...</span>
+      <main className="flex min-h-screen items-center justify-center bg-slate-50 px-4 text-slate-950">
+        <div className="roadmind-panel flex w-full max-w-md items-center gap-4 rounded-[2rem] px-6 py-5">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-700">
+            <Loader2 className="h-5 w-5 animate-spin" />
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-slate-950">Redirecting to login</p>
+            <p className="text-sm text-slate-500">Your session is missing or expired.</p>
+          </div>
         </div>
       </main>
     );

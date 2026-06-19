@@ -1,0 +1,136 @@
+
+> ai-road-trip-planner@1.0.0 dev
+> next dev
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
+  - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 6s
+ ○ Compiling / ...
+ ✓ Compiled / in 10.7s (827 modules)
+ GET / 200 in 377ms
+ ○ Compiling /trip-result ...
+ ✓ Compiled /trip-result in 11.6s (1965 modules)
+ GET /trip-result 200 in 14142ms
+ ✓ Compiled in 1862ms (941 modules)
+ ✓ Compiled in 1276ms (941 modules)
+ ✓ Compiled in 1473ms (941 modules)
+ ✓ Compiled in 992ms (941 modules)
+ ✓ Compiled in 670ms (941 modules)
+ ○ Compiling / ...
+ ✓ Compiled / in 1223ms (1034 modules)
+ GET / 200 in 2667ms
+ ✓ Compiled in 4.1s (1989 modules)
+ ✓ Compiled in 913ms (941 modules)
+ ✓ Compiled in 737ms (941 modules)
+ ✓ Compiled in 753ms (941 modules)
+ ✓ Compiled in 922ms (941 modules)
+ ✓ Compiled in 327ms (941 modules)
+ GET / 200 in 537ms
+ ○ Compiling /trip-result/itinerary ...
+ ✓ Compiled /trip-result/itinerary in 4.4s (1995 modules)
+ ✓ Compiled in 626ms (950 modules)
+ ✓ Compiled in 790ms (950 modules)
+ ✓ Compiled in 4.3s (2009 modules)
+ ✓ Compiled in 300ms (950 modules)
+ ✓ Compiled in 3.1s (2009 modules)
+ ✓ Compiled in 1152ms (950 modules)
+ ✓ Compiled in 313ms (950 modules)
+ ✓ Compiled in 526ms (950 modules)
+ ✓ Compiled in 848ms (950 modules)
+ ✓ Compiled in 778ms (950 modules)
+ ✓ Compiled in 399ms (950 modules)
+ GET /trip-result 200 in 1925ms
+ GET / 200 in 335ms
+ ✓ Compiled in 7.6s (2009 modules)
+ ✓ Compiled in 182ms (950 modules)
+ GET /trip-result 200 in 1769ms
+ ✓ Compiled in 7.2s (2009 modules)
+ ✓ Compiled in 239ms (950 modules)
+ ✓ Compiled in 3.4s (2009 modules)
+ ✓ Compiled in 915ms (950 modules)
+ ✓ Compiled in 254ms (950 modules)
+ ✓ Compiled in 3.3s (2009 modules)
+ ✓ Compiled in 633ms (950 modules)
+ ✓ Compiled in 388ms (950 modules)
+ ✓ Compiled in 4.1s (2009 modules)
+ ✓ Compiled in 600ms (950 modules)
+ GET /trip-result 200 in 2074ms
+ ✓ Compiled in 4s (2009 modules)
+ ✓ Compiled in 507ms (950 modules)
+ GET /trip-result 200 in 1532ms
+ ✓ Compiled in 6.1s (2009 modules)
+ ✓ Compiled in 952ms (950 modules)
+ ✓ Compiled in 1196ms (950 modules)
+ ✓ Compiled in 961ms (950 modules)
+ ✓ Compiled in 578ms (950 modules)
+ ✓ Compiled in 570ms (950 modules)
+ ✓ Compiled in 4.7s (2009 modules)
+ ✓ Compiled in 2.8s (2009 modules)
+ ✓ Compiled in 1211ms (950 modules)
+ ✓ Compiled in 513ms (950 modules)
+ ✓ Compiled in 3.6s (2009 modules)
+ ✓ Compiled in 1058ms (950 modules)
+ ✓ Compiled in 4.3s (2009 modules)
+ ✓ Compiled in 764ms (950 modules)
+ ✓ Compiled in 3.7s (2009 modules)
+ ✓ Compiled in 946ms (950 modules)
+ ✓ Compiled in 140ms (950 modules)
+ GET /trip-result 200 in 1512ms
+ ✓ Compiled in 4.8s (2009 modules)
+ ✓ Compiled in 6.9s (2009 modules)
+ ✓ Compiled in 447ms (950 modules)
+ GET /trip-result 200 in 5152ms
+ ✓ Compiled in 1817ms (950 modules)
+ ✓ Compiled in 910ms (950 modules)
+ ✓ Compiled in 2.2s (950 modules)
+ ✓ Compiled in 280ms (950 modules)
+ ✓ Compiled in 4.5s (2009 modules)
+ ✓ Compiled in 5.4s (950 modules)
+ GET /trip-result 200 in 9954ms
+ ✓ Compiled in 1673ms (950 modules)
+ ✓ Compiled in 873ms (950 modules)
+ ✓ Compiled in 946ms (950 modules)
+ ✓ Compiled in 480ms (950 modules)
+ ✓ Compiled in 5s (2009 modules)
+ ✓ Compiled in 1040ms (950 modules)
+ ✓ Compiled in 937ms (950 modules)
+ ✓ Compiled in 1013ms (950 modules)
+ ✓ Compiled in 912ms (950 modules)
+ ✓ Compiled in 9.1s (2009 modules)
+ ✓ Compiled in 5.5s (2009 modules)
+ ✓ Compiled in 4.8s (964 modules)
+ ✓ Compiled in 3.1s (950 modules)
+ ✓ Compiled in 1964ms (950 modules)
+ ✓ Compiled in 1464ms (950 modules)
+ ✓ Compiled in 1643ms (950 modules)
+ ✓ Compiled in 1390ms (950 modules)
+ ✓ Compiled in 1648ms (950 modules)
+ ✓ Compiled in 1167ms (950 modules)
+ ✓ Compiled in 20s (2009 modules)
+ ✓ Compiled in 2.2s (950 modules)
+ ✓ Compiled in 3.4s (950 modules)
+ ✓ Compiled in 1526ms (950 modules)
+ ✓ Compiled in 3s (950 modules)
+ ✓ Compiled in 1645ms (950 modules)
+ ✓ Compiled in 4s (950 modules)
+ ✓ Compiled in 2.7s (950 modules)
+ ✓ Compiled in 4s (950 modules)
+ ✓ Compiled in 1488ms (950 modules)
+ ✓ Compiled in 2.5s (950 modules)
+ ✓ Compiled in 1661ms (950 modules)
+ ✓ Compiled in 1114ms (950 modules)
+ ✓ Compiled in 986ms (950 modules)
+ ✓ Compiled in 1068ms (950 modules)
+ ✓ Compiled in 2.2s (950 modules)
+ ✓ Compiled in 888ms (950 modules)
+ ✓ Compiled in 1496ms (950 modules)
+ ✓ Compiled in 3.2s (950 modules)
+ ✓ Compiled in 446ms (950 modules)
+ ✓ Compiled in 1469ms (2009 modules)
+ ✓ Compiled in 106ms (950 modules)
+ ✓ Compiled in 917ms (2009 modules)
+ ✓ Compiled in 795ms (2009 modules)
+ GET /trip-result 200 in 427ms

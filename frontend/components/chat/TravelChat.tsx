@@ -121,23 +121,23 @@ export default function TravelChat({ tripId }: TravelChatProps) {
   return (
     <div className="fixed bottom-5 right-5 z-50">
       {open ? (
-        <div className="mb-3 flex h-[70vh] w-[min(22rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-3xl border border-[#1a1a1a] bg-[#0a0a0a] shadow-2xl">
-          <div className="flex items-center justify-between gap-3 border-b border-[#1a1a1a] bg-black px-4 py-3 text-white">
+        <div className="mb-3 flex h-[70vh] w-[min(22rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl">
+          <div className="flex items-center justify-between gap-3 border-b border-slate-200 bg-white px-4 py-3 text-slate-950">
             <div>
-              <p className="text-xs uppercase tracking-[0.22em] text-[#888888]">Travel Assistant</p>
+              <p className="text-xs uppercase tracking-[0.22em] text-slate-500">Travel Assistant</p>
               <h3 className="font-semibold">RoadMind AI</h3>
             </div>
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="rounded-full p-2 transition hover:bg-[#1a1a1a]"
+              className="rounded-full p-2 transition hover:bg-slate-100"
               aria-label="Close chat"
             >
               <X className="h-4 w-4" />
             </button>
           </div>
 
-          <div className="flex-1 space-y-3 overflow-y-auto bg-black p-4">
+          <div className="flex-1 space-y-3 overflow-y-auto bg-slate-50 p-4">
             {messages.map((message) => (
               <div
                 key={message.id}
@@ -146,8 +146,8 @@ export default function TravelChat({ tripId }: TravelChatProps) {
                 <div
                   className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-6 shadow-sm ${
                     message.role === "user"
-                      ? "bg-white text-black"
-                      : "border border-[#1a1a1a] bg-[#111111] text-white"
+                      ? "bg-[#0071e3] text-white"
+                      : "border border-slate-200 bg-white text-slate-950"
                   }`}
                 >
                   {message.content || (message.streaming ? "Typing..." : "")}
@@ -157,20 +157,20 @@ export default function TravelChat({ tripId }: TravelChatProps) {
             ))}
           </div>
 
-          <div className="border-t border-[#1a1a1a] bg-[#0a0a0a] p-3">
+          <div className="border-t border-slate-200 bg-white p-3">
             <div className="mb-3 flex flex-wrap gap-2">
               {QUICK_REPLIES.map((reply) => (
                 <button
                   key={reply}
                   type="button"
                   onClick={() => sendMessage(reply)}
-                  className="rounded-full border border-[#2a2a2a] bg-[#111111] px-3 py-1.5 text-xs font-semibold text-[#a0a0a0] transition hover:border-white hover:bg-[#1a1a1a] hover:text-white"
+                  className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:border-blue-200 hover:bg-slate-100 hover:text-slate-950"
                 >
                   {reply}
                 </button>
               ))}
             </div>
-            <div className="flex items-center gap-2 rounded-2xl border border-[#2a2a2a] bg-[#111111] px-3 py-2">
+            <div className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2">
               <input
                 value={input}
                 onChange={(event) => setInput(event.target.value)}
@@ -181,12 +181,12 @@ export default function TravelChat({ tripId }: TravelChatProps) {
                   }
                 }}
                 placeholder="Ask about packing, safety, food..."
-                className="min-w-0 flex-1 bg-transparent px-2 py-1 text-sm text-white outline-none placeholder:text-[#444444]"
+                className="min-w-0 flex-1 bg-transparent px-2 py-1 text-sm text-slate-950 outline-none placeholder:text-slate-400"
               />
               <button
                 type="button"
                 onClick={() => sendMessage(input)}
-                className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-[#e0e0e0]"
+                className="inline-flex items-center gap-2 rounded-xl bg-[#0071e3] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#0077ed]"
               >
                 <Send className="h-4 w-4" />
                 Send
@@ -199,7 +199,7 @@ export default function TravelChat({ tripId }: TravelChatProps) {
       <button
         type="button"
         onClick={() => setOpen((current) => !current)}
-        className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-4 text-sm font-semibold text-black shadow-2xl transition hover:-translate-y-0.5 hover:bg-[#e0e0e0]"
+        className="inline-flex items-center gap-2 rounded-full bg-[#0071e3] px-5 py-4 text-sm font-semibold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-[#0077ed]"
       >
         <MessageCircle className="h-4 w-4" />
         {open ? "Close Chat" : "Ask RoadMind"}

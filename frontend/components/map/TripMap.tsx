@@ -17,7 +17,7 @@ export interface TripMapProps {
 const TripMap = dynamic<TripMapProps>(() => import("./TripMapClient"), {
   ssr: false,
   loading: () => (
-    <div className="flex h-64 items-center justify-center rounded-3xl border border-dashed border-[#2a2a2a] bg-[#111111] text-[#888888] sm:h-80 md:h-96 lg:h-[500px]">
+    <div className="flex h-64 items-center justify-center rounded-3xl border border-dashed border-slate-200 bg-slate-50 text-slate-500 sm:h-80 md:h-96 lg:h-[500px]">
       Loading map...
     </div>
   ),

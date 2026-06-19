@@ -6,10 +6,10 @@ from models.schemas import FuelCalculation
 # Fuel prices are kept hardcoded so the backend stays functional even when
 # a live price feed is not available. Update these periodically.
 FUEL_PRICES_INR: dict[str, float] = {
-    "petrol": 102.92,   # per litre - national average
-    "diesel": 89.62,    # per litre - national average
-    "cng": 75.50,       # per kg
-    "electric": 8.50,   # per kWh
+    "petrol": 106.0,
+    "diesel": 95.0,
+    "cng": 85.0,
+    "electric": 9.0,
 }
 
 CITY_FUEL_PRICES_INR: dict[str, dict[str, float]] = {

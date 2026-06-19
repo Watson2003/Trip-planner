@@ -6,7 +6,6 @@ from typing import Any
 from agents.state import TripState
 from models.schemas import FuelCalculation
 from utils.fuel_price import get_fuel_price
-from utils.mcp_bridge import mcp_calculate_fuel_cost
 
 
 USD_TO_INR = 83.5
@@ -402,9 +401,13 @@ def build_food_daily_breakdown(
 
 
 def calculate_toll_cost(distance_km: float, vehicle_type: str) -> float:
-    rate = TOLL_COST_PER_100KM.get(vehicle_type.lower(), 65)
-    toll = (distance_km / 100.0) * rate
-    return round(toll, 2)
+    if distance_km <= 0:
+        return 0.0
+
+    # Use a stable fallback estimate whenever a live toll service is not present.
+    estimated_toll = distance_km * 1.2
+    rounded_toll = round(estimated_toll / 10.0) * 10.0
+    return round(max(10.0, rounded_toll), 2)
 
 
 def parse_dates(dates_string: str) -> dict[str, int]:
@@ -469,16 +472,23 @@ def run_budget_agent(state: TripState) -> TripState:
     print(f"[BUDGET] FINAL days={number_of_days} nights={number_of_nights}")
 
     fuel_price = get_fuel_price(vehicle["fuel_type"], origin)
-    fuel_summary = mcp_calculate_fuel_cost(
-        distance_km=distance_km,
-        fuel_efficiency_kmpl=vehicle["mileage_kmpl"],
-        fuel_price_per_litre=fuel_price,
-    )
-    fuel_required_litres = float(fuel_summary["litres_needed"])
+    mileage_kmpl = max(float(vehicle["mileage_kmpl"]), 0.01)
+    fuel_required_litres = round(max(distance_km, 0.0) / mileage_kmpl, 2)
+    fuel_cost_inr_raw = fuel_required_litres * fuel_price
+    fuel_cost_inr = round(fuel_cost_inr_raw, 2)
+    if distance_km > 0 and fuel_cost_inr <= 0:
+        fuel_cost_inr = round(fuel_required_litres * fuel_price, 2)
     refueling_stops = int(fuel_required_litres / vehicle["tank_capacity_litres"]) if vehicle["tank_capacity_litres"] and vehicle["tank_capacity_litres"] > 0 else 0
+    fuel_summary = {
+        "distance_km": round(distance_km, 2),
+        "litres_needed": fuel_required_litres,
+        "fuel_price_per_litre": round(fuel_price, 2),
+        "cost_inr": fuel_cost_inr,
+        "cost_usd": round(fuel_cost_inr / USD_TO_INR, 2),
+    }
     fuel_calculation = FuelCalculation(
         distance_km=fuel_summary["distance_km"],
-        mileage_kmpl=round(float(vehicle["mileage_kmpl"]), 2),
+        mileage_kmpl=round(mileage_kmpl, 2),
         fuel_required_litres=fuel_summary["litres_needed"],
         fuel_type=vehicle["fuel_type"],
         fuel_price_per_litre=fuel_summary["fuel_price_per_litre"],
@@ -489,7 +499,12 @@ def run_budget_agent(state: TripState) -> TripState:
         vehicle_name=vehicle["vehicle_name"],
         vehicle_type=vehicle_type,
     )
-    fuel_cost_inr = round(fuel_calculation.total_fuel_cost_inr, 2)
+    print(f"[FUEL] distance_km={round(distance_km, 2)}")
+    print(f"[FUEL] fuel_type={vehicle['fuel_type']}")
+    print(f"[FUEL] mileage={round(mileage_kmpl, 2)}")
+    print(f"[FUEL] fuel_price={round(fuel_price, 2)}")
+    print(f"[FUEL] fuel_needed={fuel_required_litres}")
+    print(f"[FUEL] fuel_cost={fuel_cost_inr}")
 
     hotel_info = get_hotel_price_per_night(
         destination=destination,
@@ -537,6 +552,10 @@ def run_budget_agent(state: TripState) -> TripState:
     )
 
     toll_cost_inr = calculate_toll_cost(distance_km=distance_km, vehicle_type=vehicle_type)
+    toll_estimation_used = distance_km > 0
+    print(f"[TOLL] distance={round(distance_km, 2)}")
+    print(f"[TOLL] estimated_toll={toll_cost_inr}")
+    print(f"[TOLL] toll_estimation_used={str(toll_estimation_used).lower()}")
     misc_cost_inr = round(total_budget * 0.05, 2)
     grand_total = round(
         fuel_cost_inr + hotel_cost_inr + food_cost_inr + toll_cost_inr + misc_cost_inr,

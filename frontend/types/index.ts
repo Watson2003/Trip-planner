@@ -41,6 +41,8 @@ export interface RouteInfo {
   stops: string[];
   origin?: string;
   destination?: string;
+  origin_coords?: [number, number] | null;
+  destination_coords?: [number, number] | null;
 }
 
 export interface DailyWeather {
@@ -219,6 +221,8 @@ export interface TripRoutePlan {
     duration_hours: number;
     polyline: Array<[number, number]>;
     toll_roads: boolean;
+    origin_coords?: [number, number] | null;
+    destination_coords?: [number, number] | null;
   };
   waypoints: string[];
 }
@@ -237,6 +241,8 @@ export interface PlannedTripResponse {
     duration_hours: number;
     polyline: Array<[number, number]>;
     toll_roads: boolean;
+    origin_coords?: [number, number] | null;
+    destination_coords?: [number, number] | null;
   };
   weather: DailyWeather[];
   weather_status?: "success" | "unavailable" | "past_dates";

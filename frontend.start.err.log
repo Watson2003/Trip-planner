@@ -1,0 +1,60 @@
+ ⨯ Error: Cannot find module './vendor-chunks/lucide-react.js'
+Require stack:
+- D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+- D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\cli\next-start.js
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1409:15)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1060:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1065:22)
+    at Function._load (node:internal/modules/cjs/loader:1214:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\webpack-runtime.js',
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\pages\\_document.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\next-server.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\next.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\start-server.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\cli\\next-start.js'
+  ]
+}
+ ⨯ Error: Cannot find module './vendor-chunks/lucide-react.js'
+Require stack:
+- D:\ROOT\Trip planner\frontend\.next\server\webpack-runtime.js
+- D:\ROOT\Trip planner\frontend\.next\server\pages\_document.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next-server.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\next.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\lib\start-server.js
+- D:\ROOT\Trip planner\frontend\node_modules\next\dist\cli\next-start.js
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1409:15)
+    at D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1060:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1065:22)
+    at Function._load (node:internal/modules/cjs/loader:1214:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:234:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1495:12)
+    at mod.require (D:\ROOT\Trip planner\frontend\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\webpack-runtime.js',
+    'D:\\ROOT\\Trip planner\\frontend\\.next\\server\\pages\\_document.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\require.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\next-server.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\next.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\server\\lib\\start-server.js',
+    'D:\\ROOT\\Trip planner\\frontend\\node_modules\\next\\dist\\cli\\next-start.js'
+  ]
+}
