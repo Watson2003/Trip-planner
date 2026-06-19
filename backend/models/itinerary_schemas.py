@@ -32,8 +32,10 @@ class TimeSlot(BaseModel):
     cost_inr: float
     reason: str
     best_time_to_visit: Optional[str] = ""
+    cluster: Optional[str] = ""
     nearby_places: list[str] = Field(default_factory=list)
     travel_time_minutes: Optional[int] = None
+    distance_from_previous_km: Optional[float] = None
     current_location_before: str
     current_location_after: str
     activity: Optional[str] = ""

@@ -12,7 +12,12 @@ from typing import Any
 
 from agents.state import TripState
 from models.itinerary_schemas import ActivityCategory, DayItinerary, FullItinerary, TimeSlot
-from utils.geo import cluster_nearby_places, haversine_distance_km
+from utils.place_clustering import (
+    cluster_places_by_distance,
+    estimate_travel_time_minutes,
+    haversine_distance_km,
+    sort_places_nearest_neighbor,
+)
 from utils.destination_places import build_destination_attractions, build_destination_place_pools
 from utils.llm import call_llm_json
 
@@ -1398,46 +1403,107 @@ def _explorer_clustered_attractions(explorer: dict[str, Any] | None, day_kind: s
     if not unique:
         return []
 
-    clusters = cluster_nearby_places(unique, max_distance_km=5)
+    clusters = cluster_places_by_distance(unique, max_distance_km=5)
+    cluster_count = len(clusters)
+    places_per_cluster = [len(cluster.get("places", [])) for cluster in clusters]
+    average_distance = round(
+        sum(float(cluster.get("average_distance_km") or 0.0) for cluster in clusters) / max(cluster_count, 1),
+        3,
+    )
+    logger.info(
+        "[ITINERARY] cluster_count=%d places_per_cluster=%s average_distance=%.3f",
+        cluster_count,
+        places_per_cluster,
+        average_distance,
+    )
+
+    preferred_cluster_order = {
+        "arrival": ["Evening Cluster", "Afternoon Cluster", "Morning Cluster"],
+        "return": ["Morning Cluster", "Afternoon Cluster", "Evening Cluster"],
+        "full": ["Morning Cluster", "Afternoon Cluster", "Evening Cluster"],
+    }.get(day_kind, ["Morning Cluster", "Afternoon Cluster", "Evening Cluster"])
+    cluster_label_map = {index: preferred_cluster_order[min(index, len(preferred_cluster_order) - 1)] for index in range(max(cluster_count, 1))}
+
     ordered_clusters = []
-    for cluster in clusters:
+    for index, cluster in enumerate(clusters):
         places = [place for place in cluster.get("places", []) if isinstance(place, dict)]
         if not places:
             continue
         rank = min(_best_time_rank(place.get("best_time_to_visit")) for place in places)
-        ordered_clusters.append((rank, -len(places), cluster))
-    ordered_clusters.sort(key=lambda item: (item[0], item[1]))
+        ordered_clusters.append((preferred_cluster_order.index(cluster_label_map.get(index, preferred_cluster_order[-1])), rank, -len(places), index, cluster))
+    ordered_clusters.sort(key=lambda item: (item[0], item[1], item[2]))
 
-    target_count = 5
-    if day_kind == "arrival":
-        target_count = 2
-    elif day_kind == "return":
-        target_count = 3
+    target_count = 2 if day_kind == "arrival" else 3 if day_kind == "return" else 5
 
     ordered_places: list[dict[str, Any]] = []
-    for _, _, cluster in ordered_clusters:
-        places = sorted(
-            [place for place in cluster.get("places", []) if isinstance(place, dict)],
-            key=lambda place: (_best_time_rank(place.get("best_time_to_visit")), _normalize_text(place.get("name"))),
-        )
+    previous_coords: tuple[float | None, float | None] = (None, None)
+    for _, _, _, index, cluster in ordered_clusters:
+        cluster_label = cluster_label_map.get(index, preferred_cluster_order[-1])
+        places = sort_places_nearest_neighbor([place for place in cluster.get("places", []) if isinstance(place, dict)])
         for place in places:
             normalized = normalize_place_name(place.get("name", ""))
             if not normalized or any(normalize_place_name(item.get("name", "")) == normalized for item in ordered_places):
                 continue
-            ordered_places.append(place)
+            place_lat, place_lon = _place_lat_lon(place)
+            distance_from_previous = 0.0
+            if previous_coords[0] is not None and previous_coords[1] is not None and place_lat is not None and place_lon is not None:
+                distance_from_previous = haversine_distance_km(previous_coords[0], previous_coords[1], place_lat, place_lon)
+            annotated = dict(place)
+            annotated["cluster"] = cluster_label
+            annotated["best_time_to_visit"] = annotated.get("best_time_to_visit") or cluster_label.replace(" Cluster", "")
+            annotated["distance_from_previous_km"] = round(distance_from_previous, 3)
+            annotated["travel_time_minutes"] = estimate_travel_time_minutes(distance_from_previous)
+            ordered_places.append(annotated)
+            previous_coords = (place_lat, place_lon)
             if len(ordered_places) >= target_count:
                 return ordered_places
 
     if len(ordered_places) < target_count:
-        for place in sorted(unique, key=lambda item: (_best_time_rank(item.get("best_time_to_visit")), _normalize_text(item.get("name")))):
+        for place in sort_places_nearest_neighbor(unique):
             normalized = normalize_place_name(place.get("name", ""))
             if not normalized or any(normalize_place_name(item.get("name", "")) == normalized for item in ordered_places):
                 continue
-            ordered_places.append(place)
+            place_lat, place_lon = _place_lat_lon(place)
+            distance_from_previous = 0.0
+            if previous_coords[0] is not None and previous_coords[1] is not None and place_lat is not None and place_lon is not None:
+                distance_from_previous = haversine_distance_km(previous_coords[0], previous_coords[1], place_lat, place_lon)
+            annotated = dict(place)
+            annotated.setdefault("cluster", preferred_cluster_order[min(len(ordered_places), len(preferred_cluster_order) - 1)])
+            annotated.setdefault("best_time_to_visit", annotated.get("cluster", "").replace(" Cluster", ""))
+            annotated["distance_from_previous_km"] = round(distance_from_previous, 3)
+            annotated["travel_time_minutes"] = estimate_travel_time_minutes(distance_from_previous)
+            ordered_places.append(annotated)
+            previous_coords = (place_lat, place_lon)
             if len(ordered_places) >= target_count:
                 break
 
     return ordered_places
+
+
+def _annotate_slot_travel_metrics(slots: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Add distance and travel-time metadata between successive slots."""
+    annotated: list[dict[str, Any]] = []
+    previous_coords: tuple[float | None, float | None] = (None, None)
+
+    for slot in slots:
+        slot_copy = dict(slot)
+        slot_lat_lon = _place_lat_lon(slot_copy)
+        distance = 0.0
+        if previous_coords[0] is not None and previous_coords[1] is not None and slot_lat_lon[0] is not None and slot_lat_lon[1] is not None:
+            distance = haversine_distance_km(previous_coords[0], previous_coords[1], slot_lat_lon[0], slot_lat_lon[1])
+        existing_travel_time = _safe_float(slot_copy.get("travel_time_minutes"), 0.0)
+        computed_travel_time = estimate_travel_time_minutes(distance)
+        if distance <= 0:
+            computed_travel_time = int(existing_travel_time or 0)
+        else:
+            computed_travel_time = max(int(existing_travel_time or 0), computed_travel_time)
+        slot_copy["distance_from_previous_km"] = round(distance, 3)
+        slot_copy["travel_time_minutes"] = computed_travel_time
+        annotated.append(slot_copy)
+        if slot_lat_lon[0] is not None and slot_lat_lon[1] is not None:
+            previous_coords = slot_lat_lon
+
+    return annotated
 
 
 def _names_from_block(block: dict[str, Any] | None, kind: str) -> list[str]:
@@ -1494,6 +1560,8 @@ def _make_time_slot(
     place_name: str = "",
     best_time_to_visit: str = "",
     nearby_places: list[str] | None = None,
+    distance_from_previous_km: float | None = None,
+    cluster: str = "",
 ) -> TimeSlot:
     return TimeSlot(
         time=time,
@@ -1516,7 +1584,9 @@ def _make_time_slot(
         tips=reason,
         place_name=place_name,
         best_time_to_visit=best_time_to_visit,
+        cluster=cluster,
         nearby_places=nearby_places or [],
+        distance_from_previous_km=distance_from_previous_km,
     )
 
 
@@ -1609,7 +1679,7 @@ def _build_route_aware_itinerary(
     ]
 
     def route_day_slot_plan() -> list[dict[str, Any]]:
-        return [
+        return _annotate_slot_travel_metrics([
             {
                 "time": "06:30 AM",
                 "type": ActivityCategory.BREAKFAST,
@@ -1724,7 +1794,7 @@ def _build_route_aware_itinerary(
                 "current_location_after": destination,
                 "progress": 1.0,
             },
-        ]
+        ])
 
     def destination_day_slot_plan(day_index: int) -> list[dict[str, Any]]:
         breakfast_place = get_unique_place("restaurants", destination, used_places)
@@ -1732,7 +1802,7 @@ def _build_route_aware_itinerary(
         dinner_place = get_unique_place("restaurants", destination, used_places)
         attraction_title = get_unique_place("attractions", destination, used_places).get("name", destination)
         secondary_attraction = get_unique_place("attractions", destination, used_places).get("name", destination)
-        return [
+        return _annotate_slot_travel_metrics([
             {
                 "time": "08:00 AM",
                 "type": ActivityCategory.BREAKFAST,
@@ -1841,7 +1911,7 @@ def _build_route_aware_itinerary(
                 "current_location_after": destination,
                 "progress": 1.0,
             },
-        ]
+        ])
 
     def return_day_slot_plan() -> list[dict[str, Any]]:
         breakfast_place = get_unique_place("restaurants", destination, used_places)
@@ -2005,6 +2075,8 @@ def _build_route_aware_itinerary(
                 current_location_after=current_after,
                 activity=_normalize_text(raw_slot.get("activity"), title),
                 description=_normalize_text(raw_slot.get("description"), _normalize_text(raw_slot.get("reason"))),
+                distance_from_previous_km=_safe_float(raw_slot.get("distance_from_previous_km"), 0.0) or None,
+                cluster=_normalize_text(raw_slot.get("cluster")),
             )
             day_slots.append(slot)
             day_cost += slot.cost_inr
@@ -2984,7 +3056,7 @@ def _build_sightseeing_day_slots(
         breakfast_lat, breakfast_lon = _place_lat_lon(breakfast_place)
         lunch_lat, lunch_lon = _place_lat_lon(lunch_place)
         fuel_lat, fuel_lon = _place_lat_lon(fuel_place)
-        return [
+        return _annotate_slot_travel_metrics([
             {
                 "time": "08:00 AM",
                 "type": ActivityCategory.BREAKFAST,
@@ -3082,7 +3154,7 @@ def _build_sightseeing_day_slots(
                 "current_location_before": route_stop_two or route_stop,
                 "current_location_after": origin,
             },
-        ]
+        ])
 
     breakfast_place = _pick_meal("restaurants", destination)
     lunch_place = _pick_meal("restaurants", destination)
@@ -3090,7 +3162,7 @@ def _build_sightseeing_day_slots(
     breakfast_lat, breakfast_lon = _place_lat_lon(breakfast_place)
     lunch_lat, lunch_lon = _place_lat_lon(lunch_place)
     dinner_lat, dinner_lon = _place_lat_lon(dinner_place)
-    return [
+    slots = [
         {
             "time": "08:00 AM",
             "type": ActivityCategory.BREAKFAST,
@@ -3107,60 +3179,67 @@ def _build_sightseeing_day_slots(
             "current_location_before": destination,
             "current_location_after": destination,
         },
-    ] + [
-        {
-            "time": time,
-            "type": ActivityCategory.ATTRACTION,
-            "title": f"Visit {place.get('name', destination)}",
-            "place_name": place.get("name", destination),
-            "location": place.get("name", destination),
-            "latitude": _place_lat_lon(place)[0],
-            "longitude": _place_lat_lon(place)[1],
-            "estimated_duration_minutes": 70 if idx < 2 else 60,
-            "cost_inr": _fallback_slot_cost(ActivityCategory.ATTRACTION, distance_km=distance_km, vehicle_type=vehicle_type, is_travel_day=False, is_return_day=False),
-            "reason": place.get("description", "A scenic destination stop."),
-            "best_time_to_visit": place.get("best_time_to_visit", "Morning"),
-            "nearby_places": place.get("nearby_places", []),
-            "current_location_before": destination,
-            "current_location_after": destination,
-        }
-        for idx, (time, place) in enumerate(
-            zip(["09:00 AM", "10:45 AM", "01:45 PM", "03:45 PM", "05:30 PM"], selected_attractions[:5], strict=False)
-        )
-    ] + [
-        {
-            "time": "12:10 PM",
-            "type": ActivityCategory.LUNCH,
-            "title": f"Lunch at {lunch_place.get('name', destination)}",
-            "place_name": lunch_place.get("name", destination),
-            "location": destination,
-            "latitude": lunch_lat,
-            "longitude": lunch_lon,
-            "estimated_duration_minutes": 55,
-            "cost_inr": _fallback_slot_cost(ActivityCategory.LUNCH, distance_km=distance_km, vehicle_type=vehicle_type, is_travel_day=False, is_return_day=False),
-            "reason": "A short lunch break keeps the destination loop moving without cutting into sightseeing time.",
-            "best_time_to_visit": "Afternoon",
-            "nearby_places": [],
-            "current_location_before": destination,
-            "current_location_after": destination,
-        },
-        {
-            "time": "07:30 PM",
-            "type": ActivityCategory.DINNER,
-            "title": f"Dinner at {dinner_place.get('name', destination)}",
-            "place_name": dinner_place.get("name", destination),
-            "location": destination,
-            "latitude": dinner_lat,
-            "longitude": dinner_lon,
-            "estimated_duration_minutes": 55,
-            "cost_inr": _fallback_slot_cost(ActivityCategory.DINNER, distance_km=distance_km, vehicle_type=vehicle_type, is_travel_day=False, is_return_day=False),
-            "reason": "Dinner ends the day after a full sightseeing circuit.",
-            "best_time_to_visit": "Evening",
-            "nearby_places": [],
-            "current_location_before": destination,
-            "current_location_after": destination,
-        },
     ]
+    attraction_times = ["09:00 AM", "10:45 AM", "01:45 PM", "03:45 PM", "05:30 PM"]
+    for idx, (time, place) in enumerate(zip(attraction_times, selected_attractions[:5], strict=False)):
+        slot_place_lat, slot_place_lon = _place_lat_lon(place)
+        slots.append(
+            {
+                "time": time,
+                "type": ActivityCategory.ATTRACTION,
+                "title": f"Visit {place.get('name', destination)}",
+                "place_name": place.get("name", destination),
+                "location": place.get("name", destination),
+                "latitude": slot_place_lat,
+                "longitude": slot_place_lon,
+                "estimated_duration_minutes": 70 if idx < 2 else 60,
+                "cost_inr": _fallback_slot_cost(ActivityCategory.ATTRACTION, distance_km=distance_km, vehicle_type=vehicle_type, is_travel_day=False, is_return_day=False),
+                "reason": place.get("description", "A scenic destination stop."),
+                "best_time_to_visit": place.get("best_time_to_visit", "Morning"),
+                "nearby_places": place.get("nearby_places", []),
+                "current_location_before": destination,
+                "current_location_after": destination,
+                "distance_from_previous_km": place.get("distance_from_previous_km"),
+                "travel_time_minutes": place.get("travel_time_minutes"),
+            }
+        )
+    slots.extend(
+        [
+            {
+                "time": "12:10 PM",
+                "type": ActivityCategory.LUNCH,
+                "title": f"Lunch at {lunch_place.get('name', destination)}",
+                "place_name": lunch_place.get("name", destination),
+                "location": destination,
+                "latitude": lunch_lat,
+                "longitude": lunch_lon,
+                "estimated_duration_minutes": 55,
+                "cost_inr": _fallback_slot_cost(ActivityCategory.LUNCH, distance_km=distance_km, vehicle_type=vehicle_type, is_travel_day=False, is_return_day=False),
+                "reason": "A short lunch break keeps the destination loop moving without cutting into sightseeing time.",
+                "best_time_to_visit": "Afternoon",
+                "nearby_places": [],
+                "current_location_before": destination,
+                "current_location_after": destination,
+            },
+            {
+                "time": "07:30 PM",
+                "type": ActivityCategory.DINNER,
+                "title": f"Dinner at {dinner_place.get('name', destination)}",
+                "place_name": dinner_place.get("name", destination),
+                "location": destination,
+                "latitude": dinner_lat,
+                "longitude": dinner_lon,
+                "estimated_duration_minutes": 55,
+                "cost_inr": _fallback_slot_cost(ActivityCategory.DINNER, distance_km=distance_km, vehicle_type=vehicle_type, is_travel_day=False, is_return_day=False),
+                "reason": "Dinner ends the day after a full sightseeing circuit.",
+                "best_time_to_visit": "Evening",
+                "nearby_places": [],
+                "current_location_before": destination,
+                "current_location_after": destination,
+            },
+        ]
+    )
+    return _annotate_slot_travel_metrics(slots)
 
 
 def _build_destination_focused_itinerary(
@@ -3294,6 +3373,8 @@ def _build_destination_focused_itinerary(
                 cost_inr=slot["cost_inr"],
                 reason=slot["reason"],
                 travel_time_minutes=slot.get("travel_time_minutes"),
+                distance_from_previous_km=slot.get("distance_from_previous_km"),
+                cluster=_normalize_text(slot.get("cluster")),
                 best_time_to_visit=slot.get("best_time_to_visit", ""),
                 nearby_places=slot.get("nearby_places", []),
                 current_location_before=slot["current_location_before"],
@@ -3372,9 +3453,11 @@ def _build_destination_focused_itinerary(
                     cost_inr=_fallback_slot_cost(ActivityCategory.ATTRACTION, distance_km=distance_km, vehicle_type=vehicle_type, is_travel_day=False, is_return_day=day.day_number == trip_days and trip_days >= 3),
                     reason=_normalize_text(entry.get("description"), "A scenic destination stop."),
                     best_time_to_visit=_normalize_text(entry.get("best_time_to_visit")),
+                    cluster=_normalize_text(entry.get("cluster")),
                     nearby_places=[str(value).strip() for value in (entry.get("nearby_places") or []) if str(value).strip()],
                     current_location_before=destination,
                     current_location_after=destination,
+                    distance_from_previous_km=_safe_float(entry.get("distance_from_previous_km"), 0.0) or None,
                 ),
             )
         day.time_slots = _apply_location_flow(

@@ -317,8 +317,10 @@ export interface TimeSlot {
   cost_inr: number;
   reason: string;
   best_time_to_visit?: string;
+  cluster?: string;
   nearby_places?: string[];
   travel_time_minutes?: number | null;
+  distance_from_previous_km?: number | null;
   current_location_before: string;
   current_location_after: string;
   activity?: string;
